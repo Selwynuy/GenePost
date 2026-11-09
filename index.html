@@ -12,9 +12,9 @@
   <link rel="canonical" href="https://selwynuy.github.io/GenePost/">
   <meta property="og:image" content="https://selwynuy.github.io/GenePost/assets/team.webp">
   <link rel="icon" href="./assets/genepost.svg?v=531d221c39" type="image/svg+xml">
-  <link rel="stylesheet" href="./assets/site.css?v=6dc43a7d2a">
-  <link rel="stylesheet" href="./assets/demo.css?v=127421d807">
-  <script src="./assets/site.js?v=9f8864e6d4" defer></script>
+  <link rel="stylesheet" href="./assets/site.css?v=6f0f59dad9">
+  <link rel="stylesheet" href="./assets/demo.css?v=40ab231018">
+  <script src="./assets/site.js?v=6e30b99039" defer></script>
 </head>
 <body>
   <a class="skip" href="#main">Skip to content</a>
@@ -33,6 +33,9 @@
     <svg class="symbol-source" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" width="0" height="0">
   <symbol id="icon-play" viewBox="0 0 24 24"><path d="m8 5 12 7-12 7Z" fill="currentColor" stroke="none"/></symbol>
   <symbol id="icon-pause" viewBox="0 0 24 24"><path d="M9 5v14m6-14v14" stroke-width="3"/></symbol>
+  <symbol id="icon-down" viewBox="0 0 24 24"><path d="M12 5v14m-6-6 6 6 6-6"/></symbol>
+  <symbol id="icon-mac" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="12" rx="2"/><path d="M2 19h20"/></symbol>
+  <symbol id="icon-cursor" viewBox="0 0 22 26"><path d="M3 2v19l5-5 4 8 4-2-4-8h7Z" fill="#fff" stroke="#201534" stroke-width="1.6" stroke-linejoin="round"/></symbol>
   <symbol id="icon-reset" viewBox="0 0 24 24"><path d="M4 11a8 8 0 1 1 2 6m-2-6V5m0 6h6"/></symbol>
   <symbol id="icon-external" viewBox="0 0 24 24"><path d="M7 17 17 7M7 7h10v10"/></symbol>
   <symbol id="icon-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
@@ -51,11 +54,65 @@
   <symbol id="icon-upload" viewBox="0 0 24 24"><path d="M12 16V4m-5 5 5-5 5 5M4 15v4a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-4"/></symbol>
   <symbol id="icon-spark" viewBox="0 0 24 24"><path d="m12 3 2.4 6.6L21 12l-6.6 2.4L12 21l-2.4-6.6L3 12l6.6-2.4Z"/></symbol>
 </svg>
-<section class="demo-stage" id="tour" aria-labelledby="hero-title">
-  <div class="wrap hero">
-    <h1 id="hero-title">Your social team.</h1>
-    <p>Hire. Draft. Schedule.</p>
+<section class="launch-hero" aria-labelledby="hero-title">
+  <div class="wrap hero-grid">
+    <div class="hero-copy">
+      <h1 id="hero-title">One idea. <span>Three posts.</span></h1>
+      <p>Your AI team.</p>
+      <div class="hero-actions">
+        <a class="button primary" href="#demo">Try the demo <svg class="symbol" aria-hidden="true"><use href="#icon-down"></use></svg></a>
+        <a class="button quiet" href="#pricing">$39 once</a>
+      </div>
+      <div class="hero-mac"><svg class="symbol" aria-hidden="true"><use href="#icon-mac"></use></svg> Made for Mac</div>
+    </div>
+    <figure class="hero-showcase">
+      <div class="macbook" aria-hidden="true">
+        <div class="mac-display">
+          <div class="mac-screen hero-screen">
+            <div class="hero-shot hero-brief">
+              <img src="./assets/team.webp" width="1600" height="1029" alt="" fetchpriority="high">
+              <span class="hero-gesture"><i></i><svg viewBox="0 0 22 26"><use href="#icon-cursor"></use></svg></span>
+            </div>
+            <div class="hero-shot hero-review">
+              <img src="./assets/compose.webp" width="1600" height="1029" alt="">
+              <span class="hero-gesture"><i></i><svg viewBox="0 0 22 26"><use href="#icon-cursor"></use></svg></span>
+            </div>
+            <div class="hero-shot hero-plan">
+              <img src="./assets/calendar.webp" width="1600" height="1029" alt="">
+            </div>
+          </div>
+        </div>
+        <div class="mac-base"><span></span></div>
+      </div>
+      <figcaption class="hero-caption">
+        <div class="hero-chapters" aria-hidden="true">
+          <span class="hero-brief"><i></i> Draft with Freya</span>
+          <span class="hero-review"><i></i> Review each post</span>
+          <span class="hero-plan"><i></i> Plan the week</span>
+        </div>
+        <span class="sr-only">A sample GenePost campaign moving from Team to Compose to Calendar.</span>
+        <button type="button" class="hero-toggle" aria-label="Pause preview" title="Pause preview" hidden>
+          <svg class="symbol" aria-hidden="true"><use href="#icon-pause"></use></svg>
+        </button>
+      </figcaption>
+    </figure>
   </div>
+</section>
+
+<section class="channel-band" aria-label="Supported channels">
+  <ul class="wrap channel-list">
+    <li><img src="./assets/instagram.png" width="19" height="19" alt="">Instagram</li>
+    <li><img src="./assets/linkedin.png" width="19" height="19" alt="">LinkedIn</li>
+    <li><img src="./assets/facebook.png" width="19" height="19" alt="">Facebook</li>
+    <li><img src="./assets/threads.png" width="19" height="19" alt="">Threads</li>
+    <li><img src="./assets/x.png" width="19" height="19" alt="">X</li>
+    <li><img src="./assets/reddit.png" width="19" height="19" alt="">Reddit</li>
+    <li><img src="./assets/tiktok.png" width="19" height="19" alt="">TikTok</li>
+  </ul>
+</section>
+
+<section class="demo-stage" id="tour" aria-labelledby="demo-title">
+  <div class="wrap demo-heading"><h2 id="demo-title">Try it live.</h2></div>
   <div class="demo-wrap" id="demo" tabindex="-1" data-assets="./assets/">
     <div class="demo-toolbar" id="demo-controls" hidden>
       <button class="button primary" type="button" data-action="play">
@@ -70,7 +127,7 @@
     <div class="macbook">
       <div class="mac-display">
         <div class="mac-screen">
-          <img id="demo-fallback" src="./assets/team.webp" width="1600" height="1029" alt="GenePost on Mac" fetchpriority="high">
+          <img id="demo-fallback" src="./assets/team.webp" width="1600" height="1029" alt="GenePost on Mac" loading="lazy">
           <div class="demo-app" data-theme="dark" hidden>
             <div class="demo-titlebar">
               <span class="window-lights" aria-hidden="true"><i></i><i></i><i></i></span>
@@ -82,7 +139,7 @@
               <div class="demo-workspace" tabindex="-1"></div>
             </div>
             <span class="demo-pointer" aria-hidden="true" hidden>
-              <svg width="22" height="26" viewBox="0 0 22 26"><path d="M3 2v19l5-5 4 8 4-2-4-8h7Z" fill="#fff" stroke="#201534" stroke-width="1.6" stroke-linejoin="round"/></svg>
+              <i></i><svg width="22" height="26" viewBox="0 0 22 26"><use href="#icon-cursor"></use></svg>
             </span>
           </div>
         </div>
@@ -94,18 +151,6 @@
       <a id="native-screen" href="./assets/team.webp" target="_blank" rel="noopener">View Mac screen <svg class="symbol" aria-hidden="true"><use href="#icon-external"></use></svg></a>
     </div>
   </div>
-</section>
-
-<section class="channel-band" aria-label="Supported channels">
-  <ul class="wrap channel-list">
-    <li><img src="./assets/instagram.png" width="19" height="19" alt="">Instagram</li>
-    <li><img src="./assets/linkedin.png" width="19" height="19" alt="">LinkedIn</li>
-    <li><img src="./assets/facebook.png" width="19" height="19" alt="">Facebook</li>
-    <li><img src="./assets/threads.png" width="19" height="19" alt="">Threads</li>
-    <li><img src="./assets/x.png" width="19" height="19" alt="">X</li>
-    <li><img src="./assets/reddit.png" width="19" height="19" alt="">Reddit</li>
-    <li><img src="./assets/tiktok.png" width="19" height="19" alt="">TikTok</li>
-  </ul>
 </section>
 
 <section class="wrap section cases" id="workflow" aria-labelledby="cases-title">

@@ -86,6 +86,8 @@ const workspaces = new Map([['coffee', newState('coffee')]]);
 let state = workspaces.get('coffee');
 let playback;
 let screenAnimation;
+let animateResponse = false;
+let pointerSubmit;
 
 const escapeHTML = value => String(value).replace(/[&<>"']/g, char => ({
   '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;',
@@ -283,7 +285,7 @@ function settings() {
 }
 
 const views = { compose, team, review, calendar, queue, drafts, channels, media, reports, settings };
-function draw({ moved = false } = {}) {
+function draw({ moved = false, reveal = '.app-notice, .app-error' } = {}) {
   const view = state.view === 'review' ? 'compose' : state.view;
   const oldFocus = workspace.contains(document.activeElement) ? document.activeElement : null;
   const scroll = workspace.scrollTop;
@@ -305,9 +307,12 @@ function draw({ moved = false } = {}) {
   const screenshot = state.view === 'team' && state.hireStep ? 'hiring' : view;
   demo.querySelector('#native-screen').href = assets + screenshot + '.webp';
   screenAnimation?.cancel();
-  if (moved && playback && !reducedMotion.matches) {
-    screenAnimation = workspace.animate([{ opacity: .56, transform: 'translateY(5px)' }, { opacity: 1, transform: 'none' }],
-      { duration: 230, easing: 'cubic-bezier(.23, 1, .32, 1)' });
+  if (animateResponse && !reducedMotion.matches) {
+    const changed = moved ? workspace : workspace.querySelector(reveal);
+    screenAnimation = changed?.animate(
+      [{ opacity: .78, transform: 'translateY(4px)' }, { opacity: 1, transform: 'none' }],
+      { duration: 210, easing: 'cubic-bezier(.16, 1, .3, 1)' }
+    );
   }
 }
 
@@ -328,7 +333,7 @@ function generate() {
   state.captions = Object.fromEntries(state.campaign.channels.map((key, index) =>
     [key, (matchingIdea ? state.campaign.captions : samples)[index]]));
   state.notice = 'Sample captions ready';
-  draw();
+  draw({ reveal: '.demo-feed' });
 }
 
 function saveDraft() {
@@ -385,11 +390,15 @@ function importMedia(file) {
 
 const commands = {
   screen,
-  'choose-media': () => { state.choosingMedia = !state.choosingMedia; draw(); },
-  attach: id => { state.asset = id; state.choosingMedia = false; draw(); },
-  'remove-media': () => { state.asset = null; draw(); },
+  'choose-media': () => { state.choosingMedia = !state.choosingMedia; draw({ reveal: '.media-picker' }); },
+  attach: id => { state.asset = id; state.choosingMedia = false; draw({ reveal: '.demo-feed' }); },
+  'remove-media': () => { state.asset = null; draw({ reveal: '.demo-feed' }); },
   'use-media': id => { state.asset = id; screen('compose'); },
-  platform: key => { state.platform = key; draw(); },
+  platform: key => {
+    if (state.platform === key) return;
+    state.platform = key;
+    draw({ reveal: '.demo-feed' });
+  },
   generate,
   'save-draft': saveDraft,
   'open-draft': id => {
@@ -410,24 +419,24 @@ const commands = {
     screen('review');
   },
   schedule,
-  'post-job': () => { state.hireStep = 'job'; draw(); },
-  applicants: () => { state.hireStep = 'applicants'; state.interview = false; draw(); },
+  'post-job': () => { state.hireStep = 'job'; draw({ reveal: '.job-form' }); },
+  applicants: () => { state.hireStep = 'applicants'; state.interview = false; draw({ reveal: '.applicants' }); },
   'team-home': () => { state.hireStep = ''; draw(); },
   candidate: name => { state.candidate = name; state.interview = false; draw(); },
-  interview: () => { state.interview = !state.interview; draw(); },
+  interview: () => { state.interview = !state.interview; draw({ reveal: '.interview-result' }); },
   hire: () => {
     if (!state.team.includes(state.candidate)) state.team.push(state.candidate);
     state.hireStep = '';
     state.notice = state.candidate + ' joined';
     draw();
   },
-  week: offset => { state.week = offsetDay(state.week, Number(offset)); draw(); },
+  week: offset => { state.week = offsetDay(state.week, Number(offset)); draw({ reveal: '.demo-week' }); },
   'open-job': id => {
     state.jobID = id;
     state.queueFilter = state.jobs.find(job => job.id === id).status;
     screen('queue');
   },
-  'select-job': id => { state.jobID = id; draw(); },
+  'select-job': id => { state.jobID = id; draw({ reveal: '.demo-feed' }); },
   'queue-filter': filter => { state.queueFilter = filter; draw(); },
   publish: id => {
     state.jobs.find(job => job.id === id).status = 'published';
@@ -444,10 +453,15 @@ const commands = {
   theme: theme => { state.theme = theme; draw(); },
 };
 
-function perform(name, value) {
+function perform(name, value, animate = false) {
   state.notice = '';
   state.error = '';
-  commands[name](value);
+  animateResponse = animate;
+  try {
+    commands[name](value);
+  } finally {
+    animateResponse = false;
+  }
 }
 
 const walkthrough = [
@@ -476,20 +490,31 @@ function showControls() {
   controls.querySelector('[data-action="reset"]').hidden = Boolean(playback);
   app.querySelector('.demo-window').inert = Boolean(playback);
   progress.hidden = !playback;
-  progress.firstElementChild.style.width = (playback ? playback.index / walkthrough.length * 100 : 0) + '%';
+  progress.firstElementChild.style.transform = 'scaleX(' + (playback ? playback.index / walkthrough.length : 0) + ')';
 }
 
 function pointAt(target) {
-  if (!target || reducedMotion.matches || !matchMedia('(min-width: 660px)').matches) return;
-  const bounds = target.getBoundingClientRect();
+  const bounds = target?.getBoundingClientRect();
   const frame = app.getBoundingClientRect();
-  if (bounds.bottom > frame.bottom || bounds.top < frame.top) {
+  if (!bounds || reducedMotion.matches || bounds.bottom > frame.bottom || bounds.top < frame.top) {
     pointer.hidden = true;
     return;
   }
   pointer.hidden = false;
   pointer.style.transform = 'translate3d(' + (bounds.left + bounds.width * .7 - frame.left) +
     'px,' + (bounds.top + bounds.height * .62 - frame.top) + 'px,0)';
+}
+
+function guidePress(target) {
+  if (!pointer.hidden) {
+    pointer.querySelector('i').animate([
+      { opacity: .9, transform: 'scale(.55)' },
+      { opacity: 0, transform: 'scale(1.45)' },
+    ], { duration: 340, easing: 'ease-out' });
+  }
+  target?.animate([
+    { transform: 'scale(1)' }, { transform: 'scale(.945)', offset: .52 }, { transform: 'scale(1)' },
+  ], { duration: 150, easing: 'ease-out' });
 }
 
 function step() {
@@ -508,13 +533,22 @@ function step() {
   cue.textContent = label;
   const target = app.querySelector(selector);
   pointAt(target);
-  run.timer = setTimeout(() => {
+  const advance = () => {
     if (playback !== run || !run.playing) return;
-    perform(command, typeof value === 'function' ? value() : value);
+    perform(command, typeof value === 'function' ? value() : value, true);
     run.index++;
     showControls();
-    run.timer = setTimeout(step, 1050);
-  }, reducedMotion.matches ? 40 : 360);
+    run.timer = setTimeout(step, 980);
+  };
+  if (reducedMotion.matches) {
+    run.timer = setTimeout(advance, 40);
+    return;
+  }
+  run.timer = setTimeout(() => {
+    if (playback !== run || !run.playing) return;
+    guidePress(target);
+    run.timer = setTimeout(advance, 110);
+  }, 305);
 }
 
 function pause() {
@@ -563,18 +597,21 @@ function reset() {
 
 sidebar.innerHTML = screens.map(([value, label, glyph]) => action('screen', label, { value, glyph })).join('');
 demo.addEventListener('click', event => {
-  const button = event.target.closest('button[data-action]');
-  if (!button) return;
+  const button = event.target.closest('button');
+  if (button?.type === 'submit') pointerSubmit = event.detail > 0 ? button : undefined;
+  if (!button?.dataset.action) return;
   const { action: name, value } = button.dataset;
   if (name === 'play') play();
   else if (name === 'stop') stop();
   else if (name === 'reset') reset();
-  else if (!playback) perform(name, value);
+  else if (!playback) perform(name, value, event.detail > 0);
 });
 
 workspace.addEventListener('submit', event => {
   event.preventDefault();
-  if (!playback) perform(event.target.dataset.submit);
+  const animate = Boolean(pointerSubmit && pointerSubmit === event.submitter);
+  pointerSubmit = undefined;
+  if (!playback) perform(event.target.dataset.submit, undefined, animate);
 });
 workspace.addEventListener('input', event => {
   const { field } = event.target.dataset;
@@ -584,9 +621,6 @@ workspace.addEventListener('input', event => {
 workspace.addEventListener('change', event => {
   if (event.target.type === 'file') importMedia(event.target.files[0]);
   if (event.target.dataset.field === 'reportFilter') draw();
-});
-document.addEventListener('visibilitychange', () => {
-  if (document.hidden && playback?.playing) pause();
 });
 document.querySelectorAll('[data-case]').forEach(link => {
   link.addEventListener('click', () => {
@@ -606,3 +640,38 @@ controls.hidden = false;
 app.hidden = false;
 demo.querySelector('#demo-fallback').hidden = true;
 demo.querySelector('.demo-under').hidden = false;
+
+const showcase = document.querySelector('.hero-showcase');
+const previewToggle = showcase.querySelector('.hero-toggle');
+let previewVisible = !('IntersectionObserver' in window);
+let previewPaused = false;
+
+function syncPreview() {
+  previewToggle.hidden = reducedMotion.matches;
+  if (reducedMotion.matches) {
+    delete showcase.dataset.reel;
+    return;
+  }
+  showcase.dataset.reel = previewVisible && !previewPaused && !document.hidden ? 'playing' : 'paused';
+  const label = previewPaused ? 'Resume preview' : 'Pause preview';
+  previewToggle.setAttribute('aria-label', label);
+  previewToggle.title = label;
+  previewToggle.querySelector('use').setAttribute('href', previewPaused ? '#icon-play' : '#icon-pause');
+}
+
+previewToggle.addEventListener('click', () => {
+  previewPaused = !previewPaused;
+  syncPreview();
+});
+if ('IntersectionObserver' in window) {
+  new IntersectionObserver(([entry]) => {
+    previewVisible = entry.intersectionRatio >= .15;
+    syncPreview();
+  }, { threshold: .15 }).observe(showcase);
+}
+reducedMotion.addEventListener('change', syncPreview);
+document.addEventListener('visibilitychange', () => {
+  syncPreview();
+  if (document.hidden && playback?.playing) pause();
+});
+syncPreview();
