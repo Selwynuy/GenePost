@@ -80,6 +80,7 @@ function newState(campaignID, seed = true) {
   return {
     campaignID, campaign, view: 'compose', theme: 'dark', idea: campaign.idea,
     jobTitle: campaign.job, jobDescription: campaign.scope, hireStep: '', hiring: null, team: [],
+    directorySpecialist: null, directRole: null,
     channels, platform: channels[0], captions: null,
     media: [
       { id: 'cover', name: campaign.media.name, src: assets + campaign.media.file, alt: campaign.media.alt },
@@ -107,15 +108,16 @@ function action(name, label, { value = '', kind = '', glyph = '', pressed, title
     (glyph ? icon(glyph) : '') + label + '</button>';
 }
 const avatar = candidate => '<img class="agent-avatar" src="' + assets + 'team-marks/' + candidate.avatar + '" width="64" height="64" alt="">';
+const onlineAvatar = person => '<span class="agent-presence">' + avatar(person) + '<i aria-hidden="true"></i></span>';
 
 const walkthrough = [
   ['Choose channels', '.demo-sidebar [data-value="channels"]', { chapter: 'channels', hold: 1550 }],
   ['Open Team', '.demo-sidebar [data-value="team"]', { chapter: 'hire' }],
+  ['Browse specialists', '[data-action="browse-specialists"]', { hold: 1000 }],
+  ['Review sample work', '[data-action="select-specialist"][data-value="Sol"]', { hold: 2000 }],
+  ['Return to Team', '[data-action="close-portfolios"]', { hold: 750 }],
   ['Post a job', '[data-action="post-job"]'],
   ['Post the role', '[data-submit="post-role"] button[type="submit"]', { hold: 2050 }],
-  ['Browse portfolios', '[data-action="browse-portfolios"]', { hold: 1000 }],
-  ['Review sample work', '[data-action="select-specialist"][data-value="Sol"]', { hold: 2000 }],
-  ['Return to job', '[data-action="close-portfolios"]', { hold: 750 }],
   ['Review applications', '[data-action="review-applications"]', { hold: 1150 }],
   ['Compare applicants', '[data-action="candidate"][data-value="Jordan"]', { hold: 1650 }],
   ['Start interview', '[data-action="interview"]', { hold: 1200 }],
@@ -193,10 +195,13 @@ function mountDemo(root, preview = false) {
   const brand = () => '<span class="app-brand">' + escapeHTML(state.campaign.name) + '</span>';
   const empty = (glyph, text, button = '') => '<div class="app-empty">' + icon(glyph) + '<p>' + text + '</p>' + button + '</div>';
   const availableSpecialists = () => candidates.filter(person => !state.team.some(member => member.person.name === person.name));
+  const directHiring = () => state.hireStep.startsWith('direct-');
+  const hiringJob = () => directHiring() ? state.directRole : state.hiring;
 
   function hiringCandidate() {
-    const job = state.hiring;
-    const name = state.hireStep === 'interview' ? job.interviewing : state.hireStep === 'portfolios' ? job.portfolio : job.selected;
+    const job = hiringJob();
+    const name = state.hireStep === 'directory' ? state.directorySpecialist :
+      state.hireStep.endsWith('interview') ? job.interviewing : state.hireStep === 'portfolios' ? job.portfolio : job.selected;
     return candidates.find(person => person.name === name);
   }
   const upload = () => '<label class="app-button upload">' + icon('upload') +
@@ -251,15 +256,17 @@ function mountDemo(root, preview = false) {
   }
 
   function team() {
-    const job = state.hiring;
-    if (state.hireStep === 'job') {
-      return heading('Post a job', brand()) + '<form class="app-stack job-form" data-submit="post-role">' +
-        '<label class="app-field">Job title<input data-field="jobTitle" required maxlength="64" value="' + escapeHTML(state.jobTitle) + '"></label>' +
-        '<label class="app-field">Job description<textarea data-field="jobDescription" required rows="3" maxlength="300">' +
-        escapeHTML(state.jobDescription) + '</textarea></label>' +
+    const job = hiringJob();
+    if (state.hireStep === 'job' || state.hireStep === 'direct-role') {
+      const direct = directHiring();
+      return heading(direct ? 'Set up ' + job.selected + '’s role' : 'Post a job', brand()) +
+        '<form class="app-stack job-form" data-submit="' + (direct ? 'prepare-role' : 'post-role') + '">' +
+        '<label class="app-field">Role title<input data-field="jobTitle" required maxlength="64" value="' + escapeHTML(direct ? job.title : state.jobTitle) + '"></label>' +
+        '<label class="app-field">Role description<textarea data-field="jobDescription" required rows="3" maxlength="300">' +
+        escapeHTML(direct ? job.description : state.jobDescription) + '</textarea></label>' +
         '<div class="app-row">' + state.channels.map(platformName).map(label => '<span class="agent-chip">' + label + '</span>').join('') + '</div>' +
-        '<div class="app-row job-actions">' + action('team-home', 'Cancel', { kind: 'job-back' }) +
-        '<button class="app-button app-primary" type="submit">' + icon('right') + 'Post job</button></div></form>';
+        '<div class="app-row job-actions">' + action(direct ? 'browse-specialists' : 'team-home', 'Cancel', { kind: 'job-back' }) +
+        '<button class="app-button app-primary" type="submit">' + icon('right') + (direct ? 'Start interview' : 'Post job') + '</button></div></form>';
     }
     if (state.hireStep === 'posted') {
       return heading('Job posted', brand()) + '<div class="job-receipt app-stack">' +
@@ -289,14 +296,16 @@ function mountDemo(root, preview = false) {
         action('interview', job.interviews[candidate.name]?.turns.length ? 'Open interview' : 'Start interview',
           { glyph: 'right', kind: 'app-primary' }) + '</div></div></section></div>';
     }
+    if (state.hireStep === 'directory') return portfolios();
     if (state.hireStep === 'portfolios') return portfolios(job);
-    if (state.hireStep === 'interview') {
+    if (state.hireStep.endsWith('interview')) {
       const candidate = hiringCandidate();
       const { draft, turns } = job.interviews[candidate.name];
       const directions = turns.filter(turn => turn.direction);
       return heading('Interview ' + candidate.name, brand()) +
         '<div class="job-context"><p>' + escapeHTML(job.title) + '</p>' +
-        action('close-interview', job.interviewFrom === 'portfolios' ? 'Portfolios' : 'Applications', { glyph: 'left', kind: 'job-back' }) + '</div>' +
+        action('close-interview', directHiring() ? 'Role setup' : job.interviewFrom === 'portfolios' ? 'Portfolios' : 'Applications',
+          { glyph: 'left', kind: 'job-back' }) + '</div>' +
         '<div class="interview-thread app-stack" aria-label="Sample interview">' +
         '<div class="interview-line">' + avatar(candidate) + '<p>What voice should I use for this role?</p></div>' +
         turns.map((turn, index) => '<div class="interview-line interview-you"><p>' + escapeHTML(turn.message) + '</p></div>' +
@@ -314,12 +323,15 @@ function mountDemo(root, preview = false) {
       '<span><strong>' + escapeHTML(job.title) + '</strong><small>' +
       (job.ready ? (job.reviewed ? 'Applications' : job.applicants.length + ' new applications') : 'Waiting for applications') + '</small></span>',
       { glyph: 'team', kind: 'app-list-row' }) + '</div>' : '';
-    return heading('Team', job || state.team.length === candidates.length ? brand() : action('post-job', 'Post a job', { glyph: 'plus', kind: 'app-primary' })) +
+    const hiringActions = availableSpecialists().length ? '<div class="app-row">' +
+      action('browse-specialists', 'Browse specialists', { glyph: 'drafts' }) +
+      (job ? '' : action('post-job', 'Post a job', { glyph: 'plus', kind: 'app-primary' })) + '</div>' : brand();
+    return heading('Team', hiringActions) +
       openJob +
       (state.team.length
         ? '<div class="team-list">' + state.team.map(({ person, directions }) =>
-          '<div class="app-list-row">' + avatar(person) + '<span><strong>' + person.name + '</strong><small>' +
-          person.role + '</small>' + (directions.length ? '<small class="team-direction">' + icon('check') +
+          '<div class="app-list-row">' + onlineAvatar(person) + '<span><strong>' + person.name + '</strong><small>' +
+          person.role + ' · <span class="online-status">Online</span></small>' + (directions.length ? '<small class="team-direction">' + icon('check') +
             escapeHTML(directions.join(' ')) + '</small>' : '') + '</span></div>'
         ).join('') + '</div>' + action('screen', 'Brief teammate', { value: 'compose', glyph: 'right' })
         : job ? '' : empty('team', 'Build your team'));
@@ -327,19 +339,22 @@ function mountDemo(root, preview = false) {
 
   function portfolios(job) {
     const specialist = hiringCandidate();
+    const roster = job ? candidates : availableSpecialists();
     const art = specialist.portfolioImage ? '<img src="' + assets + 'team-marks/' + specialist.portfolioImage +
       '" alt="Coffee tasting bowls beside bags of beans" width="320" height="180">' : '';
     const sample = specialist.portfolioSample.split('\n\n').map(part => '<p>' + escapeHTML(part) + '</p>').join('');
-    return heading('Specialist portfolios', brand()) +
-      '<div class="job-context"><p>' + escapeHTML(job.title) + '</p>' +
-      action('close-portfolios', job.portfoliosFrom === 'applicants' ? 'Applications' : 'Job post', { glyph: 'left', kind: 'job-back' }) + '</div>' +
+    return heading(job ? 'Specialist portfolios' : 'Available specialists',
+      job ? brand() : action('close-portfolios', 'Team', { glyph: 'left', kind: 'job-back' })) +
+      (job ? '<div class="job-context"><p>' + escapeHTML(job.title) + '</p>' +
+      action('close-portfolios', job.portfoliosFrom === 'applicants' ? 'Applications' : 'Job post', { glyph: 'left', kind: 'job-back' }) + '</div>' : '') +
       '<div class="applicant-panel"><div class="applicants specialists" role="group" aria-label="Available specialists">' +
-      availableSpecialists().map(person => action('select-specialist', avatar(person) + '<strong>' + person.name + '</strong><small>' + person.role + '</small>',
-        { value: person.name, pressed: person.name === specialist.name, kind: 'candidate' })).join('') + '</div>' +
+      roster.map(person => action('select-specialist', onlineAvatar(person) + '<strong>' + person.name + '</strong><small>' + person.role + '</small>',
+        { value: person.name, pressed: person.name === specialist.name, kind: 'candidate',
+          title: person.name + ', ' + person.role + ', Online' })).join('') + '</div>' +
       '<section class="candidate-profile" aria-label="Specialist profile"><div class="portfolio-heading"><div class="candidate-meta"><h3>' + specialist.name +
-      '</h3><span>' + specialist.specialty + '</span></div><div class="app-row job-actions">' +
-      action('hire', 'Hire ' + specialist.name) + action('interview', job.interviews[specialist.name] ? 'Open interview' : 'Invite to interview',
-        { glyph: 'right', kind: 'app-primary' }) + '</div></div>' +
+      '</h3><span class="online-status">Online</span><span>' + specialist.specialty + '</span></div><div class="app-row job-actions">' +
+      (job ? action('hire', 'Hire ' + specialist.name) + action('interview', job.interviews[specialist.name] ? 'Open interview' : 'Invite to interview',
+        { glyph: 'right', kind: 'app-primary' }) : action('set-up-role', 'Set up role', { glyph: 'right', kind: 'app-primary' })) + '</div></div>' +
       '<div class="portfolio-work' + (art ? ' with-art' : '') + '">' + art + '<div><span>Sample work</span><h4>' +
       escapeHTML(specialist.portfolioTitle) + '</h4><div class="portfolio-copy">' + sample + '</div></div></div></section></div>';
   }
@@ -646,21 +661,50 @@ function mountDemo(root, preview = false) {
       state.hireStep = 'portfolios';
       draw({ moved: true });
     },
+    'browse-specialists': () => {
+      const available = availableSpecialists();
+      if (!available.length) return;
+      if (!available.some(person => person.name === state.directorySpecialist)) state.directorySpecialist = available[0].name;
+      state.hireStep = 'directory';
+      draw({ moved: true });
+    },
     'select-specialist': name => {
-      if (state.hiring.portfolio === name) return;
-      state.hiring.portfolio = name;
+      if (hiringCandidate()?.name === name) return;
+      if (state.hireStep === 'directory') state.directorySpecialist = name;
+      else state.hiring.portfolio = name;
       draw({ reveal: '.portfolio-work' });
     },
-    'close-portfolios': () => { state.hireStep = state.hiring.portfoliosFrom; draw({ moved: true }); },
+    'close-portfolios': () => {
+      state.hireStep = state.hireStep === 'directory' ? '' : state.hiring.portfoliosFrom;
+      draw({ moved: true });
+    },
+    'set-up-role': () => {
+      const specialist = hiringCandidate();
+      if (state.directRole?.selected !== specialist.name) {
+        state.directRole = {
+          selected: specialist.name, title: specialist.role,
+          description: state.campaign.scope, interviews: {},
+        };
+      }
+      state.hireStep = 'direct-role';
+      draw({ moved: true });
+    },
+    'prepare-role': () => {
+      if (!state.directRole.title.trim() || !state.directRole.description.trim()) {
+        state.error = 'Add a role title and description';
+        return draw();
+      }
+      commands.interview();
+    },
     interview: () => {
-      const job = state.hiring;
+      const job = hiringJob();
       job.interviewing = hiringCandidate().name;
       job.interviews[job.interviewing] ??= { draft: '', turns: [] };
       job.interviewFrom = state.hireStep;
-      state.hireStep = 'interview';
+      state.hireStep = directHiring() ? 'direct-interview' : 'interview';
       draw({ moved: true });
     },
-    'close-interview': () => { state.hireStep = state.hiring.interviewFrom; draw({ moved: true }); },
+    'close-interview': () => { state.hireStep = hiringJob().interviewFrom; draw({ moved: true }); },
     'sample-direction': () => {
       const field = workspace.querySelector('[data-field="interviewMessage"]');
       if (field.value.trim()) return field.focus();
@@ -669,7 +713,7 @@ function mountDemo(root, preview = false) {
       if (!playback) field.focus();
     },
     'interview-message': () => {
-      const job = state.hiring;
+      const job = hiringJob();
       const interview = job.interviews[job.interviewing];
       const message = interview.draft.trim();
       if (!message) return;
@@ -684,11 +728,12 @@ function mountDemo(root, preview = false) {
       if (!playback) workspace.querySelector('[data-field="interviewMessage"]').focus({ preventScroll: true });
     },
     hire: () => {
-      const job = state.hiring;
+      const job = hiringJob();
       const person = hiringCandidate();
       const directions = (job.interviews[person.name]?.turns ?? []).filter(turn => turn.direction).map(turn => turn.message);
       state.team.push({ person, directions });
-      state.hiring = null;
+      if (directHiring()) state.directRole = null;
+      else state.hiring = null;
       state.hireStep = '';
       state.notice = person.name + ' joined the team';
       draw({ moved: true });
@@ -956,7 +1001,13 @@ function mountDemo(root, preview = false) {
   workspace.addEventListener('input', event => {
     const { field } = event.target.dataset;
     if (field === 'caption') state.captions[state.platform] = event.target.value;
-    else if (field === 'interviewMessage') state.hiring.interviews[state.hiring.interviewing].draft = event.target.value;
+    else if (field === 'interviewMessage') {
+      const job = hiringJob();
+      job.interviews[job.interviewing].draft = event.target.value;
+    }
+    else if (directHiring() && (field === 'jobTitle' || field === 'jobDescription')) {
+      state.directRole[field === 'jobTitle' ? 'title' : 'description'] = event.target.value;
+    }
     else if (field) state[field] = event.target.value;
   });
   workspace.addEventListener('change', event => {

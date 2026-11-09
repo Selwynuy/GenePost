@@ -223,6 +223,12 @@
 .library-art :is(img, video) { width: 100%; height: auto; max-height: 175px; object-fit: contain; }
 .library figcaption { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 7px; padding: 8px; overflow-wrap: anywhere; font-size: 12px; }
 .agent-avatar { display: block; width: 38px; height: 38px; flex: none; }
+.agent-presence { position: relative; display: inline-flex; flex: none; }
+.agent-presence i {
+  position: absolute; right: 0; bottom: 0; width: 10px; height: 10px; border: 2px solid var(--app-fill);
+  border-radius: 50%; background: var(--app-success);
+}
+.demo-app .online-status { color: var(--app-success); }
 .agent-chip { display: inline-flex; align-items: center; gap: 5px; font-size: 12px; font-weight: 640; color: var(--app-muted); }
 .agent-chip .agent-avatar { width: 25px; height: 25px; }
 .job-form, .job-receipt, .applicant-panel, .interview-thread, .interview-form { width: 100%; max-width: 560px; margin-inline: auto; }
@@ -269,8 +275,9 @@
   .specialists { grid-template-columns: repeat(auto-fit, minmax(74px, 1fr)); }
 }
 @media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
-  .candidate:hover .agent-avatar { transform: translateY(-2px); }
+  .candidate:hover > .agent-avatar, .candidate:hover > .agent-presence { transform: translateY(-2px); }
 }
+.candidate .agent-presence { transition: transform 200ms var(--ease-arrive); }
 .job-context {
   display: flex; justify-content: space-between; align-items: center; gap: 8px;
   color: var(--app-muted); max-width: 560px; margin: -7px auto 9px; overflow-wrap: anywhere; font-size: 13px;
