@@ -114,6 +114,7 @@
   --app-solid: #c9aefb;
   --app-solid-text: #211337;
   --app-success: #a0e4b9;
+  --app-growth: #ffd098;
   --app-error: #ffb5ca;
   color-scheme: dark;
   background: var(--app-bg);
@@ -135,6 +136,7 @@
   --app-solid: #4e2f87;
   --app-solid-text: #fff;
   --app-success: #226448;
+  --app-growth: #784b1b;
   --app-error: #972e50;
   color-scheme: light;
 }
@@ -278,6 +280,66 @@
   .candidate:hover > .agent-avatar, .candidate:hover > .agent-presence { transform: translateY(-2px); }
 }
 .candidate .agent-presence { transition: transform 200ms var(--ease-arrive); }
+.specialist-directory { container-type: inline-size; }
+.specialist-search { position: relative; min-width: 0; }
+.specialist-search > .symbol {
+  position: absolute; top: 50%; left: 10px; transform: translateY(-50%);
+  color: var(--app-muted); pointer-events: none;
+}
+.demo-app .specialist-search input {
+  padding: 6px 9px 6px 31px; width: 190px; font-size: 12px;
+}
+.specialist-search input::placeholder { color: var(--app-muted); }
+.specialist-filters { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 12px; }
+.specialist-filters > span { color: var(--app-muted); font-size: 11px; font-variant-numeric: tabular-nums; }
+.demo-app .specialty-filter { min-height: 29px; padding: 4px 8px; font-size: 11px; }
+.market-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 9px; }
+@container (min-width: 500px) {
+  .market-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+@container (max-width: 290px) {
+  .market-grid { grid-template-columns: minmax(0, 1fr); }
+}
+.demo-app .market-card {
+  display: flex; flex-direction: column; justify-content: flex-start; align-items: stretch;
+  width: 100%; gap: 0; padding: 0; overflow: hidden;
+  border-color: var(--app-line); border-radius: 9px; background: var(--app-fill); text-align: left;
+}
+.demo-app .market-card:hover { border-color: var(--app-accent); background: var(--app-fill); }
+.market-cover {
+  --sample-tone: var(--app-accent);
+  display: flex; flex-direction: column; gap: 4px; position: relative; min-height: 73px;
+  padding: 9px 10px; background: color-mix(in srgb, var(--sample-tone) 11%, var(--app-fill));
+  overflow-wrap: anywhere;
+}
+.market-cover.content { --sample-tone: var(--app-success); }
+.market-cover.growth { --sample-tone: var(--app-growth); }
+.market-cover small { color: var(--sample-tone); font-size: 11px; }
+.market-cover strong { color: var(--app-ink); font-size: 13px; line-height: 1.24; }
+.market-cover.with-art > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.market-cover.with-art small {
+  position: relative; align-self: flex-start; padding: 2px 5px;
+  border-radius: 4px; background: var(--app-fill); color: var(--app-ink);
+}
+.market-info { display: grid; gap: 5px; padding: 8px 9px; }
+.market-person { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 6px; align-items: center; }
+.market-person strong, .market-person small { display: block; line-height: 1.2; }
+.market-person strong { font-size: 12px; }
+.market-person small, .market-person > .symbol { color: var(--app-muted); font-size: 11px; }
+.market-person .agent-avatar { width: 27px; height: 27px; }
+.market-specialty { color: var(--app-ink); font-size: 11px; font-weight: 540; line-height: 1.35; overflow-wrap: anywhere; }
+.directory-profile { display: grid; gap: 10px; max-width: 590px; margin-inline: auto; }
+.directory-person { display: flex; align-items: center; gap: 9px; flex-wrap: wrap; }
+.directory-person > div { flex: 0 1 auto; }
+.directory-person h2 { color: var(--app-ink); font-size: 26px; line-height: 1.15; }
+.directory-person p { color: var(--app-muted); font-size: 12px; }
+.directory-specialty { color: var(--app-ink); font-weight: 640; }
+.directory-profile .portfolio-work { background: var(--app-fill); }
+.directory-strengths { font-size: 12px; }
+.directory-strengths ul { list-style: none; padding: 0; margin: 4px 0 8px; }
+.directory-strengths li { display: flex; align-items: flex-start; gap: 6px; }
+.directory-strengths li .symbol { color: var(--app-success); }
+.directory-strengths :is(p, li) { color: var(--app-muted); }
 .job-context {
   display: flex; justify-content: space-between; align-items: center; gap: 8px;
   color: var(--app-muted); max-width: 560px; margin: -7px auto 9px; overflow-wrap: anywhere; font-size: 13px;

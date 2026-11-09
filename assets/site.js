@@ -5,14 +5,15 @@ const template = document.querySelector('#demo-app-template');
 const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
 
 const screens = [
-  ['compose', 'New post', 'plus'], ['team', 'Team', 'team'],
-  ['calendar', 'Calendar', 'calendar'], ['queue', 'Queue', 'queue'],
+  ['compose', 'New post', 'plus'], ['calendar', 'Calendar', 'calendar'],
+  ['team', 'Team', 'team'], ['specialists', 'Specialists', 'specialists'], ['queue', 'Queue', 'queue'],
   ['drafts', 'Drafts', 'drafts'], ['channels', 'Channels', 'channels'],
   ['media', 'Media', 'media'], ['reports', 'Reports', 'reports'],
   ['settings', 'Settings', 'settings'],
 ];
 const platformNames = { instagram: 'Instagram', linkedin: 'LinkedIn', threads: 'Threads', facebook: 'Facebook', x: 'X' };
 const candidates = JSON.parse(document.querySelector('#demo-specialists').textContent);
+const specialties = { all: 'All specialties', strategy: 'Strategy', content: 'Content', growth: 'Growth' };
 const campaigns = {
   coffee: {
     name: 'Morrow Coffee', idea: 'Invite people to Saturday’s coffee tasting', job: 'Tasting campaign',
@@ -80,7 +81,7 @@ function newState(campaignID, seed = true) {
   return {
     campaignID, campaign, view: 'compose', theme: 'dark', idea: campaign.idea,
     jobTitle: campaign.job, jobDescription: campaign.scope, hireStep: '', hiring: null, team: [],
-    directorySpecialist: null, directRole: null,
+    directorySpecialist: null, specialty: 'all', specialistSearch: '', specialistScroll: 0, directRole: null,
     channels, platform: channels[0], captions: null,
     media: [
       { id: 'cover', name: campaign.media.name, src: assets + campaign.media.file, alt: campaign.media.alt },
@@ -114,8 +115,8 @@ const walkthrough = [
   ['Choose channels', '.demo-sidebar [data-value="channels"]', { chapter: 'channels', hold: 1550 }],
   ['Open Team', '.demo-sidebar [data-value="team"]', { chapter: 'hire' }],
   ['Browse specialists', '[data-action="browse-specialists"]', { hold: 1000 }],
-  ['Review sample work', '[data-action="select-specialist"][data-value="Sol"]', { hold: 2000 }],
-  ['Return to Team', '[data-action="close-portfolios"]', { hold: 750 }],
+  ['Review sample work', '[data-action="open-specialist"][data-value="Sol"]', { hold: 2000 }],
+  ['Return to Team', '.demo-sidebar [data-value="team"]', { hold: 750 }],
   ['Post a job', '[data-action="post-job"]'],
   ['Post the role', '[data-submit="post-role"] button[type="submit"]', { hold: 2050 }],
   ['Review applications', '[data-action="review-applications"]', { hold: 1150 }],
@@ -137,7 +138,7 @@ const walkthrough = [
   ['Check reports', '.demo-sidebar [data-value="reports"]', { chapter: 'reports', hold: 4200 }],
 ];
 const chaptersByView = {
-  channels: 'channels', team: 'hire', media: 'media', compose: 'draft',
+  channels: 'channels', team: 'hire', specialists: 'hire', media: 'media', compose: 'draft',
   drafts: 'plan', review: 'plan', calendar: 'plan', queue: 'queue', reports: 'reports',
 };
 
@@ -200,8 +201,8 @@ function mountDemo(root, preview = false) {
 
   function hiringCandidate() {
     const job = hiringJob();
-    const name = state.hireStep === 'directory' ? state.directorySpecialist :
-      state.hireStep.endsWith('interview') ? job.interviewing : state.hireStep === 'portfolios' ? job.portfolio : job.selected;
+    const name = state.hireStep.endsWith('interview') ? job.interviewing :
+      state.hireStep === 'portfolios' ? job.portfolio : job.selected;
     return candidates.find(person => person.name === name);
   }
   const upload = () => '<label class="app-button upload">' + icon('upload') +
@@ -265,7 +266,7 @@ function mountDemo(root, preview = false) {
         '<label class="app-field">Role description<textarea data-field="jobDescription" required rows="3" maxlength="300">' +
         escapeHTML(direct ? job.description : state.jobDescription) + '</textarea></label>' +
         '<div class="app-row">' + state.channels.map(platformName).map(label => '<span class="agent-chip">' + label + '</span>').join('') + '</div>' +
-        '<div class="app-row job-actions">' + action(direct ? 'browse-specialists' : 'team-home', 'Cancel', { kind: 'job-back' }) +
+        '<div class="app-row job-actions">' + action(direct ? 'close-role' : 'team-home', 'Cancel', { kind: 'job-back' }) +
         '<button class="app-button app-primary" type="submit">' + icon('right') + (direct ? 'Start interview' : 'Post job') + '</button></div></form>';
     }
     if (state.hireStep === 'posted') {
@@ -296,7 +297,6 @@ function mountDemo(root, preview = false) {
         action('interview', job.interviews[candidate.name]?.turns.length ? 'Open interview' : 'Start interview',
           { glyph: 'right', kind: 'app-primary' }) + '</div></div></section></div>';
     }
-    if (state.hireStep === 'directory') return portfolios();
     if (state.hireStep === 'portfolios') return portfolios(job);
     if (state.hireStep.endsWith('interview')) {
       const candidate = hiringCandidate();
@@ -324,7 +324,7 @@ function mountDemo(root, preview = false) {
       (job.ready ? (job.reviewed ? 'Applications' : job.applicants.length + ' new applications') : 'Waiting for applications') + '</small></span>',
       { glyph: 'team', kind: 'app-list-row' }) + '</div>' : '';
     const hiringActions = availableSpecialists().length ? '<div class="app-row">' +
-      action('browse-specialists', 'Browse specialists', { glyph: 'drafts' }) +
+      action('browse-specialists', 'Browse specialists', { glyph: 'specialists' }) +
       (job ? '' : action('post-job', 'Post a job', { glyph: 'plus', kind: 'app-primary' })) + '</div>' : brand();
     return heading('Team', hiringActions) +
       openJob +
@@ -339,24 +339,74 @@ function mountDemo(root, preview = false) {
 
   function portfolios(job) {
     const specialist = hiringCandidate();
-    const roster = job ? candidates : availableSpecialists();
-    const art = specialist.portfolioImage ? '<img src="' + assets + 'team-marks/' + specialist.portfolioImage +
-      '" alt="Coffee tasting bowls beside bags of beans" width="320" height="180">' : '';
-    const sample = specialist.portfolioSample.split('\n\n').map(part => '<p>' + escapeHTML(part) + '</p>').join('');
-    return heading(job ? 'Specialist portfolios' : 'Available specialists',
-      job ? brand() : action('close-portfolios', 'Team', { glyph: 'left', kind: 'job-back' })) +
-      (job ? '<div class="job-context"><p>' + escapeHTML(job.title) + '</p>' +
-      action('close-portfolios', job.portfoliosFrom === 'applicants' ? 'Applications' : 'Job post', { glyph: 'left', kind: 'job-back' }) + '</div>' : '') +
+    return heading('Specialist portfolios', brand()) +
+      '<div class="job-context"><p>' + escapeHTML(job.title) + '</p>' +
+      action('close-portfolios', job.portfoliosFrom === 'applicants' ? 'Applications' : 'Job post', { glyph: 'left', kind: 'job-back' }) + '</div>' +
       '<div class="applicant-panel"><div class="applicants specialists" role="group" aria-label="Available specialists">' +
-      roster.map(person => action('select-specialist', onlineAvatar(person) + '<strong>' + person.name + '</strong><small>' + person.role + '</small>',
+      candidates.map(person => action('select-specialist', onlineAvatar(person) + '<strong>' + person.name + '</strong><small>' + person.role + '</small>',
         { value: person.name, pressed: person.name === specialist.name, kind: 'candidate',
           title: person.name + ', ' + person.role + ', Online' })).join('') + '</div>' +
       '<section class="candidate-profile" aria-label="Specialist profile"><div class="portfolio-heading"><div class="candidate-meta"><h3>' + specialist.name +
       '</h3><span class="online-status">Online</span><span>' + specialist.specialty + '</span></div><div class="app-row job-actions">' +
-      (job ? action('hire', 'Hire ' + specialist.name) + action('interview', job.interviews[specialist.name] ? 'Open interview' : 'Invite to interview',
-        { glyph: 'right', kind: 'app-primary' }) : action('set-up-role', 'Set up role', { glyph: 'right', kind: 'app-primary' })) + '</div></div>' +
-      '<div class="portfolio-work' + (art ? ' with-art' : '') + '">' + art + '<div><span>Sample work</span><h4>' +
-      escapeHTML(specialist.portfolioTitle) + '</h4><div class="portfolio-copy">' + sample + '</div></div></div></section></div>';
+      action('hire', 'Hire ' + specialist.name) + action('interview', job.interviews[specialist.name] ? 'Open interview' : 'Invite to interview',
+        { glyph: 'right', kind: 'app-primary' }) + '</div></div>' + sampleWork(specialist) + '</section></div>';
+  }
+
+  function sampleWork(specialist) {
+    const art = specialist.portfolioImage ? '<img src="' + assets + 'team-marks/' + specialist.portfolioImage +
+      '" alt="Coffee tasting bowls beside bags of beans" width="320" height="180">' : '';
+    const sample = specialist.portfolioSample.split('\n\n').map(part => '<p>' + escapeHTML(part) + '</p>').join('');
+    return '<div class="portfolio-work' + (art ? ' with-art' : '') + '">' + art + '<div><span>Sample work</span><h4>' +
+      escapeHTML(specialist.portfolioTitle) + '</h4><div class="portfolio-copy">' + sample + '</div></div></div>';
+  }
+
+  function specialists() {
+    if (directHiring()) return team();
+    if (state.directorySpecialist) {
+      const person = candidates.find(person => person.name === state.directorySpecialist);
+      const saved = state.directRole?.selected === person.name ? state.directRole : null;
+      const setup = saved?.interviews[person.name] ? 'Resume interview' : saved ? 'Continue role setup' : 'Set up role';
+      return '<section class="directory-profile">' +
+        action('all-specialists', 'All specialists', { glyph: 'left', kind: 'job-back' }) +
+        '<div class="directory-person">' + onlineAvatar(person) + '<div><h2>' + escapeHTML(person.name) +
+        '</h2><p>' + escapeHTML(person.role) + ' · <span class="online-status">Online</span></p></div>' +
+        action('set-up-role', setup, { glyph: 'right', kind: 'app-primary' }) + '</div>' +
+        '<p class="directory-specialty">' + escapeHTML(person.specialty) + '</p>' + sampleWork(person) +
+        '<div class="directory-strengths"><strong>Strengths</strong><ul>' +
+        person.strengths.map(strength => '<li>' + icon('check') + escapeHTML(strength) + '</li>').join('') +
+        '</ul><strong>How they work</strong><p>' + escapeHTML(person.workingStyle) + '</p></div></section>';
+    }
+    const normalize = value => value.normalize('NFD').replace(/\p{Diacritic}/gu, '').toLowerCase();
+    const terms = normalize(state.specialistSearch).split(/\s+/).filter(Boolean);
+    const available = availableSpecialists();
+    const people = available.filter(person => {
+      const searchable = normalize([person.name, person.role, person.specialty, person.category, person.skillName,
+        person.sampleFormat, person.portfolioTitle, ...person.strengths].join(' '));
+      return (state.specialty === 'all' || state.specialty === person.category) && terms.every(term => searchable.includes(term));
+    });
+    const search = '<label class="specialist-search">' + icon('search') +
+      '<input type="search" data-field="specialistSearch" aria-label="Search specialists" placeholder="Search by name or skill" value="' +
+      escapeHTML(state.specialistSearch) + '"></label>';
+    return heading('Browse specialists', search) + '<section class="specialist-directory">' +
+      '<div class="specialist-filters"><div class="app-row" role="group" aria-label="Specialty">' +
+      Object.entries(specialties).map(([value, title]) => action('specialty', title,
+        { value, pressed: state.specialty === value, kind: 'specialty-filter' })).join('') +
+      '</div><span aria-live="polite">' + people.length + (people.length === 1 ? ' specialist' : ' specialists') + '</span></div>' +
+      (people.length ? '<div class="market-grid">' + people.map(specialistCard).join('') + '</div>' :
+        empty('search', available.length ? 'No matching specialists' : 'Everyone’s on your team',
+          available.length ? action('clear-specialty', 'Clear filters') : '')) + '</section>';
+  }
+
+  function specialistCard(person) {
+    const art = person.portfolioImage ? '<img src="' + assets + 'team-marks/' + person.portfolioImage +
+      '" alt="" width="320" height="180">' : '';
+    return action('open-specialist',
+      '<span class="market-cover ' + person.category + (art ? ' with-art' : '') + '">' + art +
+      '<small>' + escapeHTML(person.sampleFormat) + '</small>' + (art ? '' : '<strong>' + escapeHTML(person.sampleExcerpt) + '</strong>') +
+      '</span><span class="market-info"><span class="market-person">' + onlineAvatar(person) + '<span><strong>' +
+      escapeHTML(person.name) + '</strong><small>' + escapeHTML(person.role) + '</small></span>' + icon('right') +
+      '</span><span class="market-specialty">' + escapeHTML(person.specialty) + '</span></span>',
+      { value: person.name, kind: 'market-card', title: person.name + ', ' + person.role + ', Online' });
   }
 
   function review() {
@@ -462,10 +512,12 @@ function mountDemo(root, preview = false) {
       '</div><a class="app-button" href="' + new URL('#integrations', docs) + '">Connection guide ' + icon('external') + '</a></div>';
   }
 
-  const views = { compose, team, review, calendar, queue, drafts, channels, media, reports, settings };
+  const views = { compose, team, specialists, review, calendar, queue, drafts, channels, media, reports, settings };
   function draw({ moved = false, reveal = '.app-notice, .app-error' } = {}) {
     const view = state.view === 'review' ? 'compose' : state.view;
     const oldFocus = workspace.contains(document.activeElement) ? document.activeElement : null;
+    const searchSelection = oldFocus?.dataset.field === 'specialistSearch'
+      ? [oldFocus.selectionStart, oldFocus.selectionEnd] : null;
     const scroll = workspace.scrollTop;
     app.dataset.theme = state.theme;
     sidebar.querySelectorAll('button').forEach(button => {
@@ -484,8 +536,9 @@ function mountDemo(root, preview = false) {
         oldFocus.dataset.field ? element.dataset.field === oldFocus.dataset.field :
           oldFocus.dataset.action && element.dataset.action === oldFocus.dataset.action && element.dataset.value === oldFocus.dataset.value);
       (match ?? workspace).focus({ preventScroll: true });
+      if (match && searchSelection) match.setSelectionRange(...searchSelection);
     }
-    const screenshot = state.view === 'team' && state.hireStep ? 'hiring' : view;
+    const screenshot = view === 'specialists' || (view === 'team' && state.hireStep) ? 'hiring' : view;
     if (nativeScreen) nativeScreen.href = assets + screenshot + '.webp';
     updateChapter();
     screenAnimation?.cancel();
@@ -509,7 +562,8 @@ function mountDemo(root, preview = false) {
   function screen(view) {
     state.view = view;
     state.choosingMedia = false;
-    if (view === 'team') state.hireStep = '';
+    if (view === 'team' || view === 'specialists') state.hireStep = '';
+    if (view === 'specialists') state.directorySpecialist = null;
     draw({ moved: true });
   }
 
@@ -661,25 +715,39 @@ function mountDemo(root, preview = false) {
       state.hireStep = 'portfolios';
       draw({ moved: true });
     },
-    'browse-specialists': () => {
-      const available = availableSpecialists();
-      if (!available.length) return;
-      if (!available.some(person => person.name === state.directorySpecialist)) state.directorySpecialist = available[0].name;
-      state.hireStep = 'directory';
+    'browse-specialists': () => screen('specialists'),
+    specialty: category => {
+      state.specialty = category;
       draw({ moved: true });
+    },
+    'clear-specialty': () => {
+      state.specialistSearch = '';
+      state.specialty = 'all';
+      draw({ moved: true });
+    },
+    'open-specialist': name => {
+      state.specialistScroll = workspace.scrollTop;
+      state.directorySpecialist = name;
+      draw({ moved: true });
+    },
+    'all-specialists': () => {
+      const name = state.directorySpecialist;
+      state.directorySpecialist = null;
+      draw();
+      workspace.scrollTop = state.specialistScroll;
+      workspace.querySelector('[data-action="open-specialist"][data-value="' + CSS.escape(name) + '"]')?.focus({ preventScroll: true });
     },
     'select-specialist': name => {
       if (hiringCandidate()?.name === name) return;
-      if (state.hireStep === 'directory') state.directorySpecialist = name;
-      else state.hiring.portfolio = name;
+      state.hiring.portfolio = name;
       draw({ reveal: '.portfolio-work' });
     },
     'close-portfolios': () => {
-      state.hireStep = state.hireStep === 'directory' ? '' : state.hiring.portfoliosFrom;
+      state.hireStep = state.hiring.portfoliosFrom;
       draw({ moved: true });
     },
     'set-up-role': () => {
-      const specialist = hiringCandidate();
+      const specialist = candidates.find(person => person.name === state.directorySpecialist);
       if (state.directRole?.selected !== specialist.name) {
         state.directRole = {
           selected: specialist.name, title: specialist.role,
@@ -687,8 +755,10 @@ function mountDemo(root, preview = false) {
         };
       }
       state.hireStep = 'direct-role';
+      if (state.directRole.interviews[specialist.name]) return commands.interview();
       draw({ moved: true });
     },
+    'close-role': () => { state.hireStep = ''; draw({ moved: true }); },
     'prepare-role': () => {
       if (!state.directRole.title.trim() || !state.directRole.description.trim()) {
         state.error = 'Add a role title and description';
@@ -736,7 +806,7 @@ function mountDemo(root, preview = false) {
       else state.hiring = null;
       state.hireStep = '';
       state.notice = person.name + ' joined the team';
-      draw({ moved: true });
+      screen('team');
     },
     week: offset => { state.week = offsetDay(state.week, Number(offset)); draw({ reveal: '.demo-week' }); },
     'open-job': id => {
@@ -1001,6 +1071,10 @@ function mountDemo(root, preview = false) {
   workspace.addEventListener('input', event => {
     const { field } = event.target.dataset;
     if (field === 'caption') state.captions[state.platform] = event.target.value;
+    else if (field === 'specialistSearch') {
+      state.specialistSearch = event.target.value;
+      draw({ moved: true });
+    }
     else if (field === 'interviewMessage') {
       const job = hiringJob();
       job.interviews[job.interviewing].draft = event.target.value;
