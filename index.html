@@ -10,11 +10,11 @@
   <meta property="og:description" content="Hire AI social teammates, draft for each account, and plan your publishing week in a native Mac app.">
   <meta name="robots" content="noindex, nofollow">
   <link rel="canonical" href="https://selwynuy.github.io/GenePost/">
-  <meta property="og:image" content="https://selwynuy.github.io/GenePost/assets/team.webp">
+  <meta property="og:image" content="https://selwynuy.github.io/GenePost/assets/calendar.webp">
   <link rel="icon" href="./assets/genepost.svg?v=531d221c39" type="image/svg+xml">
-  <link rel="stylesheet" href="./assets/site.css?v=6f0f59dad9">
-  <link rel="stylesheet" href="./assets/demo.css?v=f9357d3311">
-  <script src="./assets/site.js?v=312134ac21" defer></script>
+  <link rel="stylesheet" href="./assets/site.css?v=4427fadfb1">
+  <link rel="stylesheet" href="./assets/demo.css?v=f8a28d0aab">
+  <script src="./assets/site.js?v=d005720e3d" defer></script>
 </head>
 <body>
   <a class="skip" href="#main">Skip to content</a>
@@ -69,7 +69,7 @@
       <div class="macbook" aria-hidden="true">
         <div class="mac-display">
           <div class="mac-screen hero-screen">
-            <img data-demo-fallback src="./assets/team.webp" width="1600" height="1029" alt="" fetchpriority="high">
+            <img data-demo-fallback src="./assets/calendar.webp" width="1600" height="1029" alt="" fetchpriority="high">
             <div class="hero-viewport" data-demo-host hidden></div>
           </div>
         </div>
@@ -101,29 +101,43 @@
 <section class="demo-stage" id="tour" aria-labelledby="demo-title">
   <div class="wrap demo-heading"><h2 id="demo-title">Try it live.</h2></div>
   <div class="demo-wrap" id="demo" tabindex="-1" data-assets="./assets/">
-    <div class="demo-toolbar" id="demo-controls" hidden>
-      <button class="button primary" type="button" data-action="play">
-        <svg class="symbol" aria-hidden="true"><use href="#icon-play"></use></svg><span>Play demo</span>
-      </button>
-      <button class="button quiet" type="button" data-action="stop" hidden>Try it</button>
-      <span class="demo-cue" data-demo-cue role="status">Try it yourself</span>
-      <button class="button quiet demo-reset" type="button" data-action="reset" aria-label="Reset demo" title="Reset demo">
-        <svg class="symbol" aria-hidden="true"><use href="#icon-reset"></use></svg>
-      </button>
-    </div>
-    <div class="macbook">
-      <div class="mac-display">
-        <div class="mac-screen">
-          <img data-demo-fallback src="./assets/team.webp" width="1600" height="1029" alt="GenePost on Mac" loading="lazy">
-          <div data-demo-host hidden></div>
-        </div>
+    <div class="demo-player">
+      <div class="demo-toolbar" id="demo-controls" hidden>
+        <button class="button primary" type="button" data-action="play">
+          <svg class="symbol" aria-hidden="true"><use href="#icon-play"></use></svg><span>Play demo</span>
+        </button>
+        <button class="button quiet" type="button" data-action="stop" hidden>Try it</button>
+        <span class="demo-cue" data-demo-cue>Try it yourself</span>
+        <button class="button quiet demo-reset" type="button" data-action="reset" aria-label="Reset demo" title="Reset demo">
+          <svg class="symbol" aria-hidden="true"><use href="#icon-reset"></use></svg>
+        </button>
       </div>
-      <div class="mac-base" aria-hidden="true"><span></span></div>
+      <div class="macbook">
+        <div class="mac-display">
+          <div class="mac-screen">
+            <img data-demo-fallback src="./assets/calendar.webp" width="1600" height="1029" alt="GenePost calendar on Mac" loading="lazy">
+            <div data-demo-host hidden></div>
+          </div>
+        </div>
+        <div class="mac-base" aria-hidden="true"><span></span></div>
+      </div>
+      <div class="demo-under" hidden>
+        <span class="demo-progress" aria-hidden="true" hidden><i></i></span>
+        <a id="native-screen" href="./assets/calendar.webp" target="_blank" rel="noopener">View Mac screen <svg class="symbol" aria-hidden="true"><use href="#icon-external"></use></svg></a>
+      </div>
     </div>
-    <div class="demo-under" hidden>
-      <span class="demo-progress" aria-hidden="true" hidden><i></i></span>
-      <a id="native-screen" href="./assets/team.webp" target="_blank" rel="noopener">View Mac screen <svg class="symbol" aria-hidden="true"><use href="#icon-external"></use></svg></a>
-    </div>
+    <aside class="demo-guide" aria-label="Walkthrough" hidden>
+      <h3>The workflow</h3>
+      <ol>
+        <li data-chapter="channels"><svg class="symbol" aria-hidden="true"><use href="#icon-channels"></use></svg>Choose channels</li>
+        <li data-chapter="hire"><svg class="symbol" aria-hidden="true"><use href="#icon-team"></use></svg>Hire a teammate</li>
+        <li data-chapter="media"><svg class="symbol" aria-hidden="true"><use href="#icon-media"></use></svg>Add media</li>
+        <li data-chapter="draft"><svg class="symbol" aria-hidden="true"><use href="#icon-spark"></use></svg>Draft captions</li>
+        <li data-chapter="plan"><svg class="symbol" aria-hidden="true"><use href="#icon-calendar"></use></svg>Plan your week</li>
+        <li data-chapter="queue"><svg class="symbol" aria-hidden="true"><use href="#icon-queue"></use></svg>Review the queue</li>
+        <li data-chapter="reports"><svg class="symbol" aria-hidden="true"><use href="#icon-reports"></use></svg>See what shipped</li>
+      </ol>
+    </aside>
   </div>
 </section>
 
@@ -148,16 +162,16 @@
   <h2 id="cases-title">Try a campaign.</h2>
   <div class="case-grid">
     <a class="case" data-case="coffee" href="#demo">
-      <img src="./assets/demo-coffee.svg" width="720" height="460" alt="" loading="lazy">
-      <span>Local events <svg class="symbol" aria-hidden="true"><use href="#icon-external"></use></svg></span>
+      <img src="./assets/tasting-table.webp" width="1080" height="609" alt="Coffee tasting bowls lined up beside bags of roasted beans" loading="lazy">
+      <span>Café tasting <svg class="symbol" aria-hidden="true"><use href="#icon-external"></use></svg></span>
     </a>
-    <a class="case" data-case="florist" href="#demo">
-      <img src="./assets/demo-florist.svg" width="720" height="460" alt="" loading="lazy">
-      <span>Client campaigns <svg class="symbol" aria-hidden="true"><use href="#icon-external"></use></svg></span>
+    <a class="case" data-case="personal" href="#demo">
+      <img src="./assets/design-notebook.webp" width="910" height="655" alt="A designer sketching a user flow in a notebook" loading="lazy">
+      <span>Personal brand <svg class="symbol" aria-hidden="true"><use href="#icon-external"></use></svg></span>
     </a>
-    <a class="case" data-case="studio" href="#demo">
-      <img src="./assets/demo-studio.svg" width="720" height="460" alt="" loading="lazy">
-      <span>Product launches <svg class="symbol" aria-hidden="true"><use href="#icon-external"></use></svg></span>
+    <a class="case" data-case="update" href="#demo">
+      <img src="./assets/calendar.webp" width="1600" height="1029" alt="GenePost’s weekly calendar with scheduled posts" loading="lazy">
+      <span>App update <svg class="symbol" aria-hidden="true"><use href="#icon-external"></use></svg></span>
     </a>
   </div>
 </section>

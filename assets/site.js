@@ -13,25 +13,40 @@ const screens = [
 ];
 const platformNames = { instagram: 'Instagram', linkedin: 'LinkedIn', threads: 'Threads', facebook: 'Facebook', x: 'X' };
 const candidates = [
-  { name: 'Freya', specialty: 'Community copy', sample: 'Lead with warmth', portrait: 'freya.webp' },
-  { name: 'Tessa', specialty: 'Founder stories', sample: 'Find the story', portrait: 'tessa.webp' },
-  { name: 'Mira', specialty: 'Short hooks', sample: 'Open with curiosity' },
+  { name: 'Avery', specialty: 'Community copy', sample: 'Lead with a warm invitation.', glyph: 'team' },
+  { name: 'Jordan', specialty: 'Founder stories', sample: 'Start with a detail only the founder would know.', glyph: 'drafts' },
+  { name: 'Quinn', specialty: 'Short hooks', sample: 'Open with a question people will want to answer.', glyph: 'spark' },
 ];
 const campaigns = {
   coffee: {
-    name: 'Morrow Coffee', idea: 'Saturday coffee tasting', job: 'Tasting campaign',
-    artwork: 'Saturday tasting', reminder: 'Tasting reminder', channels: ['instagram', 'linkedin', 'threads'],
-    captions: ['Saturday, sip slowly.', 'Meet our roaster.', 'Which roast first?'],
+    name: 'Morrow Coffee', idea: 'Invite people to Saturday’s coffee tasting', job: 'Tasting campaign',
+    media: { name: 'Tasting table', file: 'tasting-table.webp', alt: 'Coffee tasting bowls beside bags of roasted beans' },
+    reminder: 'Tasting reminder', channels: ['instagram', 'linkedin', 'threads'],
+    captions: [
+      'Three roasts. One table. Join us at Morrow this Saturday at 10 a.m. to taste them side by side. DM us for a seat.',
+      'What changes when you taste three coffees side by side? This Saturday at 10 a.m., we’re opening our tasting table so you can find out with our roaster.',
+      'We’re pouring three coffees at 10 a.m. Saturday. What are you reaching for first: bright and fruity, or rich and chocolatey?',
+    ],
   },
-  florist: {
-    name: 'Stem Studio', idea: 'Friday flower pickup', job: 'Florist campaign',
-    artwork: 'Friday flowers', reminder: 'Pickup reminder', channels: ['instagram', 'facebook', 'threads'],
-    captions: ['Friday flowers await.', 'Reserve your bouquet.', 'What’s your favorite?'],
+  personal: {
+    name: 'Ari Reyes', idea: 'Share why I sketch the flow before I design the screens', job: 'Designer field notes',
+    media: { name: 'Notebook sketch', file: 'design-notebook.webp', alt: 'Hands sketching a user flow on paper next to a keyboard' },
+    reminder: 'Follow up on sketching', channels: ['linkedin', 'instagram', 'threads'],
+    captions: [
+      'I sketch the path before I design the screen. On paper, it takes five seconds to cross out a step. That’s where I catch the steps I’d otherwise spend hours polishing.',
+      'Today’s desk: paper, pencil, and a few arrows. I’m sketching how someone gets from A to B before I touch the layout.',
+      'My first design tool is usually a pencil. If I can’t explain the flow in a few boxes, I’m probably adding too many steps.',
+    ],
   },
-  studio: {
-    name: 'Northline Studio', idea: 'Launch version two', job: 'Product launch',
-    artwork: 'Release day', reminder: 'Launch reminder', channels: ['linkedin', 'x', 'threads'],
-    captions: ['Meet version two.', 'Version two landed.', 'What’s your wishlist?'],
+  update: {
+    name: 'GenePost', idea: 'Show how the weekly calendar helps you plan posts', job: 'Calendar update',
+    media: { name: 'Week view', file: 'calendar.webp', alt: 'GenePost’s weekly calendar with planned posts by channel' },
+    reminder: 'Week view follow-up', channels: ['linkedin', 'x', 'threads'],
+    captions: [
+      'GenePost opens to your week. See which posts are planned, filter by channel, and click a post to review its caption and media in Queue.',
+      'A quick GenePost update: your week now opens first. See what’s planned across channels and open any post right from the calendar.',
+      'I wanted one place to see what goes out this week. GenePost’s calendar opens there now, and each post takes you straight to its preview.',
+    ],
   },
 };
 
@@ -62,12 +77,12 @@ function newState(campaignID, seed = true) {
   }));
   return {
     campaignID, campaign, view: 'compose', theme: 'dark', idea: campaign.idea,
-    jobTitle: campaign.job, hireStep: '', candidate: 'Freya', interview: false, team: [],
+    jobTitle: campaign.job, hireStep: '', candidate: candidates[0].name, interview: false, team: [],
     channels, platform: channels[0], captions: null,
     media: [
-      { id: 'cover', name: campaign.artwork, src: assets + 'demo-' + campaignID + '.svg' },
-      { id: 'menu', name: 'Tasting menu', src: assets + 'demo-menu.svg' },
-    ].slice(0, campaignID === 'coffee' ? 2 : 1),
+      { id: 'cover', name: campaign.media.name, src: assets + campaign.media.file, alt: campaign.media.alt },
+      ...(campaignID === 'coffee' ? [{ id: 'menu', name: 'Tasting menu', src: assets + 'demo-menu.svg' }] : []),
+    ],
     asset: 'cover', choosingMedia: false, draftID: null, drafts: seed ? drafts : [], jobs: seed ? jobs : [],
     day: dateKey(day), time: '10:00', week: monday(day), jobID: null,
     nextID: 1, queueFilter: 'scheduled', reportFilter: '', notice: '', error: '',
@@ -82,33 +97,37 @@ const platformIcon = key => '<img class="platform-icon" src="' + assets + key + 
 const platformName = key => platformIcon(key) + platformNames[key];
 const picture = (asset, eager = false) => asset?.video
   ? '<video src="' + escapeHTML(asset.src) + '" controls muted playsinline preload="metadata" aria-label="' + escapeHTML(asset.name) + '"></video>'
-  : asset ? '<img src="' + escapeHTML(asset.src) + '" alt="' + escapeHTML(asset.name) + '"' + (eager ? '' : ' loading="lazy"') + '>' : '';
+  : asset ? '<img src="' + escapeHTML(asset.src) + '" alt="' + escapeHTML(asset.alt ?? asset.name) + '"' + (eager ? '' : ' loading="lazy"') + '>' : '';
 function action(name, label, { value = '', kind = '', glyph = '', pressed, title } = {}) {
   return '<button type="button" class="app-button ' + kind + '" data-action="' + name +
     '" data-value="' + escapeHTML(value) + '"' + (pressed === undefined ? '' : ' aria-pressed="' + pressed + '"') +
     (title ? ' aria-label="' + title + '" title="' + title + '"' : '') + '>' +
     (glyph ? icon(glyph) : '') + label + '</button>';
 }
-const avatar = candidate => candidate.portrait
-  ? '<img class="avatar" src="' + assets + candidate.portrait + '" width="60" height="60" alt="">'
-  : '<span class="avatar monogram" aria-hidden="true">' + candidate.name[0] + '</span>';
+const roleIcon = candidate => '<span class="role-icon" aria-hidden="true">' + icon(candidate.glyph) + '</span>';
 
 const walkthrough = [
-  ['Open Team', '.demo-sidebar [data-value="team"]'],
+  ['Choose channels', '.demo-sidebar [data-value="channels"]', { chapter: 'channels', hold: 1550 }],
+  ['Open Team', '.demo-sidebar [data-value="team"]', { chapter: 'hire' }],
   ['Post a job', '[data-action="post-job"]'],
-  ['See applicants', '[data-submit="applicants"] button'],
-  ['Hire Freya', '[data-action="hire"]'],
-  ['Start a post', '.demo-sidebar [data-value="compose"]'],
+  ['See applicants', '[data-submit="applicants"] button', { hold: 1550 }],
+  ['Hire Avery', '[data-action="hire"]'],
+  ['Start a post', '.demo-sidebar [data-value="compose"]', { chapter: 'media' }],
   ['Add media', '[data-action="choose-media"]'],
-  ['Attach artwork', '[data-action="attach"][data-value="cover"]'],
-  ['Draft captions', '[data-action="generate"]'],
-  ['Save draft', '[data-action="save-draft"]'],
+  ['Attach media', '[data-action="attach"][data-value="cover"]', { hold: 1300 }],
+  ['Draft captions', '[data-action="generate"]', { chapter: 'draft', hold: 1700 }],
+  ['Compare captions', '.platform-tabs [data-action="platform"]:nth-child(2)', { hold: 1950 }],
+  ['Save draft', '[data-action="save-draft"]', { chapter: 'plan' }],
   ['Review post', '[data-action="review"]'],
-  ['Schedule posts', '[data-submit="schedule"] button'],
-  ['Open a post', '[data-action="open-job"]'],
-  ['Mark published', '[data-action="publish"]'],
-  ['Check reports', '.demo-sidebar [data-value="reports"]'],
+  ['Schedule posts', '[data-submit="schedule"] button', { hold: 1900 }],
+  ['Open a post', '[data-action="open-job"]', { chapter: 'queue', hold: 1650 }],
+  ['Mark published', '[data-action="publish"]', { hold: 1450 }],
+  ['Check reports', '.demo-sidebar [data-value="reports"]', { chapter: 'reports', hold: 4200 }],
 ];
+const chaptersByView = {
+  channels: 'channels', team: 'hire', media: 'media', compose: 'draft',
+  drafts: 'plan', review: 'plan', calendar: 'plan', queue: 'queue', reports: 'reports',
+};
 
 const previewWalkthrough = [
   ['Write an idea', '[data-field="idea"]', { typing: true, hold: 560 }],
@@ -123,7 +142,7 @@ const previewWalkthrough = [
 function previewState() {
   const state = newState('coffee', false);
   state.idea = '';
-  state.team = ['Freya'];
+  state.team = [candidates[0].name];
   return state;
 }
 
@@ -139,14 +158,18 @@ function mountDemo(root, preview = false) {
   const cue = root.querySelector('[data-demo-cue]');
   const pointer = app.querySelector('.demo-pointer');
   const progress = root.querySelector('.demo-progress');
+  const guide = root.querySelector('.demo-guide');
+  const chapters = [...root.querySelectorAll('[data-chapter]')];
   const nativeScreen = root.querySelector('#native-screen');
   const steps = preview ? previewWalkthrough : walkthrough;
   const workspaces = new Map();
   let state = preview ? previewState() : newState('coffee');
   if (!preview) workspaces.set('coffee', state);
   let playback = preview ? { index: 0, playing: false } : undefined;
-  let previewVisible = !('IntersectionObserver' in window);
+  let playerVisible = !('IntersectionObserver' in window);
   let previewPaused = false;
+  let wantsGuide = true;
+  let motionOptIn = false;
   let screenAnimation;
   let animateResponse = false;
   let pointerSubmit;
@@ -164,7 +187,7 @@ function mountDemo(root, preview = false) {
       '<div class="feed-account">' + platformIcon(platform) + '<strong>' + escapeHTML(state.campaign.name) +
       '</strong><span>' + platformNames[platform] + '</span></div>' +
       (editable
-        ? '<textarea class="caption-field" data-field="caption" aria-label="Edit caption" maxlength="1200" rows="2">' + escapeHTML(caption) + '</textarea>'
+        ? '<textarea class="caption-field" data-field="caption" aria-label="Edit caption" maxlength="1200" rows="3">' + escapeHTML(caption) + '</textarea>'
         : '<p>' + escapeHTML(caption) + '</p>') +
       (asset ? '<div class="feed-art">' + picture(asset, true) + '</div>' : '') +
       '</article>';
@@ -192,7 +215,7 @@ function mountDemo(root, preview = false) {
       '<div class="app-row">' +
       action('choose-media', asset ? 'Change media' : 'Add media', { glyph: 'media', pressed: state.choosingMedia }) +
       (asset ? action('remove-media', '', { glyph: 'close', title: 'Remove attachment', kind: 'app-icon' }) : '') +
-      (teammate ? '<span class="agent-chip">' + avatar(teammate) + teammate.name + '</span>' : '') +
+      (teammate ? '<span class="agent-chip">' + roleIcon(teammate) + teammate.name + '</span>' : '') +
       '</div>' +
       (state.choosingMedia ? mediaPicker() : '') +
       '<div class="app-row">' + action('generate', 'Draft captions', { glyph: 'spark', kind: 'app-primary' }) + '</div>' +
@@ -202,7 +225,7 @@ function mountDemo(root, preview = false) {
       '</div>' +
       '<div class="app-stack preview-column"><div class="app-row platform-tabs" aria-label="Preview channel">' + tabs + '</div>' +
       (platform ? feed(platform, state.captions?.[platform] ??
-        (preview ? 'Caption preview' : state.campaign.captions[state.campaign.channels.indexOf(platform)]), asset, Boolean(state.captions)) :
+        (preview ? 'Caption preview' : state.campaign.captions[state.campaign.channels.indexOf(platform)]), asset, Boolean(state.captions) && !playback) :
         empty('channels', 'Select a channel', action('screen', 'Open channels', { value: 'channels' }))) +
       '</div></div>';
   }
@@ -220,7 +243,7 @@ function mountDemo(root, preview = false) {
       return heading('Choose a teammate', brand()) + '<p class="job-context">' +
         escapeHTML(state.jobTitle) + '</p><div class="applicants">' +
         candidates.map(person => action('candidate',
-          avatar(person) + '<strong>' + person.name + '</strong><span>' + person.specialty + '</span>',
+          roleIcon(person) + '<strong>' + person.name + '</strong><span class="candidate-specialty">' + person.specialty + '</span>',
           { value: person.name, pressed: person.name === candidate.name, kind: 'candidate' })).join('') +
         '</div><div class="app-row candidate-actions">' +
         action('hire', 'Hire ' + candidate.name, { glyph: 'check', kind: 'app-primary' }) +
@@ -231,7 +254,7 @@ function mountDemo(root, preview = false) {
     return heading('Team', action('post-job', 'Post a job', { glyph: 'plus', kind: 'app-primary' })) +
       (state.team.length
         ? '<div class="team-list">' + candidates.filter(person => state.team.includes(person.name)).map(person =>
-          '<div class="app-list-row">' + avatar(person) + '<span><strong>' + person.name + '</strong><small>' +
+          '<div class="app-list-row">' + roleIcon(person) + '<span><strong>' + person.name + '</strong><small>' +
           person.specialty + '</small></span></div>'
         ).join('') + '</div>' + action('screen', 'Brief teammate', { value: 'compose', glyph: 'right' })
         : empty('team', 'Build your team')) + '<div class="team-brand">' + brand() + '</div>';
@@ -270,7 +293,7 @@ function mountDemo(root, preview = false) {
       action('queue-filter', 'History', { value: 'published', pressed: state.queueFilter === 'published' }) +
       '</div>') + (selected ? '<div class="compose-layout"><div class="app-stack">' +
         jobs.map(job => action('select-job', platformName(job.platform) + '<small>' +
-          dateLabel.format(new Date(job.date)) + '</small>', {
+          dateLabel.format(new Date(job.publishedAt ?? job.date)) + '</small>', {
           value: job.id, pressed: selected.id === job.id, kind: 'app-list-row',
         })).join('') + '</div><div class="app-stack">' +
         feed(selected.platform, selected.caption, mediaByID(selected.asset)) +
@@ -305,21 +328,32 @@ function mountDemo(root, preview = false) {
 
   function reports() {
     const jobs = state.jobs.filter(job => !state.reportFilter || job.platform === state.reportFilter);
-    const published = jobs.filter(job => job.status === 'published').length;
-    const totalByChannel = state.campaign.channels.map(key => {
-      const count = jobs.filter(job => job.platform === key && job.status === 'published').length;
-      return '<div class="report-channel">' + platformName(key) +
-        '<div class="report-bar" aria-hidden="true"><i style="width:' + (published ? count / published * 100 : 0) + '%"></i></div><strong>' +
-        count + '</strong></div>';
-    }).join('');
-    return heading('Reports', '<select aria-label="Filter channels" data-field="reportFilter">' +
+    const published = jobs.filter(job => job.status === 'published')
+      .sort((first, second) => new Date(second.publishedAt ?? second.date) - new Date(first.publishedAt ?? first.date));
+    const upcoming = jobs.filter(job => job.status === 'scheduled')
+      .sort((first, second) => new Date(first.date) - new Date(second.date));
+    const postRow = job => {
+      const asset = mediaByID(job.asset);
+      const date = new Date(job.publishedAt ?? job.date);
+      const thumb = asset && !asset.video
+        ? '<img src="' + escapeHTML(asset.src) + '" alt="" loading="lazy">'
+        : icon(asset?.video ? 'media' : 'drafts');
+      return '<li>' + action('open-job',
+        '<span class="report-thumb" aria-hidden="true">' + thumb + '</span>' +
+        '<span class="report-copy"><strong>' + escapeHTML(job.caption) + '</strong><small>' + platformName(job.platform) + '</small></span>' +
+        '<time datetime="' + date.toISOString() + '">' + dateLabel.format(date) + '</time>' + icon('right'),
+        { value: job.id, kind: 'report-post' }) + '</li>';
+    };
+    const section = (title, entries, status, glyph, emptyText) => '<section class="report-section">' +
+      '<h3>' + icon(glyph) + title + '<span data-count="' + status + '">' + entries.length + '</span></h3>' +
+      (entries.length ? '<ul>' + entries.map(postRow).join('') + '</ul>' : '<p>' + emptyText + '</p>') + '</section>';
+    return heading('Publishing report', '<select aria-label="Filter channels" data-field="reportFilter">' +
       '<option value="">All channels</option>' +
       state.campaign.channels.map(key => '<option value="' + key + '"' + (state.reportFilter === key ? ' selected' : '') + '>' +
         platformNames[key] + '</option>').join('') + '</select>') +
-      '<dl class="report-counts"><div><dt>Published</dt><dd data-count="published">' + published +
-      '</dd></div><div><dt>Scheduled</dt><dd data-count="scheduled">' + (jobs.length - published) +
-      '</dd></div><div><dt>Drafts</dt><dd>' + state.drafts.length + '</dd></div></dl>' +
-      '<h3>Published by channel</h3><div class="report-channels">' + totalByChannel + '</div>';
+      '<div class="publishing-log">' +
+      section('Published', published, 'published', 'check', 'No published posts yet') +
+      section('Up next', upcoming, 'scheduled', 'calendar', 'Nothing scheduled') + '</div>';
   }
 
   function settings() {
@@ -351,6 +385,7 @@ function mountDemo(root, preview = false) {
     }
     const screenshot = state.view === 'team' && state.hireStep ? 'hiring' : view;
     if (nativeScreen) nativeScreen.href = assets + screenshot + '.webp';
+    updateChapter();
     screenAnimation?.cancel();
     if (animateResponse && !reducedMotion.matches) {
       const changed = moved
@@ -380,7 +415,7 @@ function mountDemo(root, preview = false) {
     state.captions = Object.fromEntries(state.campaign.channels.map((key, index) =>
       [key, (matchingIdea ? state.campaign.captions : samples)[index]]));
     state.notice = 'Sample captions ready';
-    draw({ reveal: preview ? '.caption-field' : '.demo-feed' });
+    draw({ reveal: preview ? '.demo-feed > p' : '.demo-feed' });
   }
 
   function saveDraft() {
@@ -438,13 +473,13 @@ function mountDemo(root, preview = false) {
   const commands = {
     screen,
     'choose-media': () => { state.choosingMedia = !state.choosingMedia; draw({ reveal: '.media-picker' }); },
-    attach: id => { state.asset = id; state.choosingMedia = false; draw({ reveal: preview ? '.caption-field' : '.demo-feed' }); },
-    'remove-media': () => { state.asset = null; draw({ reveal: preview ? '.caption-field' : '.demo-feed' }); },
+    attach: id => { state.asset = id; state.choosingMedia = false; draw({ reveal: '.demo-feed' }); },
+    'remove-media': () => { state.asset = null; draw({ reveal: '.demo-feed' }); },
     'use-media': id => { state.asset = id; screen('compose'); },
     platform: key => {
       if (state.platform === key) return;
       state.platform = key;
-      draw({ reveal: preview ? '.caption-field' : '.demo-feed' });
+      draw({ reveal: preview ? '.demo-feed > p' : '.demo-feed' });
     },
     generate,
     'save-draft': saveDraft,
@@ -483,10 +518,12 @@ function mountDemo(root, preview = false) {
       state.queueFilter = state.jobs.find(job => job.id === id).status;
       screen('queue');
     },
-    'select-job': id => { state.jobID = id; draw({ reveal: preview ? '.caption-field' : '.demo-feed' }); },
+    'select-job': id => { state.jobID = id; draw({ reveal: '.demo-feed' }); },
     'queue-filter': filter => { state.queueFilter = filter; draw(); },
     publish: id => {
-      state.jobs.find(job => job.id === id).status = 'published';
+      const job = state.jobs.find(job => job.id === id);
+      job.status = 'published';
+      job.publishedAt = new Date().toISOString();
       state.jobID = id;
       state.queueFilter = 'published';
       state.notice = 'Marked published';
@@ -522,7 +559,7 @@ function mountDemo(root, preview = false) {
       playButton.querySelector('use').setAttribute('href', previewPaused ? '#icon-play' : '#icon-pause');
       return;
     }
-    const label = playback ? (playing ? 'Pause' : playback.done ? 'Replay demo' : 'Resume') : 'Play demo';
+    const label = playback ? (playing ? 'Pause' : 'Resume') : 'Play demo';
     playButton.querySelector('span').textContent = label;
     playButton.querySelector('use').setAttribute('href', playing ? '#icon-pause' : '#icon-play');
     stopButton.hidden = !playback;
@@ -530,6 +567,15 @@ function mountDemo(root, preview = false) {
     appWindow.inert = Boolean(playback);
     progress.hidden = !playback;
     progress.firstElementChild.style.transform = 'scaleX(' + (playback ? playback.index / steps.length : 0) + ')';
+    updateChapter();
+  }
+
+  function updateChapter() {
+    const current = playback?.chapter ?? chaptersByView[state.view];
+    chapters.forEach(item => {
+      if (item.dataset.chapter === current) item.setAttribute('aria-current', 'step');
+      else item.removeAttribute('aria-current');
+    });
   }
 
   function pointAt(target) {
@@ -589,23 +635,19 @@ function mountDemo(root, preview = false) {
     if (!run?.playing) return;
     const next = steps[run.index];
     if (!next) {
-      run.playing = false;
-      run.done = true;
-      cue.textContent = 'Demo complete';
-      pointer.hidden = true;
-      showControls();
-      return;
+      startGuide();
+      return resume();
     }
-    const [label, selector, { hold = 980, typing = false, restart = false } = {}] = next;
+    const [label, selector, { hold = 980, typing = false, restart = false, chapter } = {}] = next;
     const target = app.querySelector(selector);
     if (!target) {
       if (preview) {
         previewPaused = true;
         cue.textContent = 'Preview paused';
-      }
+      } else wantsGuide = false;
       return pause();
     }
-    cue.textContent = label;
+    cue.textContent = run.label = label;
     pointAt(target);
     const advance = () => {
       run.index = restart ? 0 : run.index + 1;
@@ -615,6 +657,7 @@ function mountDemo(root, preview = false) {
     };
     const activate = () => {
       if (restart) state = previewState();
+      if (chapter) run.chapter = chapter;
       scriptedInput = true;
       try {
         target.click();
@@ -646,16 +689,35 @@ function mountDemo(root, preview = false) {
 
   function resume() {
     playback.playing = true;
+    if (!preview && playback.label) cue.textContent = playback.label;
     showControls();
     if (playback.pending) waitForStep(playback.pending, 95);
-    else waitForStep(step, preview ? 550 : 0);
+    else waitForStep(step, 500);
   }
 
   function syncPreview() {
-    const shouldPlay = previewVisible && !previewPaused && !document.hidden && !reducedMotion.matches;
+    const shouldPlay = playerVisible && !previewPaused && !document.hidden && !reducedMotion.matches;
     if (shouldPlay && !playback.playing) resume();
     else if (!shouldPlay && playback.playing) pause();
     else showControls();
+  }
+
+  function startGuide() {
+    const previous = playback?.previous ?? state;
+    state = newState(previous.campaignID, false);
+    state.asset = null;
+    state.theme = previous.theme;
+    playback = { previous, index: 0, playing: false };
+    pointer.hidden = true;
+    draw({ moved: true });
+  }
+
+  function syncGuide() {
+    const shouldPlay = wantsGuide && playerVisible && !document.hidden && (motionOptIn || !reducedMotion.matches);
+    if (shouldPlay) {
+      if (!playback) startGuide();
+      if (!playback.playing) resume();
+    } else if (playback?.playing) pause();
   }
 
   function play() {
@@ -663,19 +725,13 @@ function mountDemo(root, preview = false) {
       previewPaused = !previewPaused;
       return syncPreview();
     }
-    if (playback?.playing) return pause();
-    if (!playback || playback.done) {
-      const previous = playback?.previous ?? state;
-      state = newState(previous.campaignID, false);
-      state.asset = null;
-      state.theme = previous.theme;
-      playback = { previous, index: 0, playing: false, done: false };
-      draw();
-    }
-    resume();
+    wantsGuide = !playback?.playing;
+    motionOptIn = wantsGuide && reducedMotion.matches;
+    syncGuide();
   }
 
-  function stop() {
+  function stop(focus = true) {
+    wantsGuide = false;
     if (!playback) return;
     clearTimeout(playback.timer);
     state = playback.previous;
@@ -684,7 +740,7 @@ function mountDemo(root, preview = false) {
     cue.textContent = 'Try it yourself';
     showControls();
     draw();
-    playButton.focus({ preventScroll: true });
+    if (focus) playButton.focus({ preventScroll: true });
   }
 
   function reset() {
@@ -734,7 +790,7 @@ function mountDemo(root, preview = false) {
     pointer.style.transform = 'translate3d(' + (app.offsetWidth - 55) + 'px,' + (app.offsetHeight - 43) + 'px,0)';
     if ('IntersectionObserver' in window) {
       new IntersectionObserver(([entry]) => {
-        previewVisible = entry.intersectionRatio >= .15;
+        playerVisible = entry.intersectionRatio >= .15;
         syncPreview();
       }, { threshold: .15 }).observe(root);
     }
@@ -743,13 +799,23 @@ function mountDemo(root, preview = false) {
     syncPreview();
   } else {
     controls.hidden = false;
+    guide.hidden = false;
     root.querySelector('.demo-under').hidden = false;
-    document.addEventListener('visibilitychange', () => {
-      if (document.hidden && playback?.playing) pause();
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(([entry]) => {
+        playerVisible = entry.intersectionRatio >= .28;
+        syncGuide();
+      }, { threshold: .28 }).observe(root.querySelector('.mac-screen'));
+    }
+    reducedMotion.addEventListener('change', () => {
+      motionOptIn = false;
+      syncGuide();
     });
+    document.addEventListener('visibilitychange', syncGuide);
+    syncGuide();
     document.querySelectorAll('[data-case]').forEach(link => {
       link.addEventListener('click', () => {
-        stop();
+        stop(false);
         const key = link.dataset.case;
         if (!workspaces.has(key)) workspaces.set(key, newState(key));
         state = workspaces.get(key);

@@ -49,7 +49,7 @@ p { text-wrap: pretty; }
 .mac-display { position: relative; margin-inline: 4.2%; border: 1px solid #4b4b57; border-radius: clamp(10px, 2vw, 23px) clamp(10px, 2vw, 23px) 5px 5px; padding: clamp(6px, 1.05vw, 13px) clamp(5px, .75vw, 10px) clamp(7px, 1.2vw, 15px); background: #171720; box-shadow: 0 22px 50px -27px #17132b85, inset 0 0 0 1px #9e9da82c; }
 .mac-display::before { content: ""; position: absolute; left: 50%; top: 5px; width: 4px; height: 4px; border-radius: 50%; background: #5a5869; transform: translateX(-50%); z-index: 1; }
 .mac-screen { aspect-ratio: 1600 / 1029; overflow: hidden; border-radius: clamp(3px, .6vw, 8px); background: #222432; }
-.mac-screen img { width: 100%; height: 100%; object-fit: cover; }
+.mac-screen > img { width: 100%; height: 100%; object-fit: cover; }
 .mac-base { position: absolute; left: 0; right: 0; bottom: 1px; height: 17px; background: linear-gradient(#dedde7, #b6b5c2 42%, #828190 80%, #515064); border-radius: 1px 1px 45% 45% / 1px 1px 85% 85%; box-shadow: 0 19px 26px -15px #17132b9e; border-top: 1px solid #ebebef; }
 .mac-base span { display: block; width: 12%; height: 5px; margin: -1px auto 0; border-radius: 0 0 8px 8px; background: #8c8b9b; box-shadow: inset 0 -1px 1px #f1f0f4a6; }
 .button { display: inline-flex; align-items: center; justify-content: center; gap: 7px; padding: 9px 15px; min-height: 42px; border: 1px solid transparent; border-radius: 9px; font-size: 14px; font-weight: 670; text-decoration: none; cursor: pointer; transition: background-color 160ms ease-out, border-color 160ms ease-out, box-shadow 180ms ease-out, transform 190ms var(--ease-arrive); }
