@@ -398,14 +398,11 @@ function mountDemo(root, preview = false) {
   }
 
   function specialistCard(person) {
-    const art = person.portfolioImage ? '<img src="' + assets + 'team-marks/' + person.portfolioImage +
-      '" alt="" width="320" height="180">' : '';
     return action('open-specialist',
-      '<span class="market-cover ' + person.category + (art ? ' with-art' : '') + '">' + art +
-      '<small>' + escapeHTML(person.sampleFormat) + '</small>' + (art ? '' : '<strong>' + escapeHTML(person.sampleExcerpt) + '</strong>') +
-      '</span><span class="market-info"><span class="market-person">' + onlineAvatar(person) + '<span><strong>' +
+      '<span class="market-portrait" style="--portrait-tone:#' + escapeHTML(person.portraitTone) + '">' + onlineAvatar(person) +
+      '</span><span class="market-info"><span class="market-person"><span><strong>' +
       escapeHTML(person.name) + '</strong><small>' + escapeHTML(person.role) + '</small></span>' + icon('right') +
-      '</span><span class="market-specialty">' + escapeHTML(person.specialty) + '</span></span>',
+      '</span></span>',
       { value: person.name, kind: 'market-card', title: person.name + ', ' + person.role + ', Online' });
   }
 

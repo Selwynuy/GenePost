@@ -114,7 +114,6 @@
   --app-solid: #c9aefb;
   --app-solid-text: #211337;
   --app-success: #a0e4b9;
-  --app-growth: #ffd098;
   --app-error: #ffb5ca;
   color-scheme: dark;
   background: var(--app-bg);
@@ -136,7 +135,6 @@
   --app-solid: #4e2f87;
   --app-solid-text: #fff;
   --app-success: #226448;
-  --app-growth: #784b1b;
   --app-error: #972e50;
   color-scheme: light;
 }
@@ -281,6 +279,7 @@
 }
 .candidate .agent-presence { transition: transform 200ms var(--ease-arrive); }
 .specialist-directory { container-type: inline-size; }
+.demo-workspace:has(.specialist-directory) .app-heading { margin-bottom: 10px; }
 .specialist-search { position: relative; min-width: 0; }
 .specialist-search > .symbol {
   position: absolute; top: 50%; left: 10px; transform: translateY(-50%);
@@ -290,7 +289,7 @@
   padding: 6px 9px 6px 31px; width: 190px; font-size: 12px;
 }
 .specialist-search input::placeholder { color: var(--app-muted); }
-.specialist-filters { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 12px; }
+.specialist-filters { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 9px; }
 .specialist-filters > span { color: var(--app-muted); font-size: 11px; font-variant-numeric: tabular-nums; }
 .demo-app .specialty-filter { min-height: 29px; padding: 4px 8px; font-size: 11px; }
 .market-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 9px; }
@@ -306,30 +305,23 @@
   border-color: var(--app-line); border-radius: 9px; background: var(--app-fill); text-align: left;
 }
 .demo-app .market-card:hover { border-color: var(--app-accent); background: var(--app-fill); }
-.market-cover {
-  --sample-tone: var(--app-accent);
-  display: flex; flex-direction: column; gap: 4px; position: relative; min-height: 73px;
-  padding: 9px 10px; background: color-mix(in srgb, var(--sample-tone) 11%, var(--app-fill));
-  overflow-wrap: anywhere;
+.market-portrait {
+  display: grid; place-items: center; min-height: 104px;
+  background: color-mix(in srgb, var(--portrait-tone) 18%, var(--app-fill));
 }
-.market-cover.content { --sample-tone: var(--app-success); }
-.market-cover.growth { --sample-tone: var(--app-growth); }
-.market-cover small { color: var(--sample-tone); font-size: 11px; }
-.market-cover strong { color: var(--app-ink); font-size: 13px; line-height: 1.24; }
-.market-cover.with-art > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-.market-cover.with-art small {
-  position: relative; align-self: flex-start; padding: 2px 5px;
-  border-radius: 4px; background: var(--app-fill); color: var(--app-ink);
+.demo-app[data-theme="light"] .market-portrait {
+  background: color-mix(in srgb, var(--portrait-tone) 49%, var(--app-fill));
 }
-.market-info { display: grid; gap: 5px; padding: 8px 9px; }
-.market-person { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 6px; align-items: center; }
+.market-portrait .agent-avatar { width: 96px; height: 96px; }
+.market-portrait .agent-presence i { width: 13px; height: 13px; right: 4px; bottom: 4px; }
+.market-info { padding: 6px 9px; }
+.market-person { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 6px; align-items: center; }
 .market-person strong, .market-person small { display: block; line-height: 1.2; }
-.market-person strong { font-size: 12px; }
+.market-person strong { font-size: 15px; }
 .market-person small, .market-person > .symbol { color: var(--app-muted); font-size: 11px; }
-.market-person .agent-avatar { width: 27px; height: 27px; }
-.market-specialty { color: var(--app-ink); font-size: 11px; font-weight: 540; line-height: 1.35; overflow-wrap: anywhere; }
 .directory-profile { display: grid; gap: 10px; max-width: 590px; margin-inline: auto; }
 .directory-person { display: flex; align-items: center; gap: 9px; flex-wrap: wrap; }
+.directory-person .agent-avatar { width: 49px; height: 49px; }
 .directory-person > div { flex: 0 1 auto; }
 .directory-person h2 { color: var(--app-ink); font-size: 26px; line-height: 1.15; }
 .directory-person p { color: var(--app-muted); font-size: 12px; }
