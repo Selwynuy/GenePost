@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>GenePost guide</title>
+  <meta name="description" content="Install GenePost, connect Codex, set up channels, and publish your first post.">
+  <meta name="theme-color" content="#fcfcfe">
+  <meta property="og:title" content="GenePost guide">
+  <meta property="og:description" content="Install GenePost, connect Codex, set up channels, and publish your first post.">
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="canonical" href="https://selwynuy.github.io/GenePost/docs/">
+  <meta property="og:image" content="https://selwynuy.github.io/GenePost/assets/team.webp">
+  <link rel="icon" href="../assets/genepost.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../assets/site.css">
+  <script src="../assets/site.js" defer></script>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="site-header">
+    <div class="wrap nav">
+      <a class="brand" href="../"><img src="../assets/genepost.svg" width="33" height="33" alt="">GenePost</a>
+      <nav aria-label="Primary">
+        <a class="nav-product" href="../#tour">Product tour</a>
+        <a class="nav-product" href="../#workflow">Use cases</a>
+        <a href="../docs/" aria-current="page">Docs</a>
+        <a class="nav-license" href="../#pricing">$39 license</a>
+      </nav>
+    </div>
+  </header>
+  <main id="main">
+    <div class="docs-grid wrap">
+  <nav class="toc" aria-label="On this page">
+    <a href="#install">Install and activate</a>
+    <a href="#channels">Set up channels</a>
+    <a href="#team">Hire an agent</a>
+    <a href="#publish">New post and Queue</a>
+    <a href="#calendar">Calendar and scheduling</a>
+    <a href="#drafts">Save and resume drafts</a>
+    <a href="#media">Media library</a>
+    <a href="#reports">Publishing reports</a>
+    <a href="#integrations">Connect Codex</a>
+    <a href="#claude">Claude Code setup</a>
+    <a href="#data">Data and recovery</a>
+    <a href="#help">Troubleshooting</a>
+  </nav>
+  <article class="prose">
+    <h1>GenePost guide</h1>
+    <p class="intro">Set up your Mac, hire your first agent, and get a post ready to publish.</p>
+    <section id="install">
+      <h2>Install and activate</h2>
+      <p>GenePost 2 supports Apple silicon Macs running macOS 14 Sonoma or later. Use the Developer ID signed, notarized disk image linked from the GenePost website when the release is available.</p>
+      <ol>
+        <li>Open the DMG and drag <strong>GenePost</strong> into <strong>Applications</strong>. Eject the disk image, then open GenePost from Applications.</li>
+        <li>Open <strong>Settings → License</strong> and paste the key in your Lemon Squeezy receipt. Select <strong>Activate this Mac</strong>.</li>
+        <li>Install a supported <a href="https://developers.openai.com/codex/cli/">Codex CLI</a> and run <code>codex login</code>. Sign in with ChatGPT. In GenePost, open <strong>Settings → Connections</strong> and select <strong>Connect</strong>.</li>
+      </ol>
+      <p>Activate on up to two Macs. A successful check lets you use licensed features offline for 30 days. AI requests and publishing require internet access. Use <strong>Verify license</strong> to refresh an activation or <strong>Deactivate this Mac</strong> before moving to a new one.</p>
+      <p>If macOS blocks an installer, check that you downloaded it from the official release page and contact support with the message.</p>
+    </section>
+    <section id="channels">
+      <h2>Set up channels</h2>
+      <p>Open <strong>Channels</strong> and save the exact profile, Page, or group URL and expected posting identity. Add multiple accounts on one platform if you use them for different brands. Group related accounts under a name like <em>Morrow Coffee</em> so you can reuse the same audience.</p>
+      <p>GenePost supports planning for Instagram, LinkedIn, Facebook, Threads, X, Reddit, and TikTok. Sign in to the correct account in your browser. Follow the channel’s rules for content, community access, and media.</p>
+    </section>
+    <section id="team">
+      <h2>Hire an agent</h2>
+      <ol>
+        <li>Open <strong>Team → Post a job</strong>. Describe the role and choose its brand group and channels.</li>
+        <li>Compare three simulated AI applicants. You can interview a candidate about the role before hiring.</li>
+        <li>Assign a task in Team. Choose <strong>Draft posts</strong>, <strong>Think &amp; plan</strong>, or <strong>Create image</strong>. A brand group carries its own voice and facts.</li>
+      </ol>
+      <p>Edit an agent’s profile to set its default model and reasoning level. The picker beneath a conversation lets you override those settings for that conversation. Each task keeps its selected model.</p>
+      <p>Tasks run while GenePost is open. Keep the Mac awake for work in progress. Check the status in Team and use the saved result or retry an interrupted task.</p>
+    </section>
+    <section id="publish">
+      <h2>Draft and publish</h2>
+      <ol>
+        <li>Start a <strong>New Post</strong> or choose <strong>Review &amp; edit</strong> on a Team result. Select the accounts and check the caption and media for each one.</li>
+        <li>Choose <strong>Review Post</strong> and set a date and time. The scheduled item appears in your local Calendar and Queue.</li>
+        <li>When you’re ready to publish, select the post in <strong>Queue</strong>. Use <strong>Copy caption &amp; open</strong> and <strong>Show media in Finder</strong>. Review the account in your browser, paste the caption, attach media, and publish there.</li>
+        <li>Return to GenePost and select <strong>Mark published</strong> after you confirm the post is live.</li>
+      </ol>
+      <p>The calendar holds your publishing plan. Feed previews approximate the layout on each platform. Always check the final caption and media in the platform’s own composer.</p>
+    </section>
+    <section id="calendar">
+      <h2>Calendar and scheduling</h2>
+      <p>Use <strong>Week</strong> or <strong>Month</strong> to check upcoming items across accounts. Filter by channel and status. Click a date to see its agenda, or open a planned item to inspect it in Queue. Check the displayed time zone before arranging a campaign.</p>
+      <p>For a batch of text posts, import a UTF-8 CSV from Calendar using <code>channel_url</code>, <code>scheduled_at</code>, and <code>caption</code>. Use saved channel URLs and future ISO 8601 times with offsets.</p>
+    </section>
+    <section id="drafts">
+      <h2>Save and resume drafts</h2>
+      <p>Choose <strong>Save Draft</strong> when a post needs approval or more work. Open <strong>Drafts</strong> and select a row to resume the caption, media, account selection, or conversation. Use the saved account previews to compare versions before scheduling. Removing a draft leaves its library media available for reuse.</p>
+    </section>
+    <section id="media">
+      <h2>Use the media library</h2>
+      <p><strong>Media</strong> keeps a reusable collection of the photos and videos you import or generate. For example, import a tasting flyer once and attach it to both the launch post and the reminder.</p>
+      <ol>
+        <li>Open <strong>Media → Import</strong> and choose a photo or video. You can also paste a copied image from a post composer.</li>
+        <li>Open the asset to check the file and preview it. Use its post action, or select it from the composer’s media menu.</li>
+        <li>Review the attachment on each account’s preview. Use <strong>Show media in Finder</strong> in Queue to locate the file for the browser handoff.</li>
+      </ol>
+      <p>Videos and images are stored locally. Keep an original backup. GenePost protects files referenced by drafts or scheduled posts from removal.</p>
+    </section>
+    <section id="reports">
+      <h2>Read a publishing report</h2>
+      <p>Open <strong>Reports</strong> and select a date range. Compare <strong>Published</strong>, <strong>Pending</strong>, and <strong>Needs attention</strong> by platform. These are GenePost’s records of publishing results, including posts you marked published.</p>
+      <p>Check that the platforms you intended to publish to have the expected counts. Investigate a missing result in <strong>Queue → History</strong> and review any unresolved item in <strong>Needs attention</strong>. <strong>Export CSV</strong> includes the scheduled time, platform, channel, status, and a post URL when recorded. Use platform dashboards for reach, impressions, or engagement.</p>
+    </section>
+    <section id="integrations">
+      <h2>Connect Codex</h2>
+      <p>With GenePost open, go to <strong>Settings → Connections → Connect to Codex</strong>. Start a new local Codex chat and select or mention the GenePost plugin. Refresh the plugin list or reopen Codex if the integration is absent.</p>
+      <p>Example prompt: “Use GenePost to draft a tasting-event post for my coffee brand. Show me each account’s caption and media before you add it to the calendar.”</p>
+      <p>GenePost shares the saved context needed for the work you request. Use an explicit destination and time for scheduling. Confirm the result in Queue.</p>
+    </section>
+    <section id="claude">
+      <h2>Claude Code setup</h2>
+      <p>Advanced setup for a local Claude Code session. The GenePost MCP server gives the session access to GenePost’s local tools. GenePost’s built-in AI tasks still use your Codex connection.</p>
+      <pre><code>claude mcp add --transport stdio --scope local genepost -- \
+  /Applications/GenePost.app/Contents/MacOS/GenePost --chat-mcp</code></pre>
+      <p>Run this in the project where you want the connection, adjusting the application path if needed. Keep GenePost open, start Claude Code in that project, and check <code>/mcp</code>. Review the server’s tools and only grant access in sessions you trust. See the <a href="https://code.claude.com/docs/en/mcp">Claude Code MCP guide</a>.</p>
+    </section>
+    <section id="data">
+      <h2>Data and recovery</h2>
+      <p>Use <strong>Settings → Connections → Advanced → Workspace Folder</strong> to find your local workspace. Quit GenePost before copying the folder to your own backup. Keep backups private since they contain posts, media, and account details. Store your license receipt separately. Mac activation is managed in Keychain.</p>
+      <p>Do not include your license key, sign-in credentials, or private drafts in support requests. Share the version number, action, and error message first.</p>
+    </section>
+    <section id="help">
+      <h2>Troubleshooting</h2>
+      <dl>
+        <dt>Codex is disconnected</dt><dd>Run <code>codex login status</code>, sign in if needed, and reconnect in GenePost. Use <strong>Choose Codex…</strong> if the app cannot find the executable.</dd>
+        <dt>A model isn’t available</dt><dd>Reload the list in the conversation’s model picker, then choose a model your account can use.</dd>
+        <dt>The key has reached its activation limit</dt><dd>Deactivate an older Mac or contact support with your order number. Avoid sending the full key.</dd>
+        <dt>A planned post hasn’t appeared</dt><dd>Open its Queue item and complete the publishing handoff in your browser. Mark it published after checking the live post.</dd>
+      </dl>
+      <p><a class="button quiet" href="mailto:support@genetrify.com?subject=GenePost%20support">Contact support</a></p>
+    </section>
+  </article>
+</div>
+
+  </main>
+  <footer class="site-footer">
+    <div class="wrap">
+      <div class="footer-main">
+        <a class="brand" href="../"><img src="../assets/genepost.svg" width="33" height="33" alt="">GenePost</a>
+        <nav aria-label="Support and legal">
+          <a href="../docs/">Documentation</a>
+          <a href="../privacy/">Privacy</a>
+          <a href="../terms/">Terms</a>
+          <a href="../refunds/">Refunds</a>
+          <a href="mailto:support@genetrify.com?subject=GenePost%20support">Support</a>
+        </nav>
+      </div>
+      <p class="footer-meta">GenePost 2 for Mac · Release preview<br>GENETRIFY INFORMATION TECHNOLOGY SERVICES · Polomolok, South Cotabato, Philippines<br>
+        <a href="mailto:support@genetrify.com">support@genetrify.com</a> · <a href="tel:+639560029945">+63 956 002 9945</a>
+      </p>
+    </div>
+  </footer>
+</body>
+</html>
