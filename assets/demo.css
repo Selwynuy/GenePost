@@ -166,6 +166,11 @@
 .demo-sidebar .app-button { width: 100%; justify-content: flex-start; padding: 5px 9px; color: var(--app-muted); background: transparent; white-space: nowrap; }
 .demo-sidebar .app-button[aria-current="page"] { background: var(--app-selection); color: var(--app-ink); }
 .demo-sidebar .app-button[aria-current="page"] .symbol { color: var(--app-accent); }
+.demo-sidebar .app-button[data-applications-unread] { position: relative; }
+.demo-sidebar .app-button[data-applications-unread]::after {
+  content: ""; position: absolute; top: 8px; right: 7px; width: 6px; height: 6px;
+  border-radius: 50%; background: var(--app-accent);
+}
 .demo-sidebar .app-button:last-child { margin-top: auto; }
 .demo-workspace { padding: clamp(16px, 2.5vw, 32px); min-width: 0; max-height: 483px; overflow: auto; scrollbar-color: var(--app-line) transparent; }
 .app-heading { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 16px; }
@@ -220,14 +225,31 @@
 .agent-avatar { display: block; width: 38px; height: 38px; flex: none; }
 .agent-chip { display: inline-flex; align-items: center; gap: 5px; font-size: 12px; font-weight: 640; color: var(--app-muted); }
 .agent-chip .agent-avatar { width: 25px; height: 25px; }
-.job-form { max-width: 360px; }
-.applicant-panel { container-type: inline-size; }
+.job-form, .job-receipt, .applicant-panel, .interview-thread, .interview-form { width: 100%; max-width: 560px; margin-inline: auto; }
+.job-actions { justify-content: flex-end; }
+.posted-role, .application-arrival, .candidate-profile, .interview-setup {
+  border-radius: 10px; padding: 13px; background: var(--app-fill); overflow-wrap: anywhere;
+}
+.posted-role { display: grid; gap: 4px; }
+.posted-role > span, .application-wait { display: flex; align-items: center; gap: 6px; }
+.posted-role > span, .interview-setup strong, .team-direction { color: var(--app-success); font-size: 12px; }
+.posted-role h3, .candidate-meta h3 { color: var(--app-ink); font-size: 17px; letter-spacing: -.015em; }
+.posted-role p, .application-wait { color: var(--app-muted); font-size: 13px; }
+.application-wait { min-height: 48px; padding-inline: 3px; }
+.application-spinner {
+  width: 13px; height: 13px; flex: none; border: 2px solid var(--app-line); border-top-color: var(--app-accent);
+  border-radius: 50%; animation: application-spin 800ms linear infinite;
+}
+@keyframes application-spin { to { transform: rotate(1turn); } }
+.application-arrival { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; }
+.application-arrival > div:nth-child(2) { flex: 1 1 140px; }
+.application-arrival :is(strong, small) { display: block; }
+.application-arrival small, .team-job small { color: var(--app-muted); }
+.arrival-marks { display: flex; gap: 3px; }
+.arrival-marks .agent-avatar { width: 25px; height: 25px; }
 .applicants {
   display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 5px;
   padding: 6px; border-radius: 11px; background: var(--app-fill);
-}
-@container (min-width: 500px) {
-  .applicants { grid-template-columns: repeat(6, minmax(0, 1fr)); }
 }
 .demo-app .candidate {
   width: 100%; min-height: 90px; flex-direction: column; gap: 1px;
@@ -235,25 +257,37 @@
 }
 .demo-app .candidate:hover { background: var(--app-button); }
 .demo-app .candidate[aria-pressed="true"] { background: var(--app-selection); color: var(--app-ink); }
-.candidate .agent-avatar { width: min(100%, 66px); height: 66px; transition: transform 200ms var(--ease-arrive); }
+.candidate .agent-avatar { width: min(100%, 60px); height: 60px; object-fit: contain; transition: transform 200ms var(--ease-arrive); }
 .candidate strong { font-size: 12px; font-weight: 670; }
 @media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
   .candidate:hover .agent-avatar { transform: translateY(-2px); }
 }
 .job-context {
   display: flex; justify-content: space-between; align-items: center; gap: 8px;
-  color: var(--app-muted); margin: -9px 0 8px; overflow-wrap: anywhere;
+  color: var(--app-muted); max-width: 560px; margin: -7px auto 9px; overflow-wrap: anywhere; font-size: 13px;
 }
 .demo-app .job-back { flex: none; background: transparent; color: var(--app-muted); min-height: 32px; padding-inline: 7px; }
-.candidate-detail { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 8px 14px; margin-top: 10px; }
+.candidate-profile { display: grid; gap: 10px; margin-top: 9px; }
 .candidate-meta { display: flex; flex-wrap: wrap; gap: 3px 8px; align-items: baseline; }
-.candidate-meta span { color: var(--app-muted); font-size: 12px; }
-.candidate-hired { display: inline-flex; align-items: center; gap: 5px; color: var(--app-success); padding-inline: 7px; }
-.interview-result {
-  color: var(--app-ink); background: var(--app-fill); border-radius: 8px;
-  padding: 9px 11px; margin-top: 9px; font-size: 13px;
-}
-.team-brand, .team-list + .app-button { margin-top: 12px; }
+.candidate-meta span, .candidate-sample > span { color: var(--app-muted); font-size: 12px; }
+.candidate-sample p { color: var(--app-ink); font-size: 13px; }
+.interview-thread { max-height: 205px; overflow: auto; padding: 1px 2px; scrollbar-color: var(--app-line) transparent; }
+.interview-line { display: flex; align-items: start; gap: 7px; font-size: 13px; overflow-wrap: anywhere; }
+.interview-line .agent-avatar { width: 27px; height: 27px; }
+.interview-line p { padding: 5px 0; }
+.interview-you { justify-content: flex-end; }
+.interview-you p { max-width: 87%; padding: 7px 10px; border-radius: 9px; background: var(--app-selection); }
+.interview-setup { margin-left: 34px; padding: 9px 11px; font-size: 12px; }
+.interview-setup strong { display: flex; align-items: center; gap: 4px; }
+.interview-setup ul { margin: 4px 0 0; padding-left: 16px; }
+.interview-form { margin-top: 12px; gap: 5px; }
+.interview-input { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 6px; }
+.interview-input input { width: 100%; font-size: 13px; }
+.interview-actions { justify-content: space-between; }
+.team-job { margin-bottom: 9px; }
+.team-job :is(strong, small) { display: block; }
+.team-job .app-list-row > :last-child { margin-left: 0; }
+.team-list small.team-direction { display: flex; align-items: center; gap: 5px; margin-top: 3px; }
 .team-list, .channel-options { display: grid; gap: 7px; margin-bottom: 13px; }
 .demo-app .app-list-row, .app-list-row { display: flex; width: 100%; justify-content: flex-start; align-items: center; text-align: left; gap: 9px; background: var(--app-fill); padding: 9px; border-radius: 7px; overflow-wrap: anywhere; }
 .app-list-row > :last-child:not(:first-child) { margin-left: auto; }
@@ -359,5 +393,6 @@
 }
 @media (prefers-reduced-motion: reduce) {
   .demo-pointer { display: none !important; }
+  .application-spinner { animation: none; }
   .demo-app .app-button:active, .media-option:active, .hero-toggle:active, .hero-actions .primary:hover .symbol { transform: none; }
 }

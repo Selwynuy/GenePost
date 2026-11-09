@@ -13,16 +13,18 @@ const screens = [
 ];
 const platformNames = { instagram: 'Instagram', linkedin: 'LinkedIn', threads: 'Threads', facebook: 'Facebook', x: 'X' };
 const candidates = [
-  { name: 'Avery', specialty: 'Community copy', sample: 'I’d lead with what people can do together, then give them one clear way to join.' },
-  { name: 'Jordan', specialty: 'Founder stories', sample: 'I’d ask for one moment from your day that explains why you’re doing this.' },
-  { name: 'Quinn', specialty: 'Short hooks', sample: 'I’d write three first lines and keep the one you’d actually say out loud.' },
-  { name: 'Mika', specialty: 'Content planning', sample: 'I’d plan the announcement and reminder together so each post has a purpose.' },
-  { name: 'Sol', specialty: 'Visual direction', sample: 'I’d choose one photo that shows the work, then write a caption that adds context.' },
-  { name: 'Remy', specialty: 'Community replies', sample: 'I’d turn the questions people keep asking into short, useful replies in your voice.' },
+  { name: 'Avery', mark: 'fold', specialty: 'Community copy', sample: 'I’d lead with what people can do together, then give them one clear way to join.' },
+  { name: 'Jordan', mark: 'folio', specialty: 'Founder stories', sample: 'I’d ask for one moment from your day that explains why you’re doing this.' },
+  { name: 'Quinn', mark: 'spark', specialty: 'Short hooks', sample: 'I’d write three first lines and keep the one you’d actually say out loud.' },
+  { name: 'Mika', mark: 'grid', specialty: 'Content planning', sample: 'I’d plan the announcement and reminder together so each post has a purpose.' },
+  { name: 'Sol', mark: 'lens', specialty: 'Visual direction', sample: 'I’d choose one photo that shows the work, then write a caption that adds context.' },
+  { name: 'Remy', mark: 'reply', specialty: 'Community replies', sample: 'I’d turn the questions people keep asking into short, useful replies in your voice.' },
 ];
 const campaigns = {
   coffee: {
     name: 'Morrow Coffee', idea: 'Invite people to Saturday’s coffee tasting', job: 'Tasting campaign',
+    scope: 'Write a tasting invite for Instagram, LinkedIn, and Threads. Give locals one clear way to reserve a seat.',
+    shortlist: ['Avery', 'Jordan', 'Sol'],
     media: { name: 'Tasting table', file: 'tasting-table.webp', alt: 'Coffee tasting bowls beside bags of roasted beans' },
     reminder: 'Tasting reminder', channels: ['instagram', 'linkedin', 'threads'],
     captions: [
@@ -33,6 +35,8 @@ const campaigns = {
   },
   personal: {
     name: 'Ari Reyes', idea: 'Share why I sketch the flow before I design the screens', job: 'Designer field notes',
+    scope: 'Turn a sketchbook habit into a short story. Use my own words and examples from the notebook.',
+    shortlist: ['Quinn', 'Jordan', 'Remy'],
     media: { name: 'Notebook sketch', file: 'design-notebook.webp', alt: 'Hands sketching a user flow on paper next to a keyboard' },
     reminder: 'Follow up on sketching', channels: ['linkedin', 'instagram', 'threads'],
     captions: [
@@ -43,6 +47,8 @@ const campaigns = {
   },
   update: {
     name: 'GenePost', idea: 'Show how the weekly calendar helps you plan posts', job: 'Calendar update',
+    scope: 'Show the week view and how to open a post preview. Draft an announcement and a follow-up.',
+    shortlist: ['Mika', 'Jordan', 'Quinn'],
     media: { name: 'Week view', file: 'calendar.webp', alt: 'GenePost’s weekly calendar with planned posts by channel' },
     reminder: 'Week view follow-up', channels: ['linkedin', 'x', 'threads'],
     captions: [
@@ -80,7 +86,7 @@ function newState(campaignID, seed = true) {
   }));
   return {
     campaignID, campaign, view: 'compose', theme: 'dark', idea: campaign.idea,
-    jobTitle: campaign.job, hireStep: '', candidate: candidates[0].name, interview: false, team: [],
+    jobTitle: campaign.job, jobDescription: campaign.scope, hireStep: '', hiring: null, team: [],
     channels, platform: channels[0], captions: null,
     media: [
       { id: 'cover', name: campaign.media.name, src: assets + campaign.media.file, alt: campaign.media.alt },
@@ -107,15 +113,18 @@ function action(name, label, { value = '', kind = '', glyph = '', pressed, title
     (title ? ' aria-label="' + title + '" title="' + title + '"' : '') + '>' +
     (glyph ? icon(glyph) : '') + label + '</button>';
 }
-const avatar = candidate => '<svg class="agent-avatar" viewBox="0 0 96 96" aria-hidden="true" focusable="false">' +
-  '<use href="#avatar-' + candidate.name.toLowerCase() + '"></use></svg>';
+const avatar = candidate => '<img class="agent-avatar" src="' + assets + 'team-marks/' + candidate.mark + '.svg" width="64" height="64" alt="">';
 
 const walkthrough = [
   ['Choose channels', '.demo-sidebar [data-value="channels"]', { chapter: 'channels', hold: 1550 }],
   ['Open Team', '.demo-sidebar [data-value="team"]', { chapter: 'hire' }],
   ['Post a job', '[data-action="post-job"]'],
-  ['See applicants', '[data-submit="applicants"] button', { hold: 1900 }],
+  ['Post the role', '[data-submit="post-role"] button', { hold: 2050 }],
+  ['Review applications', '[data-action="review-applications"]', { hold: 1150 }],
   ['Compare applicants', '[data-action="candidate"][data-value="Jordan"]', { hold: 1650 }],
+  ['Start interview', '[data-action="interview"]', { hold: 1200 }],
+  ['Give direction', '[data-action="sample-direction"]', { hold: 900 }],
+  ['Send message', '[data-submit="interview-message"] button', { hold: 1900 }],
   ['Hire Jordan', '[data-action="hire"]'],
   ['Start a post', '.demo-sidebar [data-value="compose"]', { chapter: 'media' }],
   ['Add media', '[data-action="choose-media"]'],
@@ -157,6 +166,9 @@ function mountDemo(root, preview = false) {
   const appWindow = app.querySelector('.demo-window');
   const sidebar = app.querySelector('.demo-sidebar');
   const workspace = app.querySelector('.demo-workspace');
+  const announcements = app.appendChild(document.createElement('div'));
+  announcements.className = 'sr-only';
+  announcements.setAttribute('role', 'status');
   const controls = root.querySelector('#demo-controls');
   const playButton = root.querySelector('[data-action="play"]');
   const stopButton = root.querySelector('[data-action="stop"]');
@@ -212,7 +224,7 @@ function mountDemo(root, preview = false) {
     const tabs = state.channels.map(key => action('platform', platformName(key), {
       value: key, pressed: key === platform, kind: 'platform-tab',
     })).join('');
-    const teammate = candidates.find(candidate => candidate.name === state.team.at(-1));
+    const teammate = state.team.at(-1)?.person;
     return heading('New post', brand()) + '<div class="compose-layout">' +
       '<div class="app-stack">' +
       '<label class="app-field">Post idea<textarea data-field="idea" maxlength="280" rows="3" placeholder="Describe your idea">' +
@@ -236,39 +248,75 @@ function mountDemo(root, preview = false) {
   }
 
   function team() {
+    const job = state.hiring;
     if (state.hireStep === 'job') {
-      return heading('Post a job', brand()) + '<form class="app-stack job-form" data-submit="applicants">' +
+      return heading('Post a job', brand()) + '<form class="app-stack job-form" data-submit="post-role">' +
         '<label class="app-field">Job title<input data-field="jobTitle" required maxlength="64" value="' + escapeHTML(state.jobTitle) + '"></label>' +
+        '<label class="app-field">Job description<textarea data-field="jobDescription" required rows="3" maxlength="300">' +
+        escapeHTML(state.jobDescription) + '</textarea></label>' +
         '<div class="app-row">' + state.channels.map(platformName).map(label => '<span class="agent-chip">' + label + '</span>').join('') + '</div>' +
-        '<div class="app-row"><button class="app-button app-primary" type="submit">See applicants</button>' +
-        action('team-home', 'Back') + '</div></form>';
+        '<div class="app-row job-actions">' + action('team-home', 'Cancel', { kind: 'job-back' }) +
+        '<button class="app-button app-primary" type="submit">' + icon('right') + 'Post job</button></div></form>';
+    }
+    if (state.hireStep === 'posted') {
+      return heading('Job posted', brand()) + '<div class="job-receipt app-stack">' +
+        '<div class="posted-role"><span>' + icon('check') + 'Role open</span><h3>' + escapeHTML(job.title) + '</h3>' +
+        '<p>' + escapeHTML(job.description) + '</p></div>' +
+        (job.ready
+          ? '<div class="application-arrival"><div class="arrival-marks" aria-hidden="true">' + job.applicants.map(avatar).join('') + '</div>' +
+            '<div><strong>' + job.applicants.length + ' applications received</strong><small>' + job.applicants.map(person => person.name).join(' · ') + '</small></div>' +
+            action('review-applications', 'Review applications', { glyph: 'right', kind: 'app-primary' }) + '</div>'
+          : '<p class="application-wait"><span class="application-spinner" aria-hidden="true"></span>Waiting for applications…</p>') +
+        action('team-home', 'Back to Team', { glyph: 'left', kind: 'job-back' }) + '</div>';
     }
     if (state.hireStep === 'applicants') {
-      const candidate = candidates.find(person => person.name === state.candidate);
-      const hire = state.team.includes(candidate.name)
-        ? '<span class="candidate-hired">' + icon('check') + 'On team</span>'
-        : action('hire', 'Hire ' + candidate.name, { glyph: 'check', kind: 'app-primary' });
-      return heading('Choose a teammate', brand()) +
-        '<div class="job-context"><p>' + escapeHTML(state.jobTitle) + '</p>' +
-        action('post-job', 'Back', { glyph: 'left', kind: 'job-back' }) + '</div>' +
+      const candidate = job.applicants.find(person => person.name === job.selected);
+      return heading('Applications', brand()) +
+        '<div class="job-context"><p>' + escapeHTML(job.title) + '</p>' +
+        action('job-receipt', 'Job post', { glyph: 'left', kind: 'job-back' }) + '</div>' +
         '<div class="applicant-panel"><div class="applicants" role="group" aria-label="Applicants">' +
-        candidates.map(person => action('candidate', avatar(person) + '<strong>' + person.name + '</strong>',
+        job.applicants.map(person => action('candidate', avatar(person) + '<strong>' + person.name + '</strong>',
           { value: person.name, pressed: person.name === candidate.name, kind: 'candidate' })).join('') +
-        '</div><div class="candidate-detail"><div class="candidate-meta" aria-live="polite"><strong>' +
-        candidate.name + '</strong><span>' + candidate.specialty + '</span></div>' +
-        '<div class="app-row candidate-actions">' +
-        action('interview', 'Interview', { pressed: state.interview }) +
-        hire + '</div></div>' +
-        (state.interview ? '<p class="interview-result" role="status">' + candidate.sample + '</p>' : '') +
-        '</div>';
+        '</div><section class="candidate-profile" aria-label="Applicant profile">' +
+        '<div class="candidate-meta"><h3>' + candidate.name + '</h3><span>' + candidate.specialty + '</span></div>' +
+        '<div class="candidate-sample"><span>How I’d start</span><p>' + candidate.sample + '</p></div>' +
+        '<div class="app-row job-actions">' + action('hire', 'Hire ' + candidate.name) +
+        action('interview', job.interviews[candidate.name]?.turns.length ? 'Open interview' : 'Start interview',
+          { glyph: 'right', kind: 'app-primary' }) + '</div></section></div>';
     }
-    return heading('Team', action('post-job', 'Post a job', { glyph: 'plus', kind: 'app-primary' })) +
+    if (state.hireStep === 'interview') {
+      const candidate = job.applicants.find(person => person.name === job.selected);
+      const { draft, turns } = job.interviews[candidate.name];
+      const directions = turns.filter(turn => turn.direction);
+      return heading('Interview ' + candidate.name, brand()) +
+        '<div class="job-context"><p>' + escapeHTML(job.title) + '</p>' +
+        action('review-applications', 'Applications', { glyph: 'left', kind: 'job-back' }) + '</div>' +
+        '<div class="interview-thread app-stack" aria-label="Sample interview">' +
+        '<div class="interview-line">' + avatar(candidate) + '<p>What voice should I use for this role?</p></div>' +
+        turns.map((turn, index) => '<div class="interview-line interview-you"><p>' + escapeHTML(turn.message) + '</p></div>' +
+          '<div class="interview-line"' + (index === turns.length - 1 ? ' data-latest-reply' : '') + '>' +
+          avatar(candidate) + '<p>' + turn.reply + '</p></div>').join('') +
+        (directions.length ? '<div class="interview-setup"><strong>' + icon('check') + 'Setup for this role</strong><ul>' +
+          directions.map(turn => '<li>' + escapeHTML(turn.message) + '</li>').join('') + '</ul></div>' : '') + '</div>' +
+        '<form class="app-stack interview-form" data-submit="interview-message">' +
+        '<div class="interview-input"><input data-field="interviewMessage" aria-label="Interview message" placeholder="Ask a question or give direction…" required maxlength="180" value="' + escapeHTML(draft) + '">' +
+        '<button class="app-button app-primary" type="submit">Send</button></div>' +
+        '<div class="app-row interview-actions">' + action('sample-direction', 'Keep it conversational', { kind: 'job-back' }) +
+        action('hire', 'Hire ' + candidate.name, { glyph: 'check' }) + '</div></form>';
+    }
+    const openJob = job ? '<div class="team-job">' + action('job-receipt',
+      '<span><strong>' + escapeHTML(job.title) + '</strong><small>' +
+      (job.ready ? (job.reviewed ? 'Applications' : job.applicants.length + ' new applications') : 'Waiting for applications') + '</small></span>',
+      { glyph: 'team', kind: 'app-list-row' }) + '</div>' : '';
+    return heading('Team', job || state.team.length === candidates.length ? brand() : action('post-job', 'Post a job', { glyph: 'plus', kind: 'app-primary' })) +
+      openJob +
       (state.team.length
-        ? '<div class="team-list">' + candidates.filter(person => state.team.includes(person.name)).map(person =>
+        ? '<div class="team-list">' + state.team.map(({ person, directions }) =>
           '<div class="app-list-row">' + avatar(person) + '<span><strong>' + person.name + '</strong><small>' +
-          person.specialty + '</small></span></div>'
+          person.specialty + '</small>' + (directions.length ? '<small class="team-direction">' + icon('check') +
+            escapeHTML(directions.join(' ')) + '</small>' : '') + '</span></div>'
         ).join('') + '</div>' + action('screen', 'Brief teammate', { value: 'compose', glyph: 'right' })
-        : empty('team', 'Build your team')) + '<div class="team-brand">' + brand() + '</div>';
+        : job ? '' : empty('team', 'Build your team'));
   }
 
   function review() {
@@ -383,6 +431,11 @@ function mountDemo(root, preview = false) {
     sidebar.querySelectorAll('button').forEach(button => {
       if (button.dataset.value === view) button.setAttribute('aria-current', 'page');
       else button.removeAttribute('aria-current');
+      if (button.dataset.value === 'team') {
+        const unread = Boolean(state.hiring?.ready && !state.hiring.reviewed);
+        button.toggleAttribute('data-applications-unread', unread);
+        button.setAttribute('aria-label', unread ? 'Team, new applications' : 'Team');
+      }
     });
     workspace.innerHTML = views[state.view]() +
       (state.error ? '<p class="app-error" role="alert">' + state.error + '</p>' : '') +
@@ -412,6 +465,7 @@ function mountDemo(root, preview = false) {
   function screen(view) {
     state.view = view;
     state.choosingMedia = false;
+    if (view === 'team') state.hireStep = '';
     draw({ moved: true });
   }
 
@@ -513,27 +567,87 @@ function mountDemo(root, preview = false) {
     },
     schedule,
     'post-job': () => { state.hireStep = 'job'; draw({ reveal: '.job-form' }); },
-    applicants: () => {
-      if (state.team.includes(state.candidate)) {
-        state.candidate = candidates.find(person => !state.team.includes(person.name))?.name ?? state.candidate;
+    'post-role': () => {
+      const title = state.jobTitle.trim();
+      const description = state.jobDescription.trim();
+      if (!title || !description) {
+        state.error = 'Add a job title and description';
+        return draw();
       }
+      const ranked = [...new Set([...state.campaign.shortlist, ...candidates.map(person => person.name)])];
+      const applicants = ranked.filter(name => !state.team.some(member => member.person.name === name))
+        .slice(0, 3).map(name => candidates.find(person => person.name === name));
+      const job = { title, description, applicants, selected: applicants[0].name, ready: false, reviewed: false, interviews: {} };
+      const postedWorkspace = state;
+      postedWorkspace.hiring = job;
+      postedWorkspace.hireStep = 'posted';
+      draw({ moved: true });
+      setTimeout(() => {
+        if (postedWorkspace.hiring !== job) return;
+        job.ready = true;
+        if (state !== postedWorkspace) return;
+        announcements.textContent = job.applicants.length + ' applications received for ' + job.title;
+        if (state.view !== 'team') {
+          const teamButton = sidebar.querySelector('[data-value="team"]');
+          teamButton.setAttribute('data-applications-unread', '');
+          teamButton.setAttribute('aria-label', 'Team, new applications');
+          return;
+        }
+        const arrival = state.hireStep === 'posted' ? '.application-arrival' : '.team-job';
+        animateResponse = true;
+        draw({ reveal: arrival });
+        animateResponse = false;
+      }, reducedMotion.matches ? 0 : 950);
+    },
+    'job-receipt': () => { state.hireStep = 'posted'; draw({ moved: true }); },
+    'review-applications': () => {
+      state.hiring.reviewed = true;
       state.hireStep = 'applicants';
-      state.interview = false;
-      draw({ reveal: '.applicants' });
+      draw({ moved: true });
     },
     'team-home': () => { state.hireStep = ''; draw(); },
     candidate: name => {
-      if (state.candidate === name) return;
-      state.candidate = name;
-      state.interview = false;
-      draw({ reveal: '.candidate[aria-pressed="true"] .agent-avatar' });
+      if (state.hiring.selected === name) return;
+      state.hiring.selected = name;
+      draw({ reveal: '.candidate-profile' });
     },
-    interview: () => { state.interview = !state.interview; draw({ reveal: '.interview-result' }); },
+    interview: () => {
+      const job = state.hiring;
+      job.interviews[job.selected] ??= { draft: '', turns: [] };
+      state.hireStep = 'interview';
+      draw({ moved: true });
+    },
+    'sample-direction': () => {
+      const field = workspace.querySelector('[data-field="interviewMessage"]');
+      if (field.value.trim()) return field.focus();
+      field.value = 'Keep it conversational.';
+      field.dispatchEvent(new Event('input', { bubbles: true }));
+      if (!playback) field.focus();
+    },
+    'interview-message': () => {
+      const job = state.hiring;
+      const interview = job.interviews[job.selected];
+      const message = interview.draft.trim();
+      if (!message) return;
+      const candidate = job.applicants.find(person => person.name === job.selected);
+      const direction = !message.endsWith('?') && !/^(how|what|where|why|when|can|could|would|will|do|does|is|are)\b/i.test(message);
+      const reply = direction ? 'I’ll carry that direction into the role.' : candidate.sample;
+      interview.turns.push({ message, direction, reply });
+      interview.draft = '';
+      draw({ reveal: '[data-latest-reply]' });
+      const thread = workspace.querySelector('.interview-thread');
+      thread.scrollTop = thread.scrollHeight;
+      if (!playback) workspace.querySelector('[data-field="interviewMessage"]').focus({ preventScroll: true });
+    },
     hire: () => {
-      if (!state.team.includes(state.candidate)) state.team.push(state.candidate);
+      const job = state.hiring;
+      const person = job.applicants.find(candidate => candidate.name === job.selected);
+      const directions = (job.interviews[person.name]?.turns ?? []).filter(turn => turn.direction).map(turn => turn.message);
+      state.team.push({ person, directions });
+      state.hiring = null;
       state.hireStep = '';
-      state.notice = state.candidate + ' joined';
-      draw();
+      state.notice = person.name + ' joined the team';
+      draw({ moved: true });
     },
     week: offset => { state.week = offsetDay(state.week, Number(offset)); draw({ reveal: '.demo-week' }); },
     'open-job': id => {
@@ -750,7 +864,10 @@ function mountDemo(root, preview = false) {
     }
     wantsGuide = !playback?.playing;
     motionOptIn = wantsGuide && reducedMotion.matches;
-    syncGuide();
+    if (wantsGuide && !document.hidden) {
+      if (!playback) startGuide();
+      resume();
+    } else syncGuide();
   }
 
   function stop(focus = true) {
@@ -795,6 +912,7 @@ function mountDemo(root, preview = false) {
   workspace.addEventListener('input', event => {
     const { field } = event.target.dataset;
     if (field === 'caption') state.captions[state.platform] = event.target.value;
+    else if (field === 'interviewMessage') state.hiring.interviews[state.hiring.selected].draft = event.target.value;
     else if (field) state[field] = event.target.value;
   });
   workspace.addEventListener('change', event => {
@@ -826,9 +944,9 @@ function mountDemo(root, preview = false) {
     root.querySelector('.demo-under').hidden = false;
     if ('IntersectionObserver' in window) {
       new IntersectionObserver(([entry]) => {
-        playerVisible = entry.intersectionRatio >= .28;
+        playerVisible = entry.isIntersecting;
         syncGuide();
-      }, { threshold: .28 }).observe(root.querySelector('.mac-screen'));
+      }).observe(root.querySelector('.mac-screen'));
     }
     reducedMotion.addEventListener('change', () => {
       motionOptIn = false;
