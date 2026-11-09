@@ -13,8 +13,8 @@
   <meta property="og:image" content="https://selwynuy.github.io/GenePost/assets/team.webp">
   <link rel="icon" href="./assets/genepost.svg?v=531d221c39" type="image/svg+xml">
   <link rel="stylesheet" href="./assets/site.css?v=6f0f59dad9">
-  <link rel="stylesheet" href="./assets/demo.css?v=40ab231018">
-  <script src="./assets/site.js?v=6e30b99039" defer></script>
+  <link rel="stylesheet" href="./assets/demo.css?v=f9357d3311">
+  <script src="./assets/site.js?v=312134ac21" defer></script>
 </head>
 <body>
   <a class="skip" href="#main">Skip to content</a>
@@ -65,33 +65,20 @@
       </div>
       <div class="hero-mac"><svg class="symbol" aria-hidden="true"><use href="#icon-mac"></use></svg> Made for Mac</div>
     </div>
-    <figure class="hero-showcase">
+    <figure class="hero-showcase" data-workspace-preview>
       <div class="macbook" aria-hidden="true">
         <div class="mac-display">
           <div class="mac-screen hero-screen">
-            <div class="hero-shot hero-brief">
-              <img src="./assets/team.webp" width="1600" height="1029" alt="" fetchpriority="high">
-              <span class="hero-gesture"><i></i><svg viewBox="0 0 22 26"><use href="#icon-cursor"></use></svg></span>
-            </div>
-            <div class="hero-shot hero-review">
-              <img src="./assets/compose.webp" width="1600" height="1029" alt="">
-              <span class="hero-gesture"><i></i><svg viewBox="0 0 22 26"><use href="#icon-cursor"></use></svg></span>
-            </div>
-            <div class="hero-shot hero-plan">
-              <img src="./assets/calendar.webp" width="1600" height="1029" alt="">
-            </div>
+            <img data-demo-fallback src="./assets/team.webp" width="1600" height="1029" alt="" fetchpriority="high">
+            <div class="hero-viewport" data-demo-host hidden></div>
           </div>
         </div>
         <div class="mac-base"><span></span></div>
       </div>
       <figcaption class="hero-caption">
-        <div class="hero-chapters" aria-hidden="true">
-          <span class="hero-brief"><i></i> Draft with Freya</span>
-          <span class="hero-review"><i></i> Review each post</span>
-          <span class="hero-plan"><i></i> Plan the week</span>
-        </div>
-        <span class="sr-only">A sample GenePost campaign moving from Team to Compose to Calendar.</span>
-        <button type="button" class="hero-toggle" aria-label="Pause preview" title="Pause preview" hidden>
+        <span class="hero-cue" data-demo-cue aria-hidden="true">New post</span>
+        <span class="sr-only">A sample GenePost workspace drafting and scheduling posts in one window.</span>
+        <button type="button" class="hero-toggle" data-action="play" aria-label="Pause preview" title="Pause preview" hidden>
           <svg class="symbol" aria-hidden="true"><use href="#icon-pause"></use></svg>
         </button>
       </figcaption>
@@ -119,7 +106,7 @@
         <svg class="symbol" aria-hidden="true"><use href="#icon-play"></use></svg><span>Play demo</span>
       </button>
       <button class="button quiet" type="button" data-action="stop" hidden>Try it</button>
-      <span class="demo-cue" role="status">Try it yourself</span>
+      <span class="demo-cue" data-demo-cue role="status">Try it yourself</span>
       <button class="button quiet demo-reset" type="button" data-action="reset" aria-label="Reset demo" title="Reset demo">
         <svg class="symbol" aria-hidden="true"><use href="#icon-reset"></use></svg>
       </button>
@@ -127,21 +114,8 @@
     <div class="macbook">
       <div class="mac-display">
         <div class="mac-screen">
-          <img id="demo-fallback" src="./assets/team.webp" width="1600" height="1029" alt="GenePost on Mac" loading="lazy">
-          <div class="demo-app" data-theme="dark" hidden>
-            <div class="demo-titlebar">
-              <span class="window-lights" aria-hidden="true"><i></i><i></i><i></i></span>
-              <span>GenePost</span>
-              <span class="demo-label">Sample workspace</span>
-            </div>
-            <div class="demo-window">
-              <nav class="demo-sidebar" aria-label="Demo screens"></nav>
-              <div class="demo-workspace" tabindex="-1"></div>
-            </div>
-            <span class="demo-pointer" aria-hidden="true" hidden>
-              <i></i><svg width="22" height="26" viewBox="0 0 22 26"><use href="#icon-cursor"></use></svg>
-            </span>
-          </div>
+          <img data-demo-fallback src="./assets/team.webp" width="1600" height="1029" alt="GenePost on Mac" loading="lazy">
+          <div data-demo-host hidden></div>
         </div>
       </div>
       <div class="mac-base" aria-hidden="true"><span></span></div>
@@ -152,6 +126,23 @@
     </div>
   </div>
 </section>
+
+<template id="demo-app-template">
+  <div class="demo-app" data-theme="dark">
+    <div class="demo-titlebar">
+      <span class="window-lights" aria-hidden="true"><i></i><i></i><i></i></span>
+      <span>GenePost</span>
+      <span class="demo-label">Sample workspace</span>
+    </div>
+    <div class="demo-window">
+      <nav class="demo-sidebar" aria-label="Demo screens"></nav>
+      <div class="demo-workspace" tabindex="-1"></div>
+    </div>
+    <span class="demo-pointer" aria-hidden="true" hidden>
+      <i></i><svg width="22" height="26" viewBox="0 0 22 26"><use href="#icon-cursor"></use></svg>
+    </span>
+  </div>
+</template>
 
 <section class="wrap section cases" id="workflow" aria-labelledby="cases-title">
   <h2 id="cases-title">Try a campaign.</h2>
