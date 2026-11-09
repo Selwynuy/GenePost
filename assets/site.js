@@ -106,7 +106,7 @@ function action(name, label, { value = '', kind = '', glyph = '', pressed, title
     (title ? ' aria-label="' + title + '" title="' + title + '"' : '') + '>' +
     (glyph ? icon(glyph) : '') + label + '</button>';
 }
-const avatar = candidate => '<img class="agent-avatar" src="' + assets + 'team-marks/' + candidate.mark + '.svg" width="64" height="64" alt="">';
+const avatar = candidate => '<img class="agent-avatar" src="' + assets + 'team-marks/' + candidate.avatar + '" width="64" height="64" alt="">';
 
 const walkthrough = [
   ['Choose channels', '.demo-sidebar [data-value="channels"]', { chapter: 'channels', hold: 1550 }],
@@ -329,6 +329,7 @@ function mountDemo(root, preview = false) {
     const specialist = hiringCandidate();
     const art = specialist.portfolioImage ? '<img src="' + assets + 'team-marks/' + specialist.portfolioImage +
       '" alt="Coffee tasting bowls beside bags of beans" width="320" height="180">' : '';
+    const sample = specialist.portfolioSample.split('\n\n').map(part => '<p>' + escapeHTML(part) + '</p>').join('');
     return heading('Specialist portfolios', brand()) +
       '<div class="job-context"><p>' + escapeHTML(job.title) + '</p>' +
       action('close-portfolios', job.portfoliosFrom === 'applicants' ? 'Applications' : 'Job post', { glyph: 'left', kind: 'job-back' }) + '</div>' +
@@ -340,7 +341,7 @@ function mountDemo(root, preview = false) {
       action('hire', 'Hire ' + specialist.name) + action('interview', job.interviews[specialist.name] ? 'Open interview' : 'Invite to interview',
         { glyph: 'right', kind: 'app-primary' }) + '</div></div>' +
       '<div class="portfolio-work' + (art ? ' with-art' : '') + '">' + art + '<div><span>Sample work</span><h4>' +
-      escapeHTML(specialist.portfolioTitle) + '</h4><p>' + escapeHTML(specialist.portfolioSample) + '</p></div></div></section></div>';
+      escapeHTML(specialist.portfolioTitle) + '</h4><div class="portfolio-copy">' + sample + '</div></div></div></section></div>';
   }
 
   function review() {

@@ -285,7 +285,8 @@
 .portfolio-work > img { width: 100%; height: auto; max-height: 135px; object-fit: contain; border-radius: 6px; }
 .portfolio-work span { color: var(--app-muted); font-size: 11px; }
 .portfolio-work h4 { color: var(--app-ink); margin-block: 2px 5px; font-size: 14px; }
-.portfolio-work p { color: var(--app-ink); white-space: pre-wrap; font-size: 12px; line-height: 1.4; }
+.portfolio-copy { display: grid; gap: 6px; }
+.portfolio-copy p { color: var(--app-ink); white-space: pre-line; font-size: 12px; line-height: 1.4; }
 .interview-thread { max-height: 205px; overflow: auto; padding: 1px 2px; scrollbar-color: var(--app-line) transparent; }
 .interview-line { display: flex; align-items: start; gap: 7px; font-size: 13px; overflow-wrap: anywhere; }
 .interview-line .agent-avatar { width: 27px; height: 27px; }

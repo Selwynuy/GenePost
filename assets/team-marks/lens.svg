@@ -1,14 +1,20 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96">
-  <defs>
-    <linearGradient id="frame" x2="1" y2="1"><stop stop-color="#ffe5a3"/><stop offset="1" stop-color="#e7a74d"/></linearGradient>
-  </defs>
-  <ellipse cx="49" cy="84" rx="34" ry="4" fill="#4b2d20" opacity=".21"/>
-  <path d="m12 30 43-15 30 17-1 39-34 13-37-15Z" fill="#a36530"/>
-  <path d="m10 25 45-15 31 16-3 41-34 12-36-15Z" fill="url(#frame)"/>
-  <path d="m10 25 45-15 31 16-43 15Z" fill="#ffe0a1"/>
-  <path d="m43 41 43-15-3 41-34 12Z" fill="#e2a048"/>
-  <path d="m24 34 25-8 22 10 1 20-23 11-23-10Z" fill="#775148"/>
-  <path d="m32 39 16-6 15 7v11l-15 8-14-7Z" fill="#b48375"/>
-  <path d="m41 41 9-3 7 5v7l-9 4-7-4Z" fill="#f6d6ae"/>
-  <path d="m14 25 40-12 26 13" fill="none" stroke="#fff5cd" stroke-width="1.6" stroke-linecap="round" opacity=".77"/>
+  <defs><clipPath id="frame"><rect x="4" y="4" width="88" height="88" rx="15"/></clipPath></defs>
+  <g clip-path="url(#frame)">
+    <path fill="#f3e3bb" d="M0 0h96v96H0z"/>
+    <path fill="#ecd5a0" d="M0 78 96 23v73H0z"/>
+    <path fill="#a9793b" d="M9 98c4-16 18-25 34-29l20-2c17 4 26 14 29 31Z"/>
+    <path fill="#765c46" d="m38 71 10 2-2 25H24Z"/>
+    <path fill="#8d503e" d="m43 56 18 1 3 16-11 8-12-9Z"/>
+    <path fill="#b97c60" d="m27 35 14-12 24 3 9 13-4 23-15 10-17-5-12-15Z"/>
+    <path fill="#cf9271" d="m54 27 11-1 9 13-4 23-15 10-7-4 11-11Z"/>
+    <path fill="#44312d" d="m26 49-4-12 7-11 11-4 24-1 11 11-2 14-9-9-18-1-13 6-4 8Z"/>
+    <path fill="#a8543a" d="M20 34c-1-6 5-13 14-17 12-6 25-6 38 0l5 12-8 4-27-1-18 7Z"/>
+    <path fill="#d07c4f" d="m21 31 14-12 24-4 11 4-18 4-19 2-8 11Z"/>
+    <path fill="#793e32" d="m53 14 1-6 5-1 3 7Z"/>
+    <path fill="#f4e7c7" d="m43 72 11 6 11-8-5 13-7-1-6 3Z"/>
+    <path d="M35 44q4-4 8-1m15-1q4-4 8-1" fill="none" stroke="#4d2d2b" stroke-width="2.1" stroke-linecap="round"/>
+    <g fill="#392622"><ellipse cx="42" cy="47" rx="2.4" ry="3.2"/><ellipse cx="63" cy="45" rx="2.4" ry="3.2"/></g>
+    <path d="M47 56q6 3 12-1" fill="none" stroke="#5c2f2c" stroke-width="2.5" stroke-linecap="round"/>
+  </g>
 </svg>
