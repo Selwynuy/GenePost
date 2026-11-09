@@ -226,7 +226,10 @@
 .agent-chip { display: inline-flex; align-items: center; gap: 5px; font-size: 12px; font-weight: 640; color: var(--app-muted); }
 .agent-chip .agent-avatar { width: 25px; height: 25px; }
 .job-form, .job-receipt, .applicant-panel, .interview-thread, .interview-form { width: 100%; max-width: 560px; margin-inline: auto; }
+.applicant-panel { container-type: inline-size; }
 .job-actions { justify-content: flex-end; }
+.receipt-actions, .candidate-actions, .portfolio-heading { justify-content: space-between; }
+.portfolio-heading { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; }
 .posted-role, .application-arrival, .candidate-profile, .interview-setup {
   border-radius: 10px; padding: 13px; background: var(--app-fill); overflow-wrap: anywhere;
 }
@@ -259,6 +262,12 @@
 .demo-app .candidate[aria-pressed="true"] { background: var(--app-selection); color: var(--app-ink); }
 .candidate .agent-avatar { width: min(100%, 60px); height: 60px; object-fit: contain; transition: transform 200ms var(--ease-arrive); }
 .candidate strong { font-size: 12px; font-weight: 670; }
+.demo-app .specialists .candidate { min-height: 75px; padding: 6px 3px; line-height: 1.15; }
+.specialists .candidate .agent-avatar { width: 37px; height: 37px; }
+.specialists .candidate small { color: var(--app-muted); font-size: 11px; text-wrap: balance; }
+@container (min-width: 485px) {
+  .specialists { grid-template-columns: repeat(auto-fit, minmax(74px, 1fr)); }
+}
 @media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
   .candidate:hover .agent-avatar { transform: translateY(-2px); }
 }
@@ -271,6 +280,12 @@
 .candidate-meta { display: flex; flex-wrap: wrap; gap: 3px 8px; align-items: baseline; }
 .candidate-meta span, .candidate-sample > span { color: var(--app-muted); font-size: 12px; }
 .candidate-sample p { color: var(--app-ink); font-size: 13px; }
+.portfolio-work { display: grid; gap: 10px; padding: 10px 11px; border-radius: 8px; background: var(--app-bg); }
+.portfolio-work.with-art { grid-template-columns: minmax(84px, .85fr) minmax(0, 1.2fr); align-items: center; }
+.portfolio-work > img { width: 100%; height: auto; max-height: 135px; object-fit: contain; border-radius: 6px; }
+.portfolio-work span { color: var(--app-muted); font-size: 11px; }
+.portfolio-work h4 { color: var(--app-ink); margin-block: 2px 5px; font-size: 14px; }
+.portfolio-work p { color: var(--app-ink); white-space: pre-wrap; font-size: 12px; line-height: 1.4; }
 .interview-thread { max-height: 205px; overflow: auto; padding: 1px 2px; scrollbar-color: var(--app-line) transparent; }
 .interview-line { display: flex; align-items: start; gap: 7px; font-size: 13px; overflow-wrap: anywhere; }
 .interview-line .agent-avatar { width: 27px; height: 27px; }
