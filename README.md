@@ -1,5 +1,5 @@
 # GenePost for Mac
 
-This repository hosts the GenePost product site, documentation, and future notarized release downloads. The current website is a release preview with fictional campaign data.
+This repository hosts the GenePost site, guide, and future notarized release downloads. The release preview includes a browser demo with fictional campaigns and silent guided playback. The demo keeps changes in the current tab.
 
-Visit [GenePost](https://selwynuy.github.io/GenePost/) for the product tour and [the guide](https://selwynuy.github.io/GenePost/docs/) for setup, channel workflows, and integrations.
+Try the [GenePost demo](https://selwynuy.github.io/GenePost/#demo). Read the [guide](https://selwynuy.github.io/GenePost/docs/) for Mac setup, channel workflows, and integrations.

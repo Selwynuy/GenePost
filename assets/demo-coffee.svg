@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 460">
+  <rect width="720" height="460" fill="#e9dbc0"/>
+  <circle cx="548" cy="237" r="145" fill="#244d3c"/>
+  <circle cx="548" cy="237" r="119" fill="#b46a49"/>
+  <circle cx="548" cy="237" r="95" fill="none" stroke="#244d3c" stroke-width="2"/>
+  <circle cx="548" cy="237" r="84" fill="none" stroke="#e9dbc0" stroke-opacity=".45"/>
+  <path d="M535 197c41-16 65 29 32 68-22 28-62 12-59-16 3-24 12-46 27-52Z" fill="#244d3c"/>
+  <path d="M557 208c-19 15 5 31-23 53" fill="none" stroke="#e9dbc0" stroke-width="3" stroke-linecap="round"/>
+  <g fill="#193c2f" font-family="Georgia,serif">
+    <text x="38" y="237" font-size="70" letter-spacing="-4">Saturday</text>
+    <text x="38" y="304" font-size="70" letter-spacing="-4" font-style="italic">tasting.</text>
+  </g>
+  <path d="M42 80h635M42 384h635" stroke="#244d3c" stroke-opacity=".54"/>
+  <g fill="#193c2f" font-family="sans-serif" font-size="16" font-weight="700" letter-spacing="3">
+    <text x="42" y="59">MORROW COFFEE</text>
+    <text x="42" y="419">10 AM</text>
+    <text x="675" y="419" text-anchor="end">THREE ROASTS</text>
+  </g>
+</svg>

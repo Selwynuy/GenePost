@@ -1,7 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 256 256">
   <title>GenePost</title>
-  <rect width="256" height="256" rx="58" fill="#eee9fb"/>
-  <g fill="#242138" transform="translate(19.5 34)">
+  <rect width="256" height="256" rx="58" fill="#e5ddfa"/>
+  <g fill="#211737" transform="translate(19.5 34)">
     <path d="
       M46 20 H112 Q114.5 20 114.5 22.5 V37.5 Q114.5 39 113.5 40
       L107 46.5 Q106 47.5 104.5 47.5 H54.5 Q53 47.5 51.5 49

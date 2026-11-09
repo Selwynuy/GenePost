@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>GenePost | Your AI social team for Mac</title>
   <meta name="description" content="Hire AI social teammates, draft for each account, and plan your publishing week in a native Mac app.">
-  <meta name="theme-color" content="#fcfcfe">
+  <meta name="theme-color" content="#faf9fc">
   <meta property="og:title" content="GenePost | Your AI social team for Mac">
   <meta property="og:description" content="Hire AI social teammates, draft for each account, and plan your publishing week in a native Mac app.">
   <meta name="robots" content="noindex, nofollow">
@@ -13,6 +13,7 @@
   <meta property="og:image" content="https://selwynuy.github.io/GenePost/assets/team.webp">
   <link rel="icon" href="./assets/genepost.svg" type="image/svg+xml">
   <link rel="stylesheet" href="./assets/site.css">
+  <link rel="stylesheet" href="./assets/demo.css">
   <script src="./assets/site.js" defer></script>
 </head>
 <body>
@@ -21,7 +22,7 @@
     <div class="wrap nav">
       <a class="brand" href="./"><img src="./assets/genepost.svg" width="33" height="33" alt="">GenePost</a>
       <nav aria-label="Primary">
-        <a class="nav-product" href="./#tour">Product tour</a>
+        <a class="nav-product" href="./#tour">Demo</a>
         <a class="nav-product" href="./#workflow">Use cases</a>
         <a href="./docs/">Docs</a>
         <a class="nav-license" href="./#pricing">$39 license</a>
@@ -29,365 +30,179 @@
     </div>
   </header>
   <main id="main">
-    <section class="lead-stage wrap" aria-labelledby="hero-title">
-  <div class="hero">
-    <h1 id="hero-title">Hire your AI team.<br><span>One brief.<br>Every account.</span></h1>
-    <p class="lede">Brief a teammate, review a different caption for each account, and publish from your Mac. Your agents, drafts, media, and calendar stay together.</p>
-    <div class="actions">
-      <a class="button primary" href="#pricing">See the $39 license <span aria-hidden="true">↗</span></a>
-      <a class="button quiet" href="#sample">See a sample campaign <span aria-hidden="true">↓</span></a>
-    </div>
-    <p class="requirements">Apple silicon <span>·</span> macOS 14+ <span>·</span> No social API keys</p>
+    <svg class="symbol-source" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" width="0" height="0">
+  <symbol id="icon-play" viewBox="0 0 24 24"><path d="m8 5 12 7-12 7Z" fill="currentColor" stroke="none"/></symbol>
+  <symbol id="icon-pause" viewBox="0 0 24 24"><path d="M9 5v14m6-14v14" stroke-width="3"/></symbol>
+  <symbol id="icon-reset" viewBox="0 0 24 24"><path d="M4 11a8 8 0 1 1 2 6m-2-6V5m0 6h6"/></symbol>
+  <symbol id="icon-external" viewBox="0 0 24 24"><path d="M7 17 17 7M7 7h10v10"/></symbol>
+  <symbol id="icon-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="icon-team" viewBox="0 0 24 24"><circle cx="10" cy="8" r="3"/><path d="M4 19v-1a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v1m1-13a3 3 0 0 1 0 6m1 2a4 4 0 0 1 2 4v1"/></symbol>
+  <symbol id="icon-calendar" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M7 3v4m10-4v4M3 10h18m-14 5h3m4 0h3"/></symbol>
+  <symbol id="icon-queue" viewBox="0 0 24 24"><path d="M4 12l2-7h12l2 7v6a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-6h5l1 3h4l1-3h5"/></symbol>
+  <symbol id="icon-drafts" viewBox="0 0 24 24"><path d="M13 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V10Zm0 0v7h7M8 14h8m-8 3h6"/></symbol>
+  <symbol id="icon-channels" viewBox="0 0 24 24"><path d="M10 8l3-3a4 4 0 0 1 6 6l-3 3m-2 2-3 3a4 4 0 0 1-6-6l3-3m1 5 6-6"/></symbol>
+  <symbol id="icon-media" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="3"/><circle cx="9" cy="9" r="1.5"/><path d="m3 17 5-5 4 4 4-5 5 5"/></symbol>
+  <symbol id="icon-reports" viewBox="0 0 24 24"><path d="M4 4v16h16M8 16v-4m5 4V8m5 8V5"/></symbol>
+  <symbol id="icon-settings" viewBox="0 0 24 24"><path d="M4 6h6m4 0h6M4 12h10m4 0h2M4 18h2m4 0h10m-10-14v4m4 2v4m-8 2v4"/></symbol>
+  <symbol id="icon-check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></symbol>
+  <symbol id="icon-close" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></symbol>
+  <symbol id="icon-right" viewBox="0 0 24 24"><path d="m9 5 7 7-7 7"/></symbol>
+  <symbol id="icon-left" viewBox="0 0 24 24"><path d="m15 5-7 7 7 7"/></symbol>
+  <symbol id="icon-upload" viewBox="0 0 24 24"><path d="M12 16V4m-5 5 5-5 5 5M4 15v4a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-4"/></symbol>
+  <symbol id="icon-spark" viewBox="0 0 24 24"><path d="m12 3 2.4 6.6L21 12l-6.6 2.4L12 21l-2.4-6.6L3 12l6.6-2.4Z"/></symbol>
+</svg>
+<section class="demo-stage" id="tour" aria-labelledby="hero-title">
+  <div class="wrap hero">
+    <h1 id="hero-title">Your social team.</h1>
+    <p>Hire. Draft. Schedule.</p>
   </div>
-  <figure class="hero-device">
+  <div class="demo-wrap" id="demo" tabindex="-1" data-assets="./assets/">
+    <div class="demo-toolbar" id="demo-controls" hidden>
+      <button class="button primary" type="button" data-action="play">
+        <svg class="symbol" aria-hidden="true"><use href="#icon-play"></use></svg><span>Play demo</span>
+      </button>
+      <button class="button quiet" type="button" data-action="stop" hidden>Try it</button>
+      <span class="demo-cue" role="status">Try it yourself</span>
+      <button class="button quiet demo-reset" type="button" data-action="reset" aria-label="Reset demo" title="Reset demo">
+        <svg class="symbol" aria-hidden="true"><use href="#icon-reset"></use></svg>
+      </button>
+    </div>
     <div class="macbook">
       <div class="mac-display">
-        <div class="mac-screen"><img src="./assets/team.webp" width="1600" height="1029" alt="A MacBook mockup showing GenePost’s Team workspace with Freya’s drafts for Morrow Coffee." fetchpriority="high"></div>
+        <div class="mac-screen">
+          <img id="demo-fallback" src="./assets/team.webp" width="1600" height="1029" alt="GenePost on Mac" fetchpriority="high">
+          <div class="demo-app" data-theme="dark" hidden>
+            <div class="demo-titlebar">
+              <span class="window-lights" aria-hidden="true"><i></i><i></i><i></i></span>
+              <span>GenePost</span>
+              <span class="demo-label">Sample workspace</span>
+            </div>
+            <div class="demo-window">
+              <nav class="demo-sidebar" aria-label="Demo screens"></nav>
+              <div class="demo-workspace" tabindex="-1"></div>
+            </div>
+            <span class="demo-pointer" aria-hidden="true" hidden>
+              <svg width="22" height="26" viewBox="0 0 22 26"><path d="M3 2v19l5-5 4 8 4-2-4-8h7Z" fill="#fff" stroke="#201534" stroke-width="1.6" stroke-linejoin="round"/></svg>
+            </span>
+          </div>
+        </div>
       </div>
       <div class="mac-base" aria-hidden="true"><span></span></div>
     </div>
-    <figcaption>Freya’s Morrow Coffee campaign · Sample workspace</figcaption>
-  </figure>
-</section>
-
-<section class="channel-band" aria-label="Channel planning support">
-  <div class="wrap">
-    <p>Plan posts for your accounts on</p>
-    <ul class="channel-list">
-      <li><img src="./assets/instagram.png" width="19" height="19" alt="">Instagram</li>
-      <li><img src="./assets/linkedin.png" width="19" height="19" alt="">LinkedIn</li>
-      <li><img src="./assets/facebook.png" width="19" height="19" alt="">Facebook</li>
-      <li><img src="./assets/threads.png" width="19" height="19" alt="">Threads</li>
-      <li><img src="./assets/x.png" width="19" height="19" alt="">X</li>
-      <li><img src="./assets/reddit.png" width="19" height="19" alt="">Reddit</li>
-      <li><img src="./assets/tiktok.png" width="19" height="19" alt="">TikTok</li>
-    </ul>
-  </div>
-</section>
-
-<section class="sample-section wrap section" id="sample" aria-labelledby="sample-title">
-  <div class="section-intro">
-    <h2 id="sample-title">A coffee tasting. Three ways to tell the story.</h2>
-    <p>Morrow Coffee is a fictional café preparing for a Saturday tasting. Here’s the brief Freya received and what she brought back.</p>
-  </div>
-  <div class="sample-work">
-    <div class="sample-brief">
-      <div class="sample-agent"><img src="./assets/freya.webp" alt="" width="38" height="38"><div><strong>Freya</strong><span>Community and launch copy</span></div></div>
-      <blockquote>“Draft a warm invitation for Saturday’s coffee tasting. We’re pouring three coffees at 10 a.m. Give Instagram, LinkedIn, and Threads their own caption.”</blockquote>
-      <p>One task in the Morrow Coffee group. Three saved accounts. The same confirmed details in every draft.</p>
-    </div>
-    <div class="sample-results">
-      <article class="sample-result">
-          <h3><img src="./assets/instagram.png" width="18" height="18" alt=""> Instagram <span>Invite people in</span></h3>
-          <p>Three coffees, one slow Saturday. Join us at 10 a.m. for a guided tasting and find your next favorite roast.</p>
-        </article><article class="sample-result">
-          <h3><img src="./assets/linkedin.png" width="18" height="18" alt=""> LinkedIn <span>Tell the founder’s story</span></h3>
-          <p>We started Morrow Coffee to give people time to taste what goes into their cup. This Saturday at 10 a.m., we’re opening the roastery for a guided tasting of three coffees.</p>
-        </article><article class="sample-result">
-          <h3><img src="./assets/threads.png" width="18" height="18" alt=""> Threads <span>Start a conversation</span></h3>
-          <p>What makes a cup worth slowing down for? We’re pouring three coffees at Saturday’s 10 a.m. tasting. Which roast would you try first?</p>
-        </article>
+    <div class="demo-under" hidden>
+      <span class="demo-progress" aria-hidden="true" hidden><i></i></span>
+      <a id="native-screen" href="./assets/team.webp" target="_blank" rel="noopener">View Mac screen <svg class="symbol" aria-hidden="true"><use href="#icon-external"></use></svg></a>
     </div>
   </div>
 </section>
 
-<section class="tour-section" id="tour" aria-labelledby="tour-title">
-  <div class="wrap section">
-    <div class="section-intro">
-      <h2 id="tour-title">See how the work gets done.</h2>
-      <p>Explore the Mac app and follow the steps in each screen. Every view uses the same sample campaign.</p>
-    </div>
-    <div class="tour-tabs" role="tablist" aria-label="GenePost walkthroughs" hidden><button id="tab-hiring" role="tab" aria-selected="true" aria-controls="screen-hiring" type="button">Hire</button><button id="tab-team" role="tab" aria-selected="false" aria-controls="screen-team" type="button" tabindex="-1">Team</button><button id="tab-channels" role="tab" aria-selected="false" aria-controls="screen-channels" type="button" tabindex="-1">Channels</button><button id="tab-compose" role="tab" aria-selected="false" aria-controls="screen-compose" type="button" tabindex="-1">New post</button><button id="tab-media" role="tab" aria-selected="false" aria-controls="screen-media" type="button" tabindex="-1">Media</button><button id="tab-drafts" role="tab" aria-selected="false" aria-controls="screen-drafts" type="button" tabindex="-1">Drafts</button><button id="tab-calendar" role="tab" aria-selected="false" aria-controls="screen-calendar" type="button" tabindex="-1">Calendar</button><button id="tab-queue" role="tab" aria-selected="false" aria-controls="screen-queue" type="button" tabindex="-1">Queue</button><button id="tab-reports" role="tab" aria-selected="false" aria-controls="screen-reports" type="button" tabindex="-1">Reports</button><button id="tab-settings" role="tab" aria-selected="false" aria-controls="screen-settings" type="button" tabindex="-1">Settings</button></div><div class="tour-panel" id="screen-hiring" aria-labelledby="tab-hiring">
-      <div class="tour-intro">
-        <h3>Hire for a real job.</h3>
-        <p>Morrow Coffee needs someone to run its tasting launch. Compare how three AI applicants would approach the same brief.</p>
-      </div>
-      <div class="macbook">
-        <div class="mac-display">
-          <figure class="mac-screen"><img src="./assets/hiring.webp" width="1600" height="1029" alt="MacBook mockup of the hiring screen with three AI applicants for the tasting campaign." loading="lazy"></figure>
-        </div>
-        <div class="mac-base" aria-hidden="true"><span></span></div>
-      </div>
-      <div class="demo-guide">
-        <ol><li>In Team, choose Post a job and describe what the agent should own.</li><li>Choose the brand group and accounts. Review the applicants’ strengths and sample approaches.</li><li>Interview a candidate if you want a closer look. Hire the one whose approach fits.</li></ol>
-        <div class="demo-check">
-          <h4>What to check</h4>
-          <p>Read the sample approach before hiring. Confirm the role, brand group, and allowed accounts.</p>
-          <div class="demo-links">
-            <a href="./docs/#team">Read the guide</a>
-            <a href="./assets/hiring.webp" target="_blank" rel="noopener">View larger <span aria-hidden="true">↗</span></a>
-          </div>
-        </div>
-      </div>
-    </div><div class="tour-panel" id="screen-team" aria-labelledby="tab-team" hidden>
-      <div class="tour-intro">
-        <h3>Brief the teammate you hired.</h3>
-        <p>Freya has the Morrow Coffee campaign. Her result stays beside the task, with a preview for each account.</p>
-      </div>
-      <div class="macbook">
-        <div class="mac-display">
-          <figure class="mac-screen"><img src="./assets/team.webp" width="1600" height="1029" alt="MacBook mockup of Team with Freya, Tessa, the tasting brief and account-specific drafts." loading="lazy"></figure>
-        </div>
-        <div class="mac-base" aria-hidden="true"><span></span></div>
-      </div>
-      <div class="demo-guide">
-        <ol><li>Choose Morrow Coffee and select Freya in the Team roster.</li><li>Enter the brief, attach the tasting artwork, and select Draft posts.</li><li>Open the completed result. Switch accounts to compare the drafts or choose Review &amp; edit.</li></ol>
-        <div class="demo-check">
-          <h4>What to check</h4>
-          <p>Confirm the selected brand, teammate, and model. Read each account’s draft before using it.</p>
-          <div class="demo-links">
-            <a href="./docs/#team">Read the guide</a>
-            <a href="./assets/team.webp" target="_blank" rel="noopener">View larger <span aria-hidden="true">↗</span></a>
-          </div>
-        </div>
-      </div>
-    </div><div class="tour-panel" id="screen-channels" aria-labelledby="tab-channels" hidden>
-      <div class="tour-intro">
-        <h3>Set up the accounts once.</h3>
-        <p>Keep Instagram, LinkedIn, and Threads together in a Morrow Coffee group. Add a second account on a platform if the brand needs it.</p>
-      </div>
-      <div class="macbook">
-        <div class="mac-display">
-          <figure class="mac-screen"><img src="./assets/channels.webp" width="1600" height="1029" alt="MacBook mockup of saved Morrow Coffee channels and their group." loading="lazy"></figure>
-        </div>
-        <div class="mac-base" aria-hidden="true"><span></span></div>
-      </div>
-      <div class="demo-guide">
-        <ol><li>Open Channels and add the exact profile, Page, or group URL.</li><li>Save the posting identity you expect to use in your browser.</li><li>Create a group and choose which accounts belong to the brand.</li></ol>
-        <div class="demo-check">
-          <h4>What to check</h4>
-          <p>Verify both the destination URL and posting identity, especially when one platform has multiple accounts.</p>
-          <div class="demo-links">
-            <a href="./docs/#channels">Read the guide</a>
-            <a href="./assets/channels.webp" target="_blank" rel="noopener">View larger <span aria-hidden="true">↗</span></a>
-          </div>
-        </div>
-      </div>
-    </div><div class="tour-panel" id="screen-compose" aria-labelledby="tab-compose" hidden>
-      <div class="tour-intro">
-        <h3>Give each account its own post.</h3>
-        <p>The Instagram version pairs the tasting artwork with an invitation. Switch accounts to review the LinkedIn story or Threads conversation starter.</p>
-      </div>
-      <div class="macbook">
-        <div class="mac-display">
-          <figure class="mac-screen"><img src="./assets/compose.webp" width="1600" height="1029" alt="MacBook mockup of the caption editor beside an Instagram post preview." loading="lazy"></figure>
-        </div>
-        <div class="mac-base" aria-hidden="true"><span></span></div>
-      </div>
-      <div class="demo-guide">
-        <ol><li>Start New Post or select Review &amp; edit on a Team result.</li><li>Choose the accounts, attach media, and draft or write the caption.</li><li>Switch between account tabs to edit each caption and preview. Choose Review Post when ready.</li></ol>
-        <div class="demo-check">
-          <h4>What to check</h4>
-          <p>Check the exact caption, media order, identity, and audience for every account.</p>
-          <div class="demo-links">
-            <a href="./docs/#publish">Read the guide</a>
-            <a href="./assets/compose.webp" target="_blank" rel="noopener">View larger <span aria-hidden="true">↗</span></a>
-          </div>
-        </div>
-      </div>
-    </div><div class="tour-panel" id="screen-media" aria-labelledby="tab-media" hidden>
-      <div class="tour-intro">
-        <h3>Reuse the work you’ve already made.</h3>
-        <p>The tasting flyer and menu are saved in Media, ready for the announcement and reminder.</p>
-      </div>
-      <div class="macbook">
-        <div class="mac-display">
-          <figure class="mac-screen"><img src="./assets/media.webp" width="1600" height="1029" alt="MacBook mockup of the Media library with Morrow Coffee’s tasting flyer and tasting menu." loading="lazy"></figure>
-        </div>
-        <div class="mac-base" aria-hidden="true"><span></span></div>
-      </div>
-      <div class="demo-guide">
-        <ol><li>Open Media and choose Import to add photos or videos.</li><li>Preview a file to check its crop and content.</li><li>Attach a saved file from the post composer’s media menu or use the file’s post action.</li></ol>
-        <div class="demo-check">
-          <h4>What to check</h4>
-          <p>Confirm that the selected file is the version you want on that account. Keep originals in your own backup.</p>
-          <div class="demo-links">
-            <a href="./docs/#media">Read the guide</a>
-            <a href="./assets/media.webp" target="_blank" rel="noopener">View larger <span aria-hidden="true">↗</span></a>
-          </div>
-        </div>
-      </div>
-    </div><div class="tour-panel" id="screen-drafts" aria-labelledby="tab-drafts" hidden>
-      <div class="tour-intro">
-        <h3>Pick up where you left off.</h3>
-        <p>Keep the roaster introduction, tasting menu, and Friday reminder ready for review.</p>
-      </div>
-      <div class="macbook">
-        <div class="mac-display">
-          <figure class="mac-screen"><img src="./assets/drafts.webp" width="1600" height="1029" alt="MacBook mockup of Drafts with three saved Morrow Coffee posts and an in-progress draft." loading="lazy"></figure>
-        </div>
-        <div class="mac-base" aria-hidden="true"><span></span></div>
-      </div>
-      <div class="demo-guide">
-        <ol><li>Choose Save Draft on a post that needs more work or approval.</li><li>Open Drafts and select the saved post.</li><li>Review the existing conversation, captions, and media. Edit it or move it to the calendar.</li></ol>
-        <div class="demo-check">
-          <h4>What to check</h4>
-          <p>Check the brand and last saved version before scheduling. Each saved account can have different content.</p>
-          <div class="demo-links">
-            <a href="./docs/#drafts">Read the guide</a>
-            <a href="./assets/drafts.webp" target="_blank" rel="noopener">View larger <span aria-hidden="true">↗</span></a>
-          </div>
-        </div>
-      </div>
-    </div><div class="tour-panel" id="screen-calendar" aria-labelledby="tab-calendar" hidden>
-      <div class="tour-intro">
-        <h3>See the week before it happens.</h3>
-        <p>See the invitation, founder post, and reminder across their accounts. Use the calendar to spot gaps and overlaps.</p>
-      </div>
-      <div class="macbook">
-        <div class="mac-display">
-          <figure class="mac-screen"><img src="./assets/calendar.webp" width="1600" height="1029" alt="MacBook mockup of a GenePost weekly calendar with planned tasting campaign posts." loading="lazy"></figure>
-        </div>
-        <div class="mac-base" aria-hidden="true"><span></span></div>
-      </div>
-      <div class="demo-guide">
-        <ol><li>Set a date and time in Review Post.</li><li>Open Calendar and choose Week or Month. Filter by account or status.</li><li>Select a day to see its agenda. Open an item to review it in Queue.</li></ol>
-        <div class="demo-check">
-          <h4>What to check</h4>
-          <p>Confirm the time zone and account. Calendar records your plan for the browser handoff.</p>
-          <div class="demo-links">
-            <a href="./docs/#calendar">Read the guide</a>
-            <a href="./assets/calendar.webp" target="_blank" rel="noopener">View larger <span aria-hidden="true">↗</span></a>
-          </div>
-        </div>
-      </div>
-    </div><div class="tour-panel" id="screen-queue" aria-labelledby="tab-queue" hidden>
-      <div class="tour-intro">
-        <h3>Publish the version you reviewed.</h3>
-        <p>The selected post shows the channel, caption, artwork, and the next action.</p>
-      </div>
-      <div class="macbook">
-        <div class="mac-display">
-          <figure class="mac-screen"><img src="./assets/queue.webp" width="1600" height="1029" alt="MacBook mockup of Queue with an Instagram post preview and the Copy caption and open button." loading="lazy"></figure>
-        </div>
-        <div class="mac-base" aria-hidden="true"><span></span></div>
-      </div>
-      <div class="demo-guide">
-        <ol><li>Open the planned post in Queue and review its preview.</li><li>Choose Copy caption &amp; open. Attach the file using Show media in Finder and publish on the platform.</li><li>After you verify the live post, return to Queue and choose Mark published.</li></ol>
-        <div class="demo-check">
-          <h4>What to check</h4>
-          <p>Check the signed-in browser identity before publishing. Use History to confirm the local record afterward.</p>
-          <div class="demo-links">
-            <a href="./docs/#publish">Read the guide</a>
-            <a href="./assets/queue.webp" target="_blank" rel="noopener">View larger <span aria-hidden="true">↗</span></a>
-          </div>
-        </div>
-      </div>
-    </div><div class="tour-panel" id="screen-reports" aria-labelledby="tab-reports" hidden>
-      <div class="tour-intro">
-        <h3>Check what made it out the door.</h3>
-        <p>Review publishing records across the brand’s channels and export them for a client update.</p>
-      </div>
-      <div class="macbook">
-        <div class="mac-display">
-          <figure class="mac-screen"><img src="./assets/reports.webp" width="1600" height="1029" alt="MacBook mockup of the Publishing Report with recorded results by platform." loading="lazy"></figure>
-        </div>
-        <div class="mac-base" aria-hidden="true"><span></span></div>
-      </div>
-      <div class="demo-guide">
-        <ol><li>Open Reports and choose a date range.</li><li>Compare Published, Pending, and Needs attention across platforms.</li><li>Use Export CSV for a dated record or open Queue to check a missing result.</li></ol>
-        <div class="demo-check">
-          <h4>What to check</h4>
-          <p>Compare published counts with your plan. Reach, impressions, and engagement live in the platform dashboards.</p>
-          <div class="demo-links">
-            <a href="./docs/#reports">Read the guide</a>
-            <a href="./assets/reports.webp" target="_blank" rel="noopener">View larger <span aria-hidden="true">↗</span></a>
-          </div>
-        </div>
-      </div>
-    </div><div class="tour-panel" id="screen-settings" aria-labelledby="tab-settings" hidden>
-      <div class="tour-intro">
-        <h3>Connect the tools you use.</h3>
-        <p>Use your existing Codex sign-in and activate GenePost on your Mac. Set model defaults in the agent’s profile or inside a conversation.</p>
-      </div>
-      <div class="macbook">
-        <div class="mac-display">
-          <figure class="mac-screen"><img src="./assets/settings.webp" width="1600" height="1029" alt="MacBook mockup of GenePost Settings with Connections, Publishing, Team, and License tabs." loading="lazy"></figure>
-        </div>
-        <div class="mac-base" aria-hidden="true"><span></span></div>
-      </div>
-      <div class="demo-guide">
-        <ol><li>Use Settings → License to activate your Mac with the key in your receipt.</li><li>Use Settings → Connections to connect your signed-in Codex CLI.</li><li>Select Connect to Codex to use GenePost in a local Codex chat.</li></ol>
-        <div class="demo-check">
-          <h4>What to check</h4>
-          <p>Confirm the connection status. The model displayed in a chat is the one its next task will use.</p>
-          <div class="demo-links">
-            <a href="./docs/#integrations">Read the guide</a>
-            <a href="./assets/settings.webp" target="_blank" rel="noopener">View larger <span aria-hidden="true">↗</span></a>
-          </div>
-        </div>
-      </div>
-    </div>
+<section class="channel-band" aria-label="Supported channels">
+  <ul class="wrap channel-list">
+    <li><img src="./assets/instagram.png" width="19" height="19" alt="">Instagram</li>
+    <li><img src="./assets/linkedin.png" width="19" height="19" alt="">LinkedIn</li>
+    <li><img src="./assets/facebook.png" width="19" height="19" alt="">Facebook</li>
+    <li><img src="./assets/threads.png" width="19" height="19" alt="">Threads</li>
+    <li><img src="./assets/x.png" width="19" height="19" alt="">X</li>
+    <li><img src="./assets/reddit.png" width="19" height="19" alt="">Reddit</li>
+    <li><img src="./assets/tiktok.png" width="19" height="19" alt="">TikTok</li>
+  </ul>
+</section>
+
+<section class="wrap section cases" id="workflow" aria-labelledby="cases-title">
+  <h2 id="cases-title">Try a campaign.</h2>
+  <div class="case-grid">
+    <a class="case" data-case="coffee" href="#demo">
+      <img src="./assets/demo-coffee.svg" width="720" height="460" alt="" loading="lazy">
+      <span>Local events <svg class="symbol" aria-hidden="true"><use href="#icon-external"></use></svg></span>
+    </a>
+    <a class="case" data-case="florist" href="#demo">
+      <img src="./assets/demo-florist.svg" width="720" height="460" alt="" loading="lazy">
+      <span>Client campaigns <svg class="symbol" aria-hidden="true"><use href="#icon-external"></use></svg></span>
+    </a>
+    <a class="case" data-case="studio" href="#demo">
+      <img src="./assets/demo-studio.svg" width="720" height="460" alt="" loading="lazy">
+      <span>Product launches <svg class="symbol" aria-hidden="true"><use href="#icon-external"></use></svg></span>
+    </a>
   </div>
 </section>
 
-<section class="scenarios wrap section" id="workflow" aria-labelledby="use-cases-title">
-  <div class="section-intro">
-    <h2 id="use-cases-title">A team for the work you actually do.</h2>
-    <p>Set up a brand group once, then give each agent the responsibility you’d hand a teammate.</p>
-  </div>
-  <div class="scenario-list">
-    <article>
-      <h3>Fill seats for a local event</h3>
-      <p><strong>Give your agent:</strong> the time, location, artwork, and booking link for a café tasting or studio workshop.</p>
-      <p><strong>Review:</strong> an Instagram invitation, a Facebook reminder with the booking details, and a Threads question to start the conversation.</p>
-    </article>
-    <article>
-      <h3>Keep two clients’ voices separate</h3>
-      <p><strong>Give your team:</strong> one brief for a florist’s Friday pickup and another for a design studio’s case study.</p>
-      <p><strong>Review:</strong> warm, practical copy for the florist and a concise founder post for the studio. Each brand keeps its own notes and accounts.</p>
-    </article>
-    <article>
-      <h3>Turn a changelog into a launch</h3>
-      <p><strong>Give your agent:</strong> what changed, who benefits, and the screenshot that shows it working.</p>
-      <p><strong>Review:</strong> a short X update, a longer LinkedIn post explaining the problem, and a week of follow-ups saved to Calendar.</p>
-    </article>
-  </div>
-</section>
-
-<section class="integration-band" aria-labelledby="integration-title">
-  <div class="wrap integration">
+<section class="benefits" aria-labelledby="benefits-title">
+  <div class="wrap section benefit-layout">
     <div>
-      <h2 id="integration-title">Keep working in Codex.</h2>
-      <p>Connect the GenePost plugin to brief your team, review drafts, and plan posts from a local Codex chat. GenePost uses your own Codex sign-in.</p>
-      <a class="text-link" href="./docs/#integrations">Set up Codex <span aria-hidden="true">↗</span></a>
-      <a class="text-link alternate" href="./docs/#claude">Claude Code via MCP <span aria-hidden="true">↗</span></a>
+      <h2 id="benefits-title">Fewer tabs.<br><span>More posts.</span></h2>
+      <p>One Mac workspace.</p>
+      <a class="button quiet" href="#demo">Try the demo</a>
     </div>
-    <div class="prompt">
-      <div class="prompt-title"><img src="./assets/genepost.svg" width="25" height="25" alt=""> GenePost in Codex</div>
-      <p id="sample-prompt">Ask GenePost to draft three posts for Morrow Coffee’s tasting event. Keep each caption in the brand’s voice, then show me the drafts to review.</p>
-      <button class="copy-prompt" data-copy="sample-prompt" type="button" hidden>Copy example</button>
-      <span class="copy-feedback" role="status"></span>
-    </div>
+    <table class="benefit-table">
+      <caption class="sr-only">What comes built in</caption>
+      <thead><tr><th scope="col">In one place</th><th scope="col">Separate tools</th><th scope="col">GenePost</th></tr></thead>
+      <tbody><tr>
+      <th scope="row"><svg class="symbol" aria-hidden="true"><use href="#icon-team"></use></svg> AI teammates</th>
+      <td class="feature-manual"><svg class="symbol" aria-hidden="true"><use href="#icon-close"></use></svg><span class="sr-only">Separate setup</span></td>
+      <td class="feature-included"><svg class="symbol" aria-hidden="true"><use href="#icon-check"></use></svg><span class="sr-only">Included</span></td>
+    </tr><tr>
+      <th scope="row"><svg class="symbol" aria-hidden="true"><use href="#icon-channels"></use></svg> Brand groups</th>
+      <td class="feature-manual"><svg class="symbol" aria-hidden="true"><use href="#icon-close"></use></svg><span class="sr-only">Separate setup</span></td>
+      <td class="feature-included"><svg class="symbol" aria-hidden="true"><use href="#icon-check"></use></svg><span class="sr-only">Included</span></td>
+    </tr><tr>
+      <th scope="row"><svg class="symbol" aria-hidden="true"><use href="#icon-drafts"></use></svg> Brand voice</th>
+      <td class="feature-manual"><svg class="symbol" aria-hidden="true"><use href="#icon-close"></use></svg><span class="sr-only">Separate setup</span></td>
+      <td class="feature-included"><svg class="symbol" aria-hidden="true"><use href="#icon-check"></use></svg><span class="sr-only">Included</span></td>
+    </tr><tr>
+      <th scope="row"><svg class="symbol" aria-hidden="true"><use href="#icon-spark"></use></svg> Channel captions</th>
+      <td class="feature-manual"><svg class="symbol" aria-hidden="true"><use href="#icon-close"></use></svg><span class="sr-only">Separate setup</span></td>
+      <td class="feature-included"><svg class="symbol" aria-hidden="true"><use href="#icon-check"></use></svg><span class="sr-only">Included</span></td>
+    </tr><tr>
+      <th scope="row"><svg class="symbol" aria-hidden="true"><use href="#icon-media"></use></svg> Feed previews</th>
+      <td class="feature-manual"><svg class="symbol" aria-hidden="true"><use href="#icon-close"></use></svg><span class="sr-only">Separate setup</span></td>
+      <td class="feature-included"><svg class="symbol" aria-hidden="true"><use href="#icon-check"></use></svg><span class="sr-only">Included</span></td>
+    </tr><tr>
+      <th scope="row"><svg class="symbol" aria-hidden="true"><use href="#icon-media"></use></svg> Reusable media</th>
+      <td class="feature-manual"><svg class="symbol" aria-hidden="true"><use href="#icon-close"></use></svg><span class="sr-only">Separate setup</span></td>
+      <td class="feature-included"><svg class="symbol" aria-hidden="true"><use href="#icon-check"></use></svg><span class="sr-only">Included</span></td>
+    </tr><tr>
+      <th scope="row"><svg class="symbol" aria-hidden="true"><use href="#icon-calendar"></use></svg> Publishing calendar</th>
+      <td class="feature-manual"><svg class="symbol" aria-hidden="true"><use href="#icon-close"></use></svg><span class="sr-only">Separate setup</span></td>
+      <td class="feature-included"><svg class="symbol" aria-hidden="true"><use href="#icon-check"></use></svg><span class="sr-only">Included</span></td>
+    </tr><tr>
+      <th scope="row"><svg class="symbol" aria-hidden="true"><use href="#icon-drafts"></use></svg> Saved drafts</th>
+      <td class="feature-manual"><svg class="symbol" aria-hidden="true"><use href="#icon-close"></use></svg><span class="sr-only">Separate setup</span></td>
+      <td class="feature-included"><svg class="symbol" aria-hidden="true"><use href="#icon-check"></use></svg><span class="sr-only">Included</span></td>
+    </tr><tr>
+      <th scope="row"><svg class="symbol" aria-hidden="true"><use href="#icon-queue"></use></svg> Publishing queue</th>
+      <td class="feature-manual"><svg class="symbol" aria-hidden="true"><use href="#icon-close"></use></svg><span class="sr-only">Separate setup</span></td>
+      <td class="feature-included"><svg class="symbol" aria-hidden="true"><use href="#icon-check"></use></svg><span class="sr-only">Included</span></td>
+    </tr><tr>
+      <th scope="row"><svg class="symbol" aria-hidden="true"><use href="#icon-reports"></use></svg> Publishing reports</th>
+      <td class="feature-manual"><svg class="symbol" aria-hidden="true"><use href="#icon-close"></use></svg><span class="sr-only">Separate setup</span></td>
+      <td class="feature-included"><svg class="symbol" aria-hidden="true"><use href="#icon-check"></use></svg><span class="sr-only">Included</span></td>
+    </tr></tbody>
+    </table>
   </div>
 </section>
 
-<section class="pricing wrap section" id="pricing" aria-labelledby="pricing-title">
-  <div>
-    <h2 id="pricing-title">A one-time license.</h2>
-    <p>Your license covers GenePost 2 on up to two Macs for one person. Use it for your own brands and client work.</p>
-    <ul class="included">
-      <li>Persistent AI teammates and brand groups</li>
-      <li>Account-specific captions and media previews</li>
-      <li>Calendar, Queue, and Codex chat integration</li>
-    </ul>
-  </div>
-  <div class="price">
-    <p class="price-amount">$39 <span>USD</span></p>
-    <p>Pay once for GenePost 2.</p>
-    <p class="release-note">Checkout opens with the signed Mac release.</p><a class="button quiet" href="./docs/#install">Read the setup guide</a>
-    <p class="fine">Codex access is separate. Any applicable tax appears at checkout.</p>
-  </div>
+<section class="wrap connections" aria-labelledby="connections-title">
+  <h2 id="connections-title">Bring your AI.</h2>
+  <a href="./docs/#integrations">Codex <svg class="symbol" aria-hidden="true"><use href="#icon-external"></use></svg></a>
+  <a href="./docs/#claude">Claude Code <svg class="symbol" aria-hidden="true"><use href="#icon-external"></use></svg></a>
 </section>
 
-<section class="faq wrap section" aria-labelledby="faq-title">
-  <h2 id="faq-title">Good to know.</h2>
-  <div class="faq-list">
-    <details><summary>What do I need to run GenePost?</summary><p>An Apple silicon Mac with macOS 14 or later, a supported Codex CLI signed in with ChatGPT, and access to the accounts where you publish. Activation, AI tasks, and publishing require internet access.</p></details>
-    <details><summary>How does publishing work?</summary><p>GenePost prepares and schedules posts in your local calendar. When you’re ready, open the post in Queue, copy the caption, and publish through the account’s own website. You can mark it published afterward.</p></details>
-    <details><summary>Do I need a social API key?</summary><p>You use your existing social account in your browser. GenePost keeps the caption, media, and channel link together for the handoff.</p></details>
-    <details><summary>Where do my drafts and media live?</summary><p>Your working copies are stored on your Mac. The content you choose for an AI task can be sent to your connected provider for processing. Read the <a href="./privacy/">privacy policy</a> for details.</p></details>
-    <details><summary>Can I move my license to a new Mac?</summary><p>Deactivate the old Mac in Settings → License and activate the new Mac using the key in your purchase receipt. If the old Mac is unavailable, <a href="mailto:support@genetrify.com?subject=GenePost%20activation">contact support</a>.</p></details>
+<section class="pricing" id="pricing" aria-labelledby="pricing-title">
+  <div class="wrap section pricing-inner">
+    <div>
+      <h2 id="pricing-title">Pay once.</h2>
+      <ul class="included">
+        <li>GenePost 2</li>
+        <li>Two Macs</li>
+        <li>Apple silicon</li>
+        <li>macOS 14+</li>
+        <li>Browser publishing</li>
+      </ul>
+    </div>
+    <div class="price">
+      <p class="price-amount">$39 <span>USD</span></p>
+      <p class="release-note">Checkout coming soon</p><a class="button quiet" href="./docs/#install">Setup guide</a>
+    </div>
   </div>
 </section>
 
@@ -404,9 +219,7 @@
           <a href="mailto:support@genetrify.com?subject=GenePost%20support">Support</a>
         </nav>
       </div>
-      <p class="footer-meta">GenePost 2 for Mac · Release preview<br>GENETRIFY INFORMATION TECHNOLOGY SERVICES · Polomolok, South Cotabato, Philippines<br>
-        <a href="mailto:support@genetrify.com">support@genetrify.com</a> · <a href="tel:+639560029945">+63 956 002 9945</a>
-      </p>
+      <p class="footer-meta">Release preview</p>
     </div>
   </footer>
 </body>

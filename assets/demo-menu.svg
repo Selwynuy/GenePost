@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 460">
+  <rect width="720" height="460" fill="#dbe6d3"/>
+  <path d="M44 96h632M44 359h632" stroke="#294d3d"/>
+  <g font-family="Georgia,serif" fill="#193c2f" text-anchor="middle">
+    <text x="360" y="238" font-size="86" letter-spacing="-5">Tasting menu</text>
+    <text x="360" y="291" font-size="26" font-style="italic">Three small pours</text>
+  </g>
+  <g fill="#193c2f" font-family="sans-serif" font-size="16" font-weight="700" letter-spacing="3" text-anchor="middle">
+    <text x="360" y="72">MORROW COFFEE</text>
+    <text x="360" y="397">SATURDAY AT TEN</text>
+  </g>
+</svg>
