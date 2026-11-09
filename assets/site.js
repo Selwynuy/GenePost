@@ -13,9 +13,12 @@ const screens = [
 ];
 const platformNames = { instagram: 'Instagram', linkedin: 'LinkedIn', threads: 'Threads', facebook: 'Facebook', x: 'X' };
 const candidates = [
-  { name: 'Avery', specialty: 'Community copy', sample: 'Lead with a warm invitation.', glyph: 'team' },
-  { name: 'Jordan', specialty: 'Founder stories', sample: 'Start with a detail only the founder would know.', glyph: 'drafts' },
-  { name: 'Quinn', specialty: 'Short hooks', sample: 'Open with a question people will want to answer.', glyph: 'spark' },
+  { name: 'Avery', specialty: 'Community copy', sample: 'I’d lead with what people can do together, then give them one clear way to join.' },
+  { name: 'Jordan', specialty: 'Founder stories', sample: 'I’d ask for one moment from your day that explains why you’re doing this.' },
+  { name: 'Quinn', specialty: 'Short hooks', sample: 'I’d write three first lines and keep the one you’d actually say out loud.' },
+  { name: 'Mika', specialty: 'Content planning', sample: 'I’d plan the announcement and reminder together so each post has a purpose.' },
+  { name: 'Sol', specialty: 'Visual direction', sample: 'I’d choose one photo that shows the work, then write a caption that adds context.' },
+  { name: 'Remy', specialty: 'Community replies', sample: 'I’d turn the questions people keep asking into short, useful replies in your voice.' },
 ];
 const campaigns = {
   coffee: {
@@ -104,14 +107,16 @@ function action(name, label, { value = '', kind = '', glyph = '', pressed, title
     (title ? ' aria-label="' + title + '" title="' + title + '"' : '') + '>' +
     (glyph ? icon(glyph) : '') + label + '</button>';
 }
-const roleIcon = candidate => '<span class="role-icon" aria-hidden="true">' + icon(candidate.glyph) + '</span>';
+const avatar = candidate => '<svg class="agent-avatar" viewBox="0 0 96 96" aria-hidden="true" focusable="false">' +
+  '<use href="#avatar-' + candidate.name.toLowerCase() + '"></use></svg>';
 
 const walkthrough = [
   ['Choose channels', '.demo-sidebar [data-value="channels"]', { chapter: 'channels', hold: 1550 }],
   ['Open Team', '.demo-sidebar [data-value="team"]', { chapter: 'hire' }],
   ['Post a job', '[data-action="post-job"]'],
-  ['See applicants', '[data-submit="applicants"] button', { hold: 1550 }],
-  ['Hire Avery', '[data-action="hire"]'],
+  ['See applicants', '[data-submit="applicants"] button', { hold: 1900 }],
+  ['Compare applicants', '[data-action="candidate"][data-value="Jordan"]', { hold: 1650 }],
+  ['Hire Jordan', '[data-action="hire"]'],
   ['Start a post', '.demo-sidebar [data-value="compose"]', { chapter: 'media' }],
   ['Add media', '[data-action="choose-media"]'],
   ['Attach media', '[data-action="attach"][data-value="cover"]', { hold: 1300 }],
@@ -215,7 +220,7 @@ function mountDemo(root, preview = false) {
       '<div class="app-row">' +
       action('choose-media', asset ? 'Change media' : 'Add media', { glyph: 'media', pressed: state.choosingMedia }) +
       (asset ? action('remove-media', '', { glyph: 'close', title: 'Remove attachment', kind: 'app-icon' }) : '') +
-      (teammate ? '<span class="agent-chip">' + roleIcon(teammate) + teammate.name + '</span>' : '') +
+      (teammate ? '<span class="agent-chip">' + avatar(teammate) + teammate.name + '</span>' : '') +
       '</div>' +
       (state.choosingMedia ? mediaPicker() : '') +
       '<div class="app-row">' + action('generate', 'Draft captions', { glyph: 'spark', kind: 'app-primary' }) + '</div>' +
@@ -240,21 +245,27 @@ function mountDemo(root, preview = false) {
     }
     if (state.hireStep === 'applicants') {
       const candidate = candidates.find(person => person.name === state.candidate);
-      return heading('Choose a teammate', brand()) + '<p class="job-context">' +
-        escapeHTML(state.jobTitle) + '</p><div class="applicants">' +
-        candidates.map(person => action('candidate',
-          roleIcon(person) + '<strong>' + person.name + '</strong><span class="candidate-specialty">' + person.specialty + '</span>',
+      const hire = state.team.includes(candidate.name)
+        ? '<span class="candidate-hired">' + icon('check') + 'On team</span>'
+        : action('hire', 'Hire ' + candidate.name, { glyph: 'check', kind: 'app-primary' });
+      return heading('Choose a teammate', brand()) +
+        '<div class="job-context"><p>' + escapeHTML(state.jobTitle) + '</p>' +
+        action('post-job', 'Back', { glyph: 'left', kind: 'job-back' }) + '</div>' +
+        '<div class="applicant-panel"><div class="applicants" role="group" aria-label="Applicants">' +
+        candidates.map(person => action('candidate', avatar(person) + '<strong>' + person.name + '</strong>',
           { value: person.name, pressed: person.name === candidate.name, kind: 'candidate' })).join('') +
-        '</div><div class="app-row candidate-actions">' +
-        action('hire', 'Hire ' + candidate.name, { glyph: 'check', kind: 'app-primary' }) +
+        '</div><div class="candidate-detail"><div class="candidate-meta" aria-live="polite"><strong>' +
+        candidate.name + '</strong><span>' + candidate.specialty + '</span></div>' +
+        '<div class="app-row candidate-actions">' +
         action('interview', 'Interview', { pressed: state.interview }) +
-        action('post-job', 'Back') +
-        '</div>' + (state.interview ? '<p class="interview-result">' + candidate.sample + '</p>' : '');
+        hire + '</div></div>' +
+        (state.interview ? '<p class="interview-result" role="status">' + candidate.sample + '</p>' : '') +
+        '</div>';
     }
     return heading('Team', action('post-job', 'Post a job', { glyph: 'plus', kind: 'app-primary' })) +
       (state.team.length
         ? '<div class="team-list">' + candidates.filter(person => state.team.includes(person.name)).map(person =>
-          '<div class="app-list-row">' + roleIcon(person) + '<span><strong>' + person.name + '</strong><small>' +
+          '<div class="app-list-row">' + avatar(person) + '<span><strong>' + person.name + '</strong><small>' +
           person.specialty + '</small></span></div>'
         ).join('') + '</div>' + action('screen', 'Brief teammate', { value: 'compose', glyph: 'right' })
         : empty('team', 'Build your team')) + '<div class="team-brand">' + brand() + '</div>';
@@ -502,9 +513,21 @@ function mountDemo(root, preview = false) {
     },
     schedule,
     'post-job': () => { state.hireStep = 'job'; draw({ reveal: '.job-form' }); },
-    applicants: () => { state.hireStep = 'applicants'; state.interview = false; draw({ reveal: '.applicants' }); },
+    applicants: () => {
+      if (state.team.includes(state.candidate)) {
+        state.candidate = candidates.find(person => !state.team.includes(person.name))?.name ?? state.candidate;
+      }
+      state.hireStep = 'applicants';
+      state.interview = false;
+      draw({ reveal: '.applicants' });
+    },
     'team-home': () => { state.hireStep = ''; draw(); },
-    candidate: name => { state.candidate = name; state.interview = false; draw(); },
+    candidate: name => {
+      if (state.candidate === name) return;
+      state.candidate = name;
+      state.interview = false;
+      draw({ reveal: '.candidate[aria-pressed="true"] .agent-avatar' });
+    },
     interview: () => { state.interview = !state.interview; draw({ reveal: '.interview-result' }); },
     hire: () => {
       if (!state.team.includes(state.candidate)) state.team.push(state.candidate);

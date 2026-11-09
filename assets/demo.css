@@ -217,19 +217,43 @@
 .library-art { display: grid; align-items: center; min-height: 70px; }
 .library-art :is(img, video) { width: 100%; height: auto; max-height: 175px; object-fit: contain; }
 .library figcaption { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 7px; padding: 8px; overflow-wrap: anywhere; font-size: 12px; }
-.role-icon {
-  width: 34px; height: 34px; display: inline-grid; place-items: center; flex: none;
-  background: var(--app-selection); color: var(--app-accent); border-radius: 8px; font-size: 16px;
-}
+.agent-avatar { display: block; width: 38px; height: 38px; flex: none; }
 .agent-chip { display: inline-flex; align-items: center; gap: 5px; font-size: 12px; font-weight: 640; color: var(--app-muted); }
-.agent-chip .role-icon { width: 24px; height: 24px; font-size: 13px; border-radius: 6px; }
+.agent-chip .agent-avatar { width: 25px; height: 25px; }
 .job-form { max-width: 360px; }
-.applicants { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
-.demo-app .candidate { width: 100%; min-height: 106px; flex-direction: column; padding: 12px 6px; text-align: center; }
-.candidate-specialty { color: var(--app-muted); font-size: 11px; }
-.candidate-actions, .team-brand, .team-list + .app-button { margin-top: 12px; }
-.job-context { color: var(--app-muted); margin: -7px 0 12px; overflow-wrap: anywhere; }
-.interview-result { color: var(--app-muted); margin-top: 12px; }
+.applicant-panel { container-type: inline-size; }
+.applicants {
+  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 5px;
+  padding: 6px; border-radius: 11px; background: var(--app-fill);
+}
+@container (min-width: 500px) {
+  .applicants { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+}
+.demo-app .candidate {
+  width: 100%; min-height: 90px; flex-direction: column; gap: 1px;
+  padding: 5px 3px 8px; background: transparent; color: var(--app-ink);
+}
+.demo-app .candidate:hover { background: var(--app-button); }
+.demo-app .candidate[aria-pressed="true"] { background: var(--app-selection); color: var(--app-ink); }
+.candidate .agent-avatar { width: min(100%, 66px); height: 66px; transition: transform 200ms var(--ease-arrive); }
+.candidate strong { font-size: 12px; font-weight: 670; }
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .candidate:hover .agent-avatar { transform: translateY(-2px); }
+}
+.job-context {
+  display: flex; justify-content: space-between; align-items: center; gap: 8px;
+  color: var(--app-muted); margin: -9px 0 8px; overflow-wrap: anywhere;
+}
+.demo-app .job-back { flex: none; background: transparent; color: var(--app-muted); min-height: 32px; padding-inline: 7px; }
+.candidate-detail { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 8px 14px; margin-top: 10px; }
+.candidate-meta { display: flex; flex-wrap: wrap; gap: 3px 8px; align-items: baseline; }
+.candidate-meta span { color: var(--app-muted); font-size: 12px; }
+.candidate-hired { display: inline-flex; align-items: center; gap: 5px; color: var(--app-success); padding-inline: 7px; }
+.interview-result {
+  color: var(--app-ink); background: var(--app-fill); border-radius: 8px;
+  padding: 9px 11px; margin-top: 9px; font-size: 13px;
+}
+.team-brand, .team-list + .app-button { margin-top: 12px; }
 .team-list, .channel-options { display: grid; gap: 7px; margin-bottom: 13px; }
 .demo-app .app-list-row, .app-list-row { display: flex; width: 100%; justify-content: flex-start; align-items: center; text-align: left; gap: 9px; background: var(--app-fill); padding: 9px; border-radius: 7px; overflow-wrap: anywhere; }
 .app-list-row > :last-child:not(:first-child) { margin-left: auto; }
