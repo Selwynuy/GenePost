@@ -79,7 +79,7 @@ function newState(campaignID, seed = true) {
     status: index ? 'published' : 'scheduled',
   }));
   return {
-    campaignID, campaign, view: 'compose', theme: 'dark', idea: campaign.idea,
+    campaignID, campaign, view: 'compose', theme: 'light', idea: campaign.idea,
     jobTitle: campaign.job, jobDescription: campaign.scope, hireStep: '', hiring: null, team: [],
     directorySpecialist: null, specialty: 'all', specialistSearch: '', specialistScroll: 0, directRole: null,
     channels, platform: channels[0], captions: null,
@@ -504,8 +504,8 @@ function mountDemo(root, preview = false) {
 
   function settings() {
     return heading('Settings', brand()) + '<div class="app-stack"><h3>Appearance</h3><div class="app-row">' +
-      action('theme', 'Dark', { value: 'dark', pressed: state.theme === 'dark' }) +
       action('theme', 'Light', { value: 'light', pressed: state.theme === 'light' }) +
+      action('theme', 'Dark', { value: 'dark', pressed: state.theme === 'dark' }) +
       '</div><a class="app-button" href="' + new URL('#integrations', docs) + '">Connection guide ' + icon('external') + '</a></div>';
   }
 
