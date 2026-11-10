@@ -223,6 +223,10 @@
 .library-art :is(img, video) { width: 100%; height: auto; max-height: 175px; object-fit: contain; }
 .library figcaption { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 7px; padding: 8px; overflow-wrap: anywhere; font-size: 12px; }
 .agent-avatar { display: block; width: 38px; height: 38px; flex: none; }
+.agent-initial {
+  display: grid; place-items: center; border-radius: 50%;
+  background: var(--app-button); color: var(--app-accent); font-weight: 680;
+}
 .agent-presence { position: relative; display: inline-flex; flex: none; }
 .agent-presence i {
   position: absolute; right: 0; bottom: 0; width: 10px; height: 10px; border: 2px solid var(--app-fill);
@@ -268,6 +272,15 @@
 .demo-app .candidate[aria-pressed="true"] { background: var(--app-selection); color: var(--app-ink); }
 .candidate .agent-avatar { width: min(100%, 60px); height: 60px; object-fit: contain; transition: transform 200ms var(--ease-arrive); }
 .candidate strong { font-size: 12px; font-weight: 670; }
+.applicant-label { display: grid; gap: 2px; line-height: 1.2; }
+.candidate.job-specialist small { color: var(--app-muted); font-size: 10px; text-wrap: balance; }
+.candidate .agent-initial { width: min(100%, 46px); height: 46px; margin-block: 4px; font-size: 17px; }
+@container (min-width: 425px) {
+  .demo-app .job-applicants .candidate {
+    flex-direction: row; justify-content: flex-start; gap: 8px; min-height: 58px; padding: 5px 8px; text-align: left;
+  }
+  .job-applicants .candidate .agent-avatar { width: 42px; height: 42px; margin: 0; }
+}
 .demo-app .specialists .candidate { min-height: 75px; padding: 6px 3px; line-height: 1.15; }
 .specialists .candidate .agent-avatar { width: 37px; height: 37px; }
 .specialists .candidate small { color: var(--app-muted); font-size: 11px; text-wrap: balance; }
@@ -339,8 +352,7 @@
 .demo-app .job-back { flex: none; background: transparent; color: var(--app-muted); min-height: 32px; padding-inline: 7px; }
 .candidate-profile { display: grid; gap: 10px; margin-top: 9px; }
 .candidate-meta { display: flex; flex-wrap: wrap; gap: 3px 8px; align-items: baseline; }
-.candidate-meta span, .candidate-sample > span { color: var(--app-muted); font-size: 12px; }
-.candidate-sample p { color: var(--app-ink); font-size: 13px; }
+.candidate-meta span { color: var(--app-muted); font-size: 12px; }
 .portfolio-work { display: grid; gap: 10px; padding: 10px 11px; border-radius: 8px; background: var(--app-bg); }
 .portfolio-work.with-art { grid-template-columns: minmax(84px, .85fr) minmax(0, 1.2fr); align-items: center; }
 .portfolio-work > img { width: 100%; height: auto; max-height: 135px; object-fit: contain; border-radius: 6px; }
@@ -351,9 +363,9 @@
 .interview-thread { max-height: 205px; overflow: auto; padding: 1px 2px; scrollbar-color: var(--app-line) transparent; }
 .interview-line { display: flex; align-items: start; gap: 7px; font-size: 13px; overflow-wrap: anywhere; }
 .interview-line .agent-avatar { width: 27px; height: 27px; }
-.interview-line p { padding: 5px 0; }
+.interview-line p { padding: 7px 10px; border-radius: 9px; background: var(--app-bg); }
 .interview-you { justify-content: flex-end; }
-.interview-you p { max-width: 87%; padding: 7px 10px; border-radius: 9px; background: var(--app-selection); }
+.interview-you p { max-width: 87%; background: var(--app-selection); }
 .interview-setup { margin-left: 34px; padding: 9px 11px; font-size: 12px; }
 .interview-setup strong { display: flex; align-items: center; gap: 4px; }
 .interview-setup ul { margin: 4px 0 0; padding-left: 16px; }
@@ -361,6 +373,16 @@
 .interview-input { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 6px; }
 .interview-input input { width: 100%; font-size: 13px; }
 .interview-actions { justify-content: space-between; }
+@media (min-width: 661px) {
+  .demo-workspace:has(.job-applicants), .job-applicants, .job-applicants .candidate-profile {
+    display: flex; flex-direction: column;
+  }
+  .job-applicants, .job-applicants .candidate-profile { min-height: 0; }
+  .job-applicants .interview-thread { min-height: 70px; }
+  .demo-workspace:has(.job-applicants) > :is(.app-heading, .job-context),
+  .job-applicants :is(.applicants, .candidate-actions, .interview-form) { flex: none; }
+  .job-applicants .interview-form { margin-top: 0; }
+}
 .team-job { margin-bottom: 9px; }
 .team-job :is(strong, small) { display: block; }
 .team-job .app-list-row > :last-child { margin-left: 0; }
